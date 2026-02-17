@@ -13,6 +13,17 @@ import Careers from './pages/Careers';
 import Information from './pages/Information';
 import Socials from './pages/Socials';
 
+// Component to handle scroll reset on navigation
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -141,6 +152,7 @@ const Navbar = () => {
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen flex flex-col selection:bg-[#FFC400] selection:text-black bg-grid bg-[#081B3A]">
         <div className="fixed inset-0 bg-scanline pointer-events-none z-10 opacity-30"></div>
         <CustomCursor />
