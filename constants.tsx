@@ -1,5 +1,5 @@
 
-import { Team, Event, Job } from './types';
+import { Team, Event, Job, NewsItem } from './types';
 
 export const BRAND_COLORS = {
   primary: '#081B3A', // Tactical Navy
@@ -366,4 +366,40 @@ export const MOCK_JOBS: Job[] = [
   { id: 'j1', title: 'Content Director', department: 'Creative', location: 'Remote', type: 'Full-time' },
   { id: 'j2', title: 'Senior Motion Designer', department: 'Production', location: 'Dubai, UAE', type: 'Full-time' },
   { id: 'j3', title: 'Social Media Manager', department: 'Marketing', location: 'Remote', type: 'Contract' }
+];
+
+export const MOCK_NEWS: NewsItem[] = [
+  {
+    id: 'n1',
+    slug: 'international-qualifications-2026',
+    title: 'GEEKAY SECURES SPOT IN INTERNATIONAL CHAMPIONSHIP QUALIFIERS',
+    category: 'TOURNAMENT',
+    date: 'FEB 26, 2026',
+    readTime: '5 MIN READ',
+    excerpt: 'After a dominant regional run, our elite squads have officially qualified for the global stage in London.',
+    image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=800',
+    content: 'Full article content for international qualifications...'
+  },
+  {
+    id: 'n2',
+    slug: 'rl-decals-launch-2026',
+    title: 'OFFICIAL GEEKAY ROCKET LEAGUE DECALS NOW AVAILABLE IN-GAME',
+    category: 'ANNOUNCEMENT',
+    date: 'FEB 24, 2026',
+    readTime: '3 MIN READ',
+    excerpt: 'Represent the pride of MENA on the pitch. The 2026 GEEKAY decal collection is now live in the Rocket League item shop.',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200&h=800',
+    content: 'Full article content for RL decals launch...'
+  },
+  {
+    id: 'n3',
+    slug: 'major-roster-announcement-2026',
+    title: 'MAJOR ROSTER UPDATE: GEEKAY REVEALS NEW TALENT FOR 2026 SEASON',
+    category: 'ROSTER',
+    date: 'FEB 22, 2026',
+    readTime: '4 MIN READ',
+    excerpt: 'Strategic reinforcements have arrived. Meet the new operatives joining our championship-winning divisions.',
+    image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=1200&h=800',
+    content: 'Full article content for major roster announcement...'
+  }
 ];

@@ -76,3 +76,15 @@ export interface Job {
   location: string;
   type: string;
 }
+
+export interface NewsItem {
+  id: string;
+  slug: string;
+  title: string;
+  category: 'ANNOUNCEMENT' | 'ROSTER' | 'TOURNAMENT' | 'COMMUNITY' | 'PARTNERSHIP';
+  date: string;
+  readTime: string;
+  excerpt: string;
+  image: string;
+  content?: string;
+}

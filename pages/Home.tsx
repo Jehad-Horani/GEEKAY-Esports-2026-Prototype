@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
-import { ChevronRight, PlayCircle, Search, BarChart3, Globe, Shield, X, Twitter, Twitch, Cpu, Target, Layers, Zap, ArrowDown } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { ChevronRight, PlayCircle, Search, BarChart3, Globe, Shield, X, Twitter, Twitch, Cpu, Target, Layers, Zap, ArrowDown, ArrowRight, Clock, Calendar, MapPin, Trophy } from 'lucide-react';
 import ArenaButton from '../components/ui/ArenaButton';
-import { MOCK_EVENTS, MOCK_TEAMS } from '../constants';
+import { MOCK_EVENTS, MOCK_TEAMS, MOCK_NEWS } from '../constants';
 import { Link } from 'react-router-dom';
-import { Player } from '../types';
+import { Player, NewsItem } from '../types';
 
 // --- Components ---
 
@@ -603,179 +603,532 @@ const PlayerDetailModal: React.FC<{ player: Player; onClose: () => void }> = ({ 
 );
 
 const AnimatedNumber: React.FC<{ value: string }> = ({ value }) => {
+  const [displayValue, setDisplayValue] = useState(0);
+  const targetValue = parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+  const isFloat = value.includes('.');
+  const suffix = value.replace(/[0-9.]/g, '');
+  const nodeRef = useRef(null);
+  const isInView = useInView(nodeRef, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      const duration = 1000; // 1s duration as requested
+      const startTime = performance.now();
+
+      const update = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smoother count-up
+        const easeOutQuad = (t: number) => t * (2 - t);
+        const easedProgress = easeOutQuad(progress);
+        
+        const current = easedProgress * targetValue;
+        
+        setDisplayValue(current);
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      };
+
+      requestAnimationFrame(update);
+    }
+  }, [isInView, targetValue]);
+
   return (
     <motion.span
+      ref={nodeRef}
       initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="font-syncopate text-5xl md:text-8xl font-bold text-white block"
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      className="font-syncopate text-5xl md:text-6xl lg:text-7xl font-bold text-white block tracking-tighter"
     >
-      {value}
+      {isFloat ? displayValue.toFixed(1) : Math.floor(displayValue)}{suffix}
     </motion.span>
   );
 };
 
-const EventSpotlight = () => {
-  const event = MOCK_EVENTS[0];
-  return (
-    <section className="py-32 px-6 bg-[#040E1E]/40 relative overflow-hidden border-y border-slate-800/50">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-6 mb-16">
-          <div className="w-16 h-[2px] bg-[#FFC400]" />
-          <h2 className="font-syncopate text-xl font-bold tracking-[0.3em]">EVENT SPOTLIGHT</h2>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-slate-800 bg-[#081B3A] group shadow-2xl">
-          <div className="lg:col-span-5 p-10 md:p-16 relative z-20 flex flex-col justify-center">
-             <div className="flex items-center gap-3 mb-8">
-                <span className="flex h-3 w-3 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
-                </span>
-                <span className="font-syncopate text-[10px] font-black text-red-600 tracking-widest">LIVE BROADCAST</span>
-             </div>
-             
-             <span className="text-slate-500 font-syncopate text-[10px] tracking-[0.5em] mb-4 block uppercase">{event.game}</span>
-             <h3 className="font-syncopate text-4xl md:text-6xl font-bold mb-12 leading-[1.1] text-white">
-                {event.title.split(' ').map((word, i) => (
-                  <span key={i} className={i === 0 ? 'text-[#FFC400]' : ''}>{word} </span>
-                ))}
-             </h3>
-             
-             <div className="flex gap-4 mb-16">
-                {[
-                  { label: 'HRS', val: '04' },
-                  { label: 'MIN', val: '22' },
-                  { label: 'SEC', val: '18' }
-                ].map((t, i) => (
-                  <div key={i} className="flex flex-col items-center">
-                    <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-900 border border-slate-800 flex items-center justify-center font-syncopate text-2xl md:text-3xl font-bold text-white group-hover:border-[#FFC400] transition-colors duration-500">
-                      {t.val}
-                    </div>
-                    <span className="text-[8px] font-syncopate text-slate-500 mt-3 tracking-widest">{t.label}</span>
-                  </div>
-                ))}
-             </div>
-
-             <div className="flex items-center gap-8 pt-10 border-t border-slate-800/50">
-                <ArenaButton icon={<PlayCircle size={18} />}>
-                  WATCH LIVE
-                </ArenaButton>
-             </div>
-          </div>
-
-          <div className="lg:col-span-7 relative aspect-video lg:aspect-auto overflow-hidden">
-             <motion.img 
-               animate={{ scale: [1.05, 1.1, 1.05] }}
-               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-               src={event.image} 
-               alt={event.title} 
-               className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
-             />
-             <div className="absolute inset-0 bg-gradient-to-r from-[#081B3A] via-[#081B3A]/40 to-transparent" />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const TheFrontline = () => {
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const players = MOCK_TEAMS[0].players.slice(0, 4);
+const NewsAnnouncements = () => {
+  const news = MOCK_NEWS.slice(0, 3);
+  const featured = news[0]; // International Qualifications
+  const others = news.slice(1); // RL Decals and Roster Announcements
 
   return (
-    <section className="py-32 px-6 bg-[#081B3A] border-t border-slate-800/50">
+    <section className="py-32 px-6 bg-[#081B3A] relative overflow-hidden border-y border-slate-800/50">
+      <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16">
-          <span className="font-syncopate text-white/40 text-[10px] tracking-[0.5em] font-bold mb-4 block uppercase">OPERATIVES</span>
-          <h2 className="font-syncopate text-4xl md:text-6xl font-bold uppercase tracking-tighter text-white">THE FRONTLINE</h2>
-          <p className="mt-4 text-slate-500 font-syncopate text-[10px] tracking-[0.2em] uppercase">
-            Built for pressure. Engineered to win.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {players.map((player) => (
+        {/* Header Row */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
+          <div className="space-y-4">
             <motion.div 
-              key={player.id}
-              whileHover={{ 
-                y: -8,
-                transition: { duration: 0.3 }
-              }}
-              onClick={() => setSelectedPlayer(player)}
-              className="group relative aspect-[4/5] overflow-hidden bg-slate-900 border border-slate-800 hover:border-[#FFC400] hover:shadow-[0_0_30px_rgba(255,196,0,0.15)] transition-all duration-500 cursor-pointer"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3"
             >
-              <img 
-                src={player.photo} 
-                alt={player.nickname} 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-700" 
+              <div className="w-8 h-[1px] bg-[#FFC400]" />
+              <span className="font-syncopate text-[#FFC400] text-[10px] font-black tracking-[0.4em] uppercase">NEWS_FEED // INTEL</span>
+            </motion.div>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="font-syncopate text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter relative inline-block"
+            >
+              NEWS & <span className="text-[#FFC400]">ANNOUNCEMENTS</span>
+              <motion.div 
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
+                className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#FFC400] origin-left"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-[#081B3A]/20 to-transparent opacity-90 transition-opacity group-hover:opacity-70" />
-              
-              <div className="absolute bottom-8 left-8 right-8">
-                <span className="inline-block bg-[#FFC400] text-black px-3 py-1 font-syncopate text-[8px] font-bold tracking-widest uppercase mb-4 skew-x-[-15deg]">
-                  <span className="block skew-x-[15deg]">{player.role}</span>
+            </motion.h2>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            <Link to="/news" className="group flex items-center gap-4 font-syncopate text-[10px] font-bold text-slate-400 hover:text-[#FFC400] transition-colors tracking-[0.2em]">
+              VIEW ALL NEWS <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* News Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Featured Card (International Qualifications) */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30, clipPath: 'inset(0 100% 0 0)' }}
+            whileInView={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0 0)' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "circOut" }}
+            className="lg:col-span-8 group relative bg-[#0A1A31] border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-500 overflow-hidden h-[500px] md:h-[600px]"
+          >
+            <div className="absolute inset-0 overflow-hidden">
+              <motion.img 
+                src={featured.image} 
+                alt={featured.title} 
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.6 }}
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-[#081B3A]/60 to-transparent" />
+            </div>
+            
+            <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-end">
+              <div className="mb-6">
+                <span className="bg-[#FFC400] text-black px-4 py-1 font-syncopate text-[9px] font-black tracking-widest uppercase inline-block">
+                  {featured.category}
                 </span>
-                <h3 className="font-syncopate text-3xl font-bold text-white uppercase leading-none mb-6 group-hover:text-[#FFC400] transition-colors">
-                  {player.nickname}
-                </h3>
-                <div className="flex justify-between py-4 border-t border-white/10">
-                  <div className="flex flex-col">
-                    <span className="text-slate-500 font-syncopate text-[7px] tracking-widest block mb-1 uppercase">K/D</span>
-                    <span className="text-sm font-syncopate font-bold text-white">{player.stats.kd}</span>
+              </div>
+              
+              <h3 className="font-syncopate text-3xl md:text-5xl font-bold text-white uppercase mb-6 leading-tight relative inline-block w-fit">
+                {featured.title}
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
+              </h3>
+              
+              <p className="text-slate-300 text-sm md:text-lg mb-8 line-clamp-2 font-light max-w-2xl uppercase tracking-wide">
+                {featured.excerpt}
+              </p>
+              
+              <div className="flex items-center justify-between pt-8 border-t border-white/10">
+                <div className="flex items-center gap-6 text-slate-500 font-syncopate text-[9px] tracking-widest">
+                  <span>{featured.date}</span>
+                  <div className="w-1 h-1 bg-slate-700 rounded-full" />
+                  <span>{featured.readTime}</span>
+                </div>
+                <Link to={`/news/${featured.slug}`} className="flex items-center gap-3 text-[#FFC400] font-syncopate text-[9px] font-black tracking-[0.3em] uppercase group/link">
+                  READ UPDATE <ArrowRight size={14} className="group-hover/link:translate-x-2 transition-transform" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Corner Markers */}
+            <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#FFC400]/20 group-hover:border-[#FFC400]/50 transition-colors" />
+            <div className="absolute bottom-0 left-0 w-12 h-12 border-b border-l border-[#FFC400]/20 group-hover:border-[#FFC400]/50 transition-colors" />
+          </motion.div>
+
+          {/* Secondary Cards */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            {others.map((item, idx) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, x: 30, clipPath: 'inset(0 0 0 100%)' }}
+                whileInView={{ opacity: 1, x: 0, clipPath: 'inset(0 0 0 0)' }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 + (idx * 0.1), duration: 0.6, ease: "circOut" }}
+                className="group relative flex flex-col bg-[#0A1A31] border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-500 overflow-hidden h-[241px] md:h-[291px]"
+              >
+                <div className="absolute inset-0 overflow-hidden">
+                  <motion.img 
+                    src={item.image} 
+                    alt={item.title} 
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ duration: 0.6 }}
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-[#081B3A]/80 to-transparent" />
+                </div>
+                
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="mb-4">
+                    <span className="bg-[#FFC400] text-black px-3 py-1 font-syncopate text-[8px] font-black tracking-widest uppercase inline-block">
+                      {item.category}
+                    </span>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-slate-500 font-syncopate text-[7px] tracking-widest block mb-1 uppercase">MVP</span>
-                    <span className="text-sm font-syncopate font-bold text-white">{player.stats.mvps}</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-slate-500 font-syncopate text-[7px] tracking-widest block mb-1 uppercase">WIN RATE</span>
-                    <span className="text-sm font-syncopate font-bold text-[#FFC400]">{player.stats.winRate}</span>
+                  
+                  <h4 className="font-syncopate text-base md:text-lg font-bold text-white uppercase mb-4 group-hover:text-[#FFC400] transition-colors line-clamp-2 relative inline-block w-fit">
+                    {item.title}
+                    <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
+                  </h4>
+                  
+                  <p className="text-slate-400 text-[10px] md:text-xs mb-6 line-clamp-2 font-light uppercase tracking-wide">
+                    {item.excerpt}
+                  </p>
+                  
+                  <div className="flex justify-between items-center pt-4 border-t border-white/10">
+                    <span className="text-slate-500 font-syncopate text-[8px] tracking-widest">{item.date}</span>
+                    <Link to={`/news/${item.slug}`} className="text-[#FFC400] font-syncopate text-[8px] font-black tracking-widest flex items-center gap-2 group/btn">
+                      READ <ArrowRight size={12} className="group-hover/btn:translate-x-1 transition-transform" />
+                    </Link>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+                
+                {/* Corner Markers */}
+                <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-[#FFC400]/20 group-hover:border-[#FFC400]/50 transition-colors" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
-
-      <AnimatePresence>
-        {selectedPlayer && <PlayerDetailModal player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />}
-      </AnimatePresence>
     </section>
   );
 };
 
-const AchievementStats = () => (
-  <section className="py-48 px-6 bg-transparent border-y border-slate-900 relative overflow-hidden">
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-syncopate text-[25vw] font-black text-white/[0.02] select-none pointer-events-none whitespace-nowrap">
-      ARENA 2026
-    </div>
-    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-24 relative z-10">
-      {[
-        { label: 'GLOBAL FANS', value: '2.4M', sub: 'Active community' },
-        { label: 'MAJOR TROPHIES', value: '32', sub: 'Championship wins' },
-        { label: 'WIN RATE', value: '68%', sub: 'Last 100 matches' },
-      ].map((stat, i) => (
-        <div key={i} className="group flex flex-col items-center md:items-start text-center md:text-left">
-          <div className="mb-4">
-             <AnimatedNumber value={stat.value} />
-          </div>
-          <div className="font-syncopate text-[10px] md:text-xs text-white tracking-[0.5em] mb-4 uppercase font-bold">{stat.label}</div>
-          <motion.div 
-            initial={{ width: 0 }}
-            whileInView={{ width: '60px' }}
+const AboutSnapshot = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const leftY = useTransform(scrollYProgress, [0, 1], [20, -20]);
+  const rightY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+
+  const stats = [
+    { label: 'GLOBAL COMMUNITY', value: '24.1M', sub: 'Active network' },
+    { label: 'MAJOR TITLES', value: '32', sub: 'Championship wins' },
+    { label: 'WIN RATE', value: '68%', sub: 'Last 100 matches' },
+    { label: 'ACTIVE TEAMS', value: '12', sub: 'Elite divisions' },
+  ];
+
+  return (
+    <section ref={sectionRef} className="py-40 px-6 bg-[#081B3A] relative overflow-hidden border-t border-slate-800/50">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-grid opacity-[0.05] pointer-events-none" />
+      
+      {/* Animated Scanning Line */}
+      <motion.div
+        animate={{ top: ['-10%', '110%'] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        className="absolute left-0 w-full h-[1px] bg-[#FFC400]/10 z-0 pointer-events-none"
+      />
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[0.4fr_0.6fr] gap-16 lg:gap-24 items-center relative z-10">
+        
+        {/* Left Side: Content */}
+        <motion.div
+          style={{ y: leftY }}
+          className="flex flex-col items-start"
+        >
+          <motion.span
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="h-1 bg-[#FFC400] mb-6"
-          />
-          <p className="text-slate-500 font-syncopate text-[9px] tracking-widest uppercase">{stat.sub}</p>
+            className="font-syncopate text-[#FFC400] text-[10px] md:text-xs tracking-[0.5em] font-bold uppercase block mb-6"
+          >
+            ABOUT GEEKAY // SNAPSHOT
+          </motion.span>
+          
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="font-syncopate text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-[1.1] mb-8"
+          >
+            WHO IS <span className="text-[#FFC400]">GEEKAY ESPORTS?</span>
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-slate-400 text-base md:text-lg font-light leading-relaxed mb-10 max-w-md"
+          >
+            A premier multi-division organization dedicated to competitive excellence, 
+            maintaining a relentless focus on regional dominance and international prestige.
+          </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="font-syncopate text-lg md:text-xl font-bold text-white uppercase tracking-[0.15em] border-l-4 border-[#FFC400] pl-8 py-2 bg-white/5"
+          >
+            “FORGED IN MENA.<br />BUILT FOR GLOBAL STAGES.”
+          </motion.div>
+        </motion.div>
+
+        {/* Right Side: Stats Grid */}
+        <motion.div 
+          style={{ y: rightY }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full"
+        >
+          {stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 + (i * 0.1), duration: 0.6 }}
+              whileHover={{ 
+                y: -8, 
+                backgroundColor: 'rgba(10, 26, 49, 0.9)',
+                boxShadow: '0 0 30px rgba(255, 196, 0, 0.15)'
+              }}
+              className="bg-[#0A1A31]/40 border border-slate-800 p-10 group transition-all duration-300 relative overflow-hidden"
+            >
+              {/* Subtle Edge Glow on Hover */}
+              <div className="absolute inset-0 border border-[#FFC400]/0 group-hover:border-[#FFC400]/20 transition-colors pointer-events-none" />
+              
+              <div className="mb-8">
+                 <AnimatedNumber value={stat.value} />
+                 <motion.div 
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '100%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 1 + (i * 0.1) }}
+                    className="h-[1px] bg-[#FFC400] mt-4 opacity-50"
+                  />
+              </div>
+              
+              <div className="space-y-2">
+                <div className="font-syncopate text-[11px] text-white tracking-[0.3em] uppercase font-black group-hover:text-[#FFC400] transition-colors">
+                  {stat.label}
+                </div>
+                <p className="text-slate-500 font-syncopate text-[9px] tracking-widest uppercase">
+                  {stat.sub}
+                </p>
+              </div>
+
+              {/* Tactical Corner Marker */}
+              <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-[#FFC400]/10 group-hover:border-[#FFC400]/30 transition-colors" />
+            </motion.div>
+          ))}
+        </motion.div>
+
+      </div>
+    </section>
+  );
+};
+
+const LiveOperationsHighlight = () => {
+  const upcomingMatches = [
+    {
+      id: 'm1',
+      game: 'VALORANT',
+      title: 'VCT CHALLENGERS',
+      opponent: 'TEAM FALCONS',
+      date: 'FEB 28, 2026',
+      time: '18:00 GST',
+      region: 'MENA',
+      countdown: '2D 11H'
+    },
+    {
+      id: 'm2',
+      game: 'DOTA 2',
+      title: 'RIYADH MASTERS',
+      opponent: 'NIGMA GALAXY',
+      date: 'MAR 02, 2026',
+      time: '20:00 GST',
+      region: 'GLOBAL',
+      countdown: '4D 13H'
+    },
+    {
+      id: 'm3',
+      game: 'CS2',
+      title: 'PRO LEAGUE S13',
+      opponent: 'G2 ESPORTS',
+      date: 'MAR 05, 2026',
+      time: '19:30 GST',
+      region: 'EU',
+      countdown: '7D 12H'
+    }
+  ];
+
+  const featuredTournament = MOCK_EVENTS[1]; // THE INTERNATIONAL 2026
+
+  return (
+    <section className="py-32 px-6 bg-[#081B3A] relative overflow-hidden border-t border-slate-800/50">
+      <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="mb-16">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-3 mb-4"
+          >
+            <div className="w-8 h-[1px] bg-[#FFC400]" />
+            <span className="font-syncopate text-[#FFC400] text-[10px] font-black tracking-[0.4em] uppercase">LIVE_OPERATIONS // HIGHLIGHT</span>
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-syncopate text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4"
+          >
+            SCHEDULE <span className="text-[#FFC400]">HIGHLIGHT</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.6 }}
+            viewport={{ once: true }}
+            className="text-slate-400 font-syncopate text-[10px] tracking-[0.2em] uppercase"
+          >
+            Upcoming matches and featured tournaments.
+          </motion.p>
         </div>
-      ))}
-    </div>
-  </section>
-);
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Left Column: Upcoming Matches */}
+          <div className="lg:col-span-7 space-y-6">
+            <h3 className="font-syncopate text-xs font-bold text-white/40 tracking-[0.3em] uppercase mb-8">UPCOMING MATCHES</h3>
+            {upcomingMatches.map((match, idx) => (
+              <motion.div
+                key={match.id}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ y: -4 }}
+                className="group relative bg-[#0A1A31]/40 border border-slate-800 p-6 md:p-8 hover:border-[#FFC400]/30 transition-all overflow-hidden"
+              >
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                  <div className="space-y-4">
+                    <span className="text-[#FFC400] font-syncopate text-[9px] font-black tracking-widest uppercase">{match.game}</span>
+                    <div className="space-y-1">
+                      <h4 className="font-syncopate text-lg md:text-xl font-bold text-white uppercase">{match.title}</h4>
+                      <p className="text-slate-400 font-syncopate text-[10px] tracking-widest uppercase">VS {match.opponent}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col md:items-end gap-2">
+                    <div className="flex items-center gap-3 text-slate-300 font-syncopate text-[10px] tracking-widest">
+                      <Calendar size={14} className="text-[#FFC400]" />
+                      <span>{match.date}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-slate-500 font-syncopate text-[10px] tracking-widest">
+                      <Clock size={14} />
+                      <span>{match.time} // {match.region}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex justify-between items-center">
+                  <div className="flex items-center gap-4">
+                    <div className="px-3 py-1 bg-[#FFC400]/10 border border-[#FFC400]/20 text-[#FFC400] font-syncopate text-[8px] font-bold tracking-widest uppercase">
+                      STARTS IN: {match.countdown}
+                    </div>
+                  </div>
+                  <Link to="/schedule" className="group/link flex items-center gap-2 font-syncopate text-[9px] font-black text-[#FFC400] tracking-[0.2em] uppercase relative">
+                    VIEW MATCH 
+                    <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#FFC400] group-hover/link:w-full transition-all duration-300" />
+                  </Link>
+                </div>
+
+                {/* Hover Border Animation */}
+                <div className="absolute top-0 right-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
+                <div className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Right Column: Featured Tournament */}
+          <div className="lg:col-span-5">
+            <h3 className="font-syncopate text-xs font-bold text-white/40 tracking-[0.3em] uppercase mb-8">FEATURED TOURNAMENT</h3>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -8 }}
+              className="group relative bg-[#0A1A31] border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-500 overflow-hidden h-full flex flex-col"
+            >
+              <div className="relative aspect-video overflow-hidden">
+                <img 
+                  src={featuredTournament.image} 
+                  alt={featuredTournament.title} 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1A31] via-[#0A1A31]/40 to-transparent" />
+                <div className="absolute top-6 right-6">
+                  <span className="bg-[#FFC400] text-black px-4 py-1 font-syncopate text-[10px] font-black tracking-widest uppercase">
+                    {featuredTournament.status}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-8 md:p-12 flex-grow flex flex-col">
+                <div className="mb-6">
+                  <span className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase">{featuredTournament.game}</span>
+                  <h4 className="font-syncopate text-2xl md:text-4xl font-bold text-white uppercase mt-2 leading-tight">{featuredTournament.title}</h4>
+                </div>
+
+                <div className="space-y-6 mb-12">
+                  <div className="flex items-center gap-4 text-slate-300">
+                    <Calendar size={18} className="text-[#FFC400]" />
+                    <span className="font-syncopate text-xs tracking-widest uppercase">{featuredTournament.date}</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-slate-300">
+                    <MapPin size={18} className="text-[#FFC400]" />
+                    <span className="font-syncopate text-xs tracking-widest uppercase">{featuredTournament.location}</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-slate-300">
+                    <Trophy size={18} className="text-[#FFC400]" />
+                    <span className="font-syncopate text-xs tracking-widest uppercase">PRIZE POOL: {featuredTournament.prizePool}</span>
+                  </div>
+                </div>
+
+                <div className="mt-auto">
+                  <Link to="/schedule">
+                    <ArenaButton className="w-full" icon={<ArrowRight size={18} />}>
+                      VIEW TOURNAMENT
+                    </ArenaButton>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Corner Markers */}
+              <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-[#FFC400]/20 group-hover:border-[#FFC400]/50 transition-colors" />
+              <div className="absolute bottom-0 right-0 w-12 h-12 border-b border-r border-[#FFC400]/20 group-hover:border-[#FFC400]/50 transition-colors" />
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Sponsors = () => (
   <div className="py-24 bg-[#081B3A]/60 overflow-hidden whitespace-nowrap border-b border-slate-800">
@@ -815,9 +1168,9 @@ const Home = () => {
     >
       <Hero />
       <Sponsors />
-      <EventSpotlight />
-      <TheFrontline />
-      <AchievementStats />
+      <NewsAnnouncements />
+      <AboutSnapshot />
+      <LiveOperationsHighlight />
       <TheGeekayEdge />
     </motion.div>
   );

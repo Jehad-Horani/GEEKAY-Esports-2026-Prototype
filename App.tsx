@@ -12,6 +12,8 @@ import About from './pages/About';
 import Careers from './pages/Careers';
 import Information from './pages/Information';
 import Socials from './pages/Socials';
+import News from './pages/News';
+import NewsDetail from './pages/NewsDetail';
 
 // Component to handle scroll reset on navigation
 const ScrollToTop = () => {
@@ -70,11 +72,11 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'HOME', path: '/' },
-    { name: 'SCHEDULE', path: '/schedule' },
-    { name: 'TEAMS', path: '/teams' },
     { name: 'ABOUT', path: '/about' },
-    { name: 'CAREERS', path: '/careers' },
-    { name: 'SOCIALS', path: '/socials' },
+    { name: 'TEAMS', path: '/teams' },
+    { name: 'SCHEDULE', path: '/schedule' },
+    { name: 'MEDIA', path: '/socials' },
+    { name: 'CONTACT US', path: '/careers' },
   ];
 
   return (
@@ -160,6 +162,8 @@ export default function App() {
         <main className="flex-grow pt-24 lg:pt-0 relative z-20">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/news/:slug" element={<NewsDetail />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/about" element={<About />} />

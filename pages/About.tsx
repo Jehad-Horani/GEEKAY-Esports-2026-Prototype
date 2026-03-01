@@ -11,14 +11,15 @@ const Counter = ({ value, duration = 2 }: { value: string; duration?: number }) 
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
   
-  const numericValue = parseInt(value.replace(/[^0-9]/g, '')) || 0;
-  const suffix = value.replace(/[0-9]/g, '');
+  const match = value.match(/(\d+)/);
+  const numericValue = match ? parseInt(match[0]) : 0;
+  const prefix = value.split(/\d+/)[0] || '';
+  const suffix = value.split(/\d+/)[1] || '';
 
   useEffect(() => {
-    if (isInView) {
+    if (isInView && numericValue > 0) {
       let start = 0;
       const end = numericValue;
-      if (start === end) return;
       const totalMiliseconds = duration * 1000;
       const incrementTime = totalMiliseconds / end;
       const timer = setInterval(() => {
@@ -30,7 +31,9 @@ const Counter = ({ value, duration = 2 }: { value: string; duration?: number }) 
     }
   }, [isInView, numericValue, duration]);
 
-  return <span ref={ref}>{displayValue}{suffix}</span>;
+  if (numericValue === 0) return <span>{value}</span>;
+
+  return <span ref={ref}>{prefix}{displayValue}{suffix}</span>;
 };
 
 // --- Sub-components ---
@@ -50,7 +53,7 @@ const SectionTitle = ({ subtitle, title, titleAccent }: { subtitle: string; titl
   </div>
 );
 
-const HUDStatCard = ({ label, value, index }: { label: string; value: string; index: number }) => (
+const HUDStatCard = ({ label, value, index, isPriority = false }: { label: string; value: string; index: number; isPriority?: boolean }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -58,24 +61,54 @@ const HUDStatCard = ({ label, value, index }: { label: string; value: string; in
     whileHover={{ 
       y: -8, 
       borderColor: 'rgba(255, 196, 0, 0.4)', 
-      backgroundColor: 'rgba(10, 37, 77, 0.6)',
-      boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5), 0 0 20px rgba(255,196,0,0.1)'
+      backgroundColor: 'rgba(10, 37, 77, 0.4)',
+      boxShadow: '0 20px 40px -10px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,196,0,0.05)'
     }}
-    className="bg-[#0A254D]/20 border border-slate-800/40 p-6 md:p-10 relative flex flex-col justify-center min-h-[140px] md:min-h-[180px] group transition-all duration-300 backdrop-blur-md"
+    className={`
+      relative p-8 md:p-10 flex flex-col justify-center min-h-[160px] md:min-h-[200px] group transition-all duration-500 
+      backdrop-blur-xl border border-white/5 overflow-hidden
+      ${isPriority ? 'bg-[#FFC400]/5 border-[#FFC400]/20' : 'bg-white/[0.02]'}
+    `}
   >
-    <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#FFC400]/10 group-hover:border-[#FFC400]/40 transition-colors" />
-    <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#FFC400]/10 group-hover:border-[#FFC400]/40 transition-colors" />
+    {/* Inner Shadow / Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
     
-    <div className="font-syncopate text-[9px] text-slate-500 tracking-[0.4em] mb-4 uppercase group-hover:text-[#FFC400]/80 transition-colors">
+    {/* Gold Micro Separator */}
+    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400]/20 to-transparent" />
+    
+    {/* System Feed Micro-text */}
+    <div className="absolute top-4 right-6 font-mono text-[7px] text-white/20 tracking-widest uppercase pointer-events-none">
+      GK_CORE_DATA // v2.6
+    </div>
+
+    {/* Priority Pulse */}
+    {isPriority && (
+      <motion.div 
+        animate={{ opacity: [0.1, 0.3, 0.1] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-0 bg-[#FFC400]/5 pointer-events-none"
+      />
+    )}
+    
+    <div className="font-syncopate text-[10px] text-slate-500 tracking-[0.4em] mb-4 uppercase group-hover:text-[#FFC400] transition-colors flex items-center gap-3">
+      <div className={`w-1.5 h-1.5 rounded-full ${isPriority ? 'bg-[#FFC400] animate-pulse' : 'bg-slate-700'}`} />
       {label}
     </div>
-    <div className="font-syncopate text-3xl md:text-5xl font-bold text-white tracking-tighter">
+    
+    <div className={`font-syncopate text-4xl md:text-6xl font-bold tracking-tighter transition-all duration-500 ${isPriority ? 'text-[#FFC400]' : 'text-white'}`}>
       <Counter value={value} />
     </div>
+
+    {isPriority && (
+      <div className="mt-4 inline-flex items-center gap-2 bg-[#FFC400]/10 border border-[#FFC400]/20 px-3 py-1 rounded-full">
+        <div className="w-1 h-1 bg-[#FFC400] rounded-full" />
+        <span className="font-syncopate text-[8px] text-[#FFC400] font-bold tracking-widest uppercase">PRIORITY METRIC</span>
+      </div>
+    )}
     
-    <div className="absolute right-6 bottom-6 opacity-0 group-hover:opacity-10 transition-opacity">
-      <Activity size={50} className="text-[#FFC400]" />
-    </div>
+    {/* Corner Accents */}
+    <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#FFC400]/30" />
+    <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#FFC400]/30" />
   </motion.div>
 );
 
@@ -133,7 +166,7 @@ const About = () => {
     <div className="bg-[#081B3A] overflow-x-hidden selection:bg-[#FFC400] selection:text-black">
       
       {/* 🎬 ULTIMATE ABOUT HERO - REFINED 2-COLUMN LUXURY */}
-      <section className="relative min-h-screen w-full flex items-center overflow-hidden pt-20">
+      <section className="relative min-h-[60vh] lg:min-h-[70vh] w-full flex items-center overflow-hidden pt-24 lg:pt-32 pb-12">
         {/* Background Visuals Layer */}
         <div className="absolute inset-0 z-0">
           <motion.div 
@@ -158,8 +191,8 @@ const About = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-6 md:px-12 relative z-20 h-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[80vh]">
+        <div className="container mx-auto px-6 md:px-12 relative z-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* LEFT: DRAMATIC TEXT CONTENT */}
             <div className="lg:col-span-7 flex flex-col justify-center">
@@ -319,33 +352,50 @@ const About = () => {
         </div>
       </section>
 
-      {/* 🟨 SECTION — MAKE HISTORY (RESTORED TO ORIGINAL HIGH IMPACT) */}
-      <section className="py-32 md:py-64 px-6 md:px-12 bg-[#040E1E] relative border-y border-white/5">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-          <div className="lg:pr-12">
-            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-              <h2 className="font-syncopate text-6xl md:text-[100px] font-black leading-[0.8] tracking-tighter uppercase text-white mb-12">
-                MAKE<br />
-                <span className="text-transparent border-text" style={{ WebkitTextStroke: '2px #FFC400' }}>HISTORY.</span>
+      {/* 📊 SECTION — PERFORMANCE SNAPSHOT (REDESIGNED) */}
+      <section className="py-32 md:py-48 px-6 md:px-12 bg-[#040E1E] relative border-y border-white/5 overflow-hidden">
+        {/* Background Grid Overlay */}
+        <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center relative z-10">
+          
+          {/* LEFT: EXECUTIVE HEADLINE */}
+          <div className="lg:col-span-5">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }} 
+              whileInView={{ opacity: 1, x: 0 }} 
+              transition={{ duration: 0.8 }} 
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <div className="h-[1px] w-12 bg-[#FFC400]" />
+                <span className="font-syncopate text-[#FFC400] text-[10px] tracking-[0.6em] font-bold uppercase">
+                  ABOUT_GEEKAY // PERFORMANCE_SNAPSHOT
+                </span>
+              </div>
+
+              <h2 className="font-syncopate text-5xl md:text-7xl font-black leading-[0.9] tracking-tighter uppercase text-white mb-10">
+                WHO IS<br />
+                <span className="text-[#FFC400]">GEEKAY ESPORTS?</span>
               </h2>
-              <div className="space-y-8 border-l-2 border-[#FFC400] pl-10 py-4">
-                <p className="text-white text-2xl font-bold font-syncopate tracking-tight leading-tight uppercase">
-                  Systems, not seasons. <br /> Tactics, not hype.
+
+              <div className="space-y-8 border-l border-white/10 pl-10 py-2">
+                <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed font-syncopate tracking-tight uppercase">
+                  A multi-division organization engineered for sustained performance across global titles.
                 </p>
-                <p className="text-slate-400 font-inter text-lg leading-relaxed font-light">
-                  We build infrastructure that scales across titles. Every GEEKAY division operates with the same relentless pursuit of data-driven excellence. We don’t chase victory—we engineer it through collective discipline.
+                <p className="text-slate-500 font-inter text-base leading-relaxed font-light max-w-md">
+                  We operate at the intersection of elite talent and analytical precision, maintaining a consistent presence on the world's most competitive stages.
                 </p>
               </div>
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 md:gap-8">
-            <HUDStatCard label="ESTABLISHED" value="2018" index={0} />
-            <HUDStatCard label="GLOBAL FINALS" value="8+" index={1} />
-            <HUDStatCard label="MVP TITLES" value="42" index={2} />
-            <HUDStatCard label="DIVISIONS" value="3" index={3} />
-            <HUDStatCard label="GLOBAL RANK" value="TOP 4" index={4} />
-            <HUDStatCard label="ACTIVE OPS" value="24" index={5} />
+          {/* RIGHT: DATA GRID */}
+          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <HUDStatCard label="ACTIVE TEAMS" value="12" index={0} />
+            <HUDStatCard label="GLOBAL REACH" value="24.0M" index={1} />
+            <HUDStatCard label="TOTAL ACCOMPLISHMENTS" value="32" index={2} />
+            <HUDStatCard label="EWC PLACEMENTS" value="TOP 4" index={3} isPriority={true} />
           </div>
         </div>
       </section>

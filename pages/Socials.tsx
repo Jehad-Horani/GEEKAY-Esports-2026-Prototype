@@ -213,7 +213,7 @@ const EcosystemGraph = () => {
   );
 };
 
-const Socials = () => {
+const Media = () => {
   return (
     <div className="bg-[#0B1C2D] min-h-screen overflow-x-hidden selection:bg-[#FFC400] selection:text-black">
       
@@ -476,4 +476,4 @@ const Socials = () => {
   );
 };
 
-export default Socials;
+export default Media;

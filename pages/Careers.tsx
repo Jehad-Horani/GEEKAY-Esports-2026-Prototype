@@ -26,7 +26,7 @@ const BenefitCard = ({ icon, title, index }: { icon: React.ReactNode, title: str
   </motion.div>
 );
 
-const Careers = () => {
+const ContactUs = () => {
   return (
     <div className="bg-[#081B3A] min-h-screen overflow-x-hidden selection:bg-[#FFC400] selection:text-black">
       
@@ -89,7 +89,7 @@ const Careers = () => {
                 transition={{ duration: 0.8, delay: 1 }}
                 className="font-syncopate text-white text-3xl md:text-6xl font-black uppercase tracking-tight"
               >
-                BUILD THE NEXT ERA.
+                GET IN TOUCH.
               </motion.span>
               
               <div className="relative inline-block mt-4">
@@ -99,7 +99,7 @@ const Careers = () => {
                   transition={{ duration: 1, delay: 1.5, ease: "circOut" }}
                   className="font-syncopate text-white text-6xl md:text-[140px] font-black leading-[0.85] tracking-tighter uppercase"
                 >
-                  JOIN THE <span className="text-[#FFC400] drop-shadow-[0_0_50px_rgba(255,196,0,0.4)]">ELITE.</span>
+                  CONTACT <span className="text-[#FFC400] drop-shadow-[0_0_50px_rgba(255,196,0,0.4)]">US.</span>
                 </motion.h1>
                 <motion.div 
                   initial={{ scaleX: 0 }}
@@ -384,4 +384,4 @@ const Careers = () => {
   );
 };
 
-export default Careers;
+export default ContactUs;
