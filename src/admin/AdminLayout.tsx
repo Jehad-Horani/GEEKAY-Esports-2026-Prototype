@@ -25,7 +25,7 @@ const AdminLayout = () => {
   const location = useLocation();
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    fetch('/api/auth/me', { credentials: 'include' })
       .then(res => {
         if (res.ok) return res.json();
         throw new Error('Unauthorized');
