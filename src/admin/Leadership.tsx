@@ -14,7 +14,7 @@ const AdminLeadership = () => {
   }, []);
 
   const fetchItems = async () => {
-    const res = await fetch('/api/leadership');
+    const res = await fetch('/api/leadership', { credentials: 'include' });
     const data = await res.json();
     setItems(data);
     setLoading(false);
@@ -28,6 +28,7 @@ const AdminLeadership = () => {
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(editingItem),
     });
     
@@ -37,7 +38,7 @@ const AdminLeadership = () => {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this leadership member?')) return;
-    await fetch(`/api/leadership/${id}`, { method: 'DELETE' });
+    await fetch(`/api/leadership/${id}`, { method: 'DELETE', credentials: 'include' });
     fetchItems();
   };
 

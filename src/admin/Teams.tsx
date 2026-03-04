@@ -29,14 +29,14 @@ const AdminTeams = () => {
   }, []);
 
   const fetchTeams = async () => {
-    const res = await fetch('/api/teams');
+    const res = await fetch('/api/teams', { credentials: 'include' });
     const data = await res.json();
     setTeams(data);
     setLoading(false);
   };
 
   const fetchPlayers = async (teamId: number) => {
-    const res = await fetch(`/api/teams/${teamId}/players`);
+    const res = await fetch(`/api/teams/${teamId}/players`, { credentials: 'include' });
     const data = await res.json();
     setPlayers(data);
   };
@@ -49,6 +49,7 @@ const AdminTeams = () => {
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(editingTeam),
     });
     
@@ -58,7 +59,7 @@ const AdminTeams = () => {
 
   const handleDeleteTeam = async (id: number) => {
     if (!confirm('Are you sure you want to delete this team and all its players?')) return;
-    await fetch(`/api/teams/${id}`, { method: 'DELETE' });
+    await fetch(`/api/teams/${id}`, { method: 'DELETE', credentials: 'include' });
     fetchTeams();
   };
 
@@ -70,6 +71,7 @@ const AdminTeams = () => {
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ ...editingPlayer, team_id: expandedTeamId }),
     });
     
@@ -79,7 +81,7 @@ const AdminTeams = () => {
 
   const handleDeletePlayer = async (id: number) => {
     if (!confirm('Delete player?')) return;
-    await fetch(`/api/players/${id}`, { method: 'DELETE' });
+    await fetch(`/api/players/${id}`, { method: 'DELETE', credentials: 'include' });
     if (expandedTeamId) fetchPlayers(expandedTeamId);
   };
 
