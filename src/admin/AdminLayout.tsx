@@ -40,7 +40,7 @@ const AdminLayout = () => {
   }, [navigate]);
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
     navigate('/admin/login');
   };
 

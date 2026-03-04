@@ -22,8 +22,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/stats').then(res => res.json()),
-      fetch('/api/activity').then(res => res.json())
+      fetch('/api/stats', { credentials: 'include' }).then(res => res.json()),
+      fetch('/api/activity', { credentials: 'include' }).then(res => res.json())
     ]).then(([statsData, activityData]) => {
       setStats(statsData);
       setActivity(activityData);
