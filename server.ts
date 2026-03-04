@@ -89,6 +89,7 @@ db.exec(`
     link TEXT,
     featured INTEGER DEFAULT 0,
     description TEXT,
+    display_order INTEGER DEFAULT 0,
     published INTEGER DEFAULT 0
   );
 
