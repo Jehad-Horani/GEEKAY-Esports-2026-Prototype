@@ -190,7 +190,7 @@ async function startServer() {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'none' });
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' });
     res.json({ user: { id: user.id, username: user.username, role: user.role } });
   });
 
