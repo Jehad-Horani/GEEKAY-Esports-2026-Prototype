@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { MapPin, Trophy, ChevronRight, PlayCircle, Info, History, Activity, Target, Calendar, Radio, Crosshair, Clock, Globe, Shield } from 'lucide-react';
+import { MapPin, Trophy, ChevronRight, ChevronLeft, Search, PlayCircle, Info, History, Activity, Target, Calendar, Radio, Crosshair, Clock, Globe, Shield } from 'lucide-react';
 import { MOCK_EVENTS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
 import { Event } from '../types';
@@ -63,19 +63,205 @@ const CountdownTerminal = ({ date }: { date: string }) => {
   );
 };
 
-const Schedule = () => {
-  const [filter, setFilter] = useState<'ALL' | 'LIVE' | 'UPCOMING' | 'FINISHED'>('ALL');
-  const [selectedId, setSelectedId] = useState(MOCK_EVENTS[0].id);
-  const containerRef = useRef(null);
+const CalendarInterface = () => {
+  const [currentDate, setCurrentDate] = useState(new Date(2026, 1, 1)); // FEB 2026
+  const [gameFilter, setGameFilter] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [expandedDay, setExpandedDay] = useState<number | null>(null);
+
+  const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
+  const firstDayOfMonth = (year: number, month: number) => {
+    const day = new Date(year, month, 1).getDay();
+    return day === 0 ? 6 : day - 1; // Adjust to Mon-Sun
+  };
+
+  const monthName = currentDate.toLocaleString('default', { month: 'short' }).toUpperCase();
+  const year = currentDate.getFullYear();
+
+  const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
 
   const filteredEvents = useMemo(() => {
-    return MOCK_EVENTS.filter(e => filter === 'ALL' || e.status === filter);
-  }, [filter]);
+    return MOCK_EVENTS.filter(event => {
+      const matchesGame = gameFilter === 'ALL' || event.game.includes(gameFilter);
+      const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                           event.game.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesGame && matchesSearch;
+    });
+  }, [gameFilter, searchQuery]);
 
-  const selectedEvent = useMemo(() => 
-    MOCK_EVENTS.find(e => e.id === selectedId) || filteredEvents[0], 
-    [selectedId, filteredEvents]
+  const getEventsForDay = (day: number) => {
+    const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return filteredEvents.filter(e => e.date === dateStr);
+  };
+
+  const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  const totalDays = daysInMonth(currentDate.getFullYear(), currentDate.getMonth());
+  const startOffset = firstDayOfMonth(currentDate.getFullYear(), currentDate.getMonth());
+  
+  const today = new Date();
+  const isToday = (day: number) => {
+    return today.getDate() === day && 
+           today.getMonth() === currentDate.getMonth() && 
+           today.getFullYear() === currentDate.getFullYear();
+  };
+
+  const handleEventClick = () => {
+    window.open('https://x.com/geekay_esports?lang=en', '_blank');
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="w-full"
+    >
+      {/* 🛠 FILTER BAR */}
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-16">
+        <div className="flex flex-wrap justify-center gap-2">
+          {['ALL', 'RL', 'HOK', 'PUBG', 'VAL', 'CS2'].map(tag => (
+            <button
+              key={tag}
+              onClick={() => setGameFilter(tag)}
+              className={`px-6 py-2 font-syncopate text-[10px] font-black tracking-widest transition-all duration-300 border
+                ${gameFilter === tag 
+                  ? 'bg-[#FFC400] border-[#FFC400] text-black shadow-[0_0_20px_rgba(255,196,0,0.3)]' 
+                  : 'bg-transparent border-slate-800 text-slate-500 hover:border-slate-600 hover:text-white'}`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full max-w-md">
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+          <input 
+            type="text"
+            placeholder="SEARCH OPERATIONS..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-[#081B3A] border border-slate-800 py-4 pl-12 pr-6 font-syncopate text-[10px] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#FFC400] transition-colors"
+          />
+        </div>
+      </div>
+
+      {/* 📅 CALENDAR HEADER */}
+      <div className="flex items-center justify-between mb-12 bg-[#081B3A] border border-slate-800 p-8">
+        <div className="flex items-center gap-6">
+          <button onClick={prevMonth} className="p-2 hover:text-[#FFC400] transition-colors text-slate-500">
+            <ChevronLeft size={24} />
+          </button>
+          <h2 className="font-syncopate text-2xl md:text-4xl font-black text-white tracking-tighter">
+            {monthName} <span className="text-[#FFC400]">{year}</span>
+          </h2>
+          <button onClick={nextMonth} className="p-2 hover:text-[#FFC400] transition-colors text-slate-500">
+            <ChevronRight size={24} />
+          </button>
+        </div>
+        <div className="hidden md:flex items-center gap-4 opacity-40">
+           <div className="w-2 h-2 bg-[#FFC400] rounded-full animate-pulse" />
+           <span className="font-syncopate text-[8px] tracking-[0.4em] text-white font-bold">CALENDAR_SYNC_ACTIVE</span>
+        </div>
+      </div>
+
+      {/* 🗓 CALENDAR GRID */}
+      <div className="grid grid-cols-7 border-t border-l border-slate-800">
+        {/* Weekday Headers */}
+        {weekDays.map(day => (
+          <div key={day} className="border-r border-b border-slate-800 bg-[#081B3A]/50 py-4 text-center">
+            <span className="font-syncopate text-[9px] font-black tracking-widest text-slate-500">{day}</span>
+          </div>
+        ))}
+
+        {/* Empty cells for start offset */}
+        {[...Array(startOffset)].map((_, i) => (
+          <div key={`empty-${i}`} className="border-r border-b border-slate-800 aspect-square md:aspect-video bg-[#040E1E]/30" />
+        ))}
+
+        {/* Day cells */}
+        {[...Array(totalDays)].map((_, i) => {
+          const day = i + 1;
+          const events = getEventsForDay(day);
+          const hasEvents = events.length > 0;
+          const isCurrent = isToday(day);
+          const isExpanded = expandedDay === day;
+
+          return (
+            <div 
+              key={day} 
+              className={`border-r border-b border-slate-800 p-2 md:p-4 min-h-[120px] md:min-h-[160px] relative group transition-colors
+                ${isCurrent ? 'bg-[#FFC400]/5' : 'hover:bg-white/[0.02]'}`}
+            >
+              {isCurrent && (
+                <div className="absolute inset-0 border border-[#FFC400]/30 pointer-events-none" />
+              )}
+              
+              <div className="flex justify-between items-start mb-4">
+                <span className={`font-syncopate text-xs md:text-sm font-black 
+                  ${isCurrent ? 'text-[#FFC400]' : 'text-slate-600 group-hover:text-slate-400'}`}>
+                  {String(day).padStart(2, '0')}
+                </span>
+              </div>
+
+              <div className="space-y-2">
+                <AnimatePresence>
+                  {(isExpanded ? events : events.slice(0, 2)).map((event, idx) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      onClick={handleEventClick}
+                      className="bg-[#081B3A] border border-slate-800 p-2 rounded-sm cursor-pointer hover:border-[#FFC400] transition-all group/chip relative overflow-hidden"
+                    >
+                      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#FFC400]" />
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-syncopate text-[7px] font-black text-[#FFC400] tracking-tighter">{event.game}</span>
+                        <span className="font-syncopate text-[6px] text-slate-500 font-bold">{event.time}</span>
+                      </div>
+                      <h4 className="font-syncopate text-[8px] font-bold text-white uppercase truncate leading-tight">{event.title}</h4>
+                      <div className="mt-1 flex items-center gap-1">
+                        <div className={`w-1 h-1 rounded-full ${event.type === 'TOURNAMENT' ? 'bg-purple-500' : 'bg-blue-500'}`} />
+                        <span className="font-syncopate text-[6px] text-slate-600 font-bold uppercase">{event.type}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+
+                {events.length > 2 && !isExpanded && (
+                  <button 
+                    onClick={() => setExpandedDay(day)}
+                    className="w-full py-1 font-syncopate text-[8px] font-black text-[#FFC400] hover:text-white transition-colors uppercase tracking-widest"
+                  >
+                    +{events.length - 2} MORE
+                  </button>
+                )}
+                
+                {isExpanded && (
+                  <button 
+                    onClick={() => setExpandedDay(null)}
+                    className="w-full py-1 font-syncopate text-[8px] font-black text-slate-500 hover:text-white transition-colors uppercase tracking-widest"
+                  >
+                    COLLAPSE
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Empty cells for end padding to keep grid consistent */}
+        {[...Array((7 - ((startOffset + totalDays) % 7)) % 7)].map((_, i) => (
+          <div key={`empty-end-${i}`} className="border-r border-b border-slate-800 aspect-square md:aspect-video bg-[#040E1E]/30" />
+        ))}
+      </div>
+    </motion.div>
   );
+};
+
+const Schedule = () => {
+  const containerRef = useRef(null);
 
   return (
     <div className="bg-[#0B1C2D] min-h-screen selection:bg-[#FFC400] selection:text-black pt-20 overflow-x-hidden" ref={containerRef}>
@@ -158,227 +344,12 @@ const Schedule = () => {
         </div>
       </section>
 
-      {/* 🧩 MAIN OPERATIONS LAYOUT */}
+      {/* 🧩 MAIN OPERATIONS LAYOUT — CALENDAR INTERFACE */}
       <section className="py-32 px-6 bg-[#040E1E] relative border-t border-white/5">
         <div className="max-w-screen-2xl mx-auto">
           
-          {/* Tactical Switcher (Filters) */}
-          <div className="mb-24 flex justify-center">
-             <div className="bg-[#081B3A] p-1 border border-slate-800 flex gap-2 relative skew-x-[-10deg]">
-                {(['ALL', 'LIVE', 'UPCOMING', 'FINISHED'] as const).map(f => (
-                  <button 
-                    key={f}
-                    onClick={() => setFilter(f)}
-                    className={`relative px-8 py-4 font-syncopate text-[9px] font-black tracking-[0.3em] uppercase transition-all duration-300 flex items-center justify-center
-                      ${filter === f ? 'text-black' : 'text-slate-500 hover:text-white'}`}
-                  >
-                    <div className="skew-x-[10deg] z-10">{f}</div>
-                    {filter === f && (
-                      <motion.div 
-                        layoutId="activeFilter"
-                        className="absolute inset-0 bg-[#FFC400]" 
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
-                  </button>
-                ))}
-             </div>
-          </div>
+          <CalendarInterface />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-            
-            {/* LEFT: Tactical Timeline */}
-            <div className="lg:col-span-4 relative pl-12">
-               {/* Vertical Tactical Line */}
-               <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-slate-800">
-                  <motion.div 
-                    initial={{ height: 0 }}
-                    whileInView={{ height: '100%' }}
-                    transition={{ duration: 1.5 }}
-                    className="absolute top-0 left-0 w-full bg-[#FFC400]" 
-                  />
-               </div>
-
-               <div className="space-y-6">
-                 {filteredEvents.map((event, idx) => {
-                   const isSelected = selectedId === event.id;
-                   const isLive = event.status === 'LIVE';
-                   const isUpcoming = event.status === 'UPCOMING';
-                   const isFinished = event.status === 'FINISHED';
-
-                   return (
-                     <motion.div 
-                       key={event.id}
-                       initial={{ opacity: 0, x: -30 }}
-                       whileInView={{ opacity: 1, x: 0 }}
-                       transition={{ delay: idx * 0.05 }}
-                       onClick={() => setSelectedId(event.id)}
-                       className={`relative p-8 cursor-pointer transition-all duration-300 group
-                         ${isSelected ? 'bg-[#FFC400]/5 border border-[#FFC400] shadow-[0_0_30px_rgba(255,196,0,0.1)]' : 'hover:bg-slate-900/50'}`}
-                     >
-                       {/* Connection Dot */}
-                       <div className={`absolute left-[-52px] top-1/2 -translate-y-1/2 w-3 h-3 border-2 transition-all duration-500
-                         ${isSelected ? 'bg-[#FFC400] border-[#FFC400] scale-125' : 'bg-[#040E1E] border-slate-700'}`} 
-                       />
-
-                       <div className="flex flex-col gap-2">
-                         <div className="flex justify-between items-center">
-                           <span className="font-syncopate text-[8px] text-slate-500 font-bold tracking-widest uppercase">OP-0{idx + 1}</span>
-                           <div className="flex items-center gap-2">
-                              {isLive && (
-                                <motion.div 
-                                  animate={{ opacity: [1, 0.4, 1] }}
-                                  transition={{ duration: 1.2, repeat: Infinity }}
-                                  className="w-1.5 h-1.5 bg-red-600 rounded-full shadow-[0_0_10px_#dc2626]" 
-                                />
-                              )}
-                              <span className={`font-syncopate text-[8px] font-black tracking-widest uppercase 
-                                ${isLive ? 'text-red-600' : isUpcoming ? 'text-[#FFC400]' : 'text-slate-600'}`}>
-                                {isUpcoming && 'UPCOMING_'}
-                                {event.status}
-                                {isUpcoming && <motion.div animate={{ opacity: [1, 0, 1] }} transition={{ repeat: Infinity, duration: 1 }} className="inline">_</motion.div>}
-                              </span>
-                           </div>
-                         </div>
-                         <div className="font-syncopate text-xs text-white/40 mb-1">{event.date}</div>
-                         <h4 className={`font-syncopate text-lg font-bold uppercase tracking-tight transition-colors 
-                           ${isSelected ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`}>
-                           {event.title}
-                           {isFinished && <div className="absolute inset-0 bg-slate-950/40 pointer-events-none skew-x-[-15deg]" />}
-                         </h4>
-                         <span className="font-syncopate text-[9px] text-[#FFC400] font-bold tracking-[0.2em] uppercase mt-2">{event.game}</span>
-                       </div>
-                     </motion.div>
-                   );
-                 })}
-               </div>
-            </div>
-
-            {/* RIGHT: Mission Detail Panel */}
-            <div className="lg:col-span-8 lg:sticky lg:top-40 h-fit">
-               <AnimatePresence mode="wait">
-                 <motion.div
-                   key={selectedEvent.id}
-                   initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
-                   animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                   exit={{ opacity: 0, x: -50, filter: "blur(10px)" }}
-                   transition={{ duration: 0.6, ease: "circOut" }}
-                   className="bg-[#081B3A] border border-slate-800 p-12 md:p-20 relative overflow-hidden group"
-                 >
-                    {/* Panel Radar Background Decoration */}
-                    <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] pointer-events-none opacity-[0.05] group-hover:opacity-[0.08] transition-opacity">
-                       <Crosshair size={600} strokeWidth={0.5} className="text-[#FFC400] animate-spin-slow" />
-                    </div>
-                    
-                    {/* Header Tactical Info */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16 border-b border-slate-800 pb-12">
-                       <div>
-                          <div className="flex items-center gap-3 mb-4">
-                             <div className="w-1.5 h-1.5 bg-[#FFC400] animate-pulse" />
-                             <span className="font-syncopate text-[#FFC400] text-[10px] tracking-[0.6em] font-bold uppercase">MISSION_INTEL</span>
-                          </div>
-                          <h2 className="font-syncopate text-4xl md:text-7xl font-black text-white uppercase tracking-tighter leading-[0.85]">
-                             {selectedEvent.title}
-                          </h2>
-                       </div>
-                       <div className="bg-[#040E1E] p-6 border border-slate-800 skew-x-[-15deg]">
-                          <div className="skew-x-[15deg]">
-                             <span className="font-syncopate text-slate-500 text-[8px] tracking-[0.4em] mb-2 block uppercase">LOCATION</span>
-                             <div className="flex items-center gap-3">
-                                <MapPin size={18} className="text-[#FFC400]" />
-                                <span className="font-syncopate text-sm font-bold text-white uppercase">{selectedEvent.location}</span>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
-                       <div className="space-y-4">
-                          <span className="font-syncopate text-slate-500 text-[10px] tracking-[0.5em] block uppercase">GAME_SECTOR</span>
-                          <div className="flex items-center gap-4">
-                             <div className="p-3 bg-white/5 border border-slate-800">
-                                <Activity size={24} className="text-[#FFC400]" />
-                             </div>
-                             <span className="font-syncopate text-2xl font-bold text-white uppercase">{selectedEvent.game}</span>
-                          </div>
-                       </div>
-                       <div className="space-y-4 text-right md:text-left">
-                          <span className="font-syncopate text-slate-500 text-[10px] tracking-[0.5em] block uppercase">PRIZE_ALLOCATION</span>
-                          <div className="flex items-center md:justify-start justify-end gap-4">
-                             <div className="p-3 bg-white/5 border border-slate-800">
-                                <Trophy size={24} className="text-[#FFC400]" />
-                             </div>
-                             <span className="font-syncopate text-2xl font-bold text-[#FFC400] uppercase">{selectedEvent.prizePool}</span>
-                          </div>
-                       </div>
-                    </div>
-
-                    {/* Dynamic Countdown / Status */}
-                    <div className="mb-20">
-                       {selectedEvent.status === 'UPCOMING' && (
-                          <div className="space-y-8">
-                             <span className="font-syncopate text-slate-500 text-[10px] tracking-[0.6em] block uppercase">OPERATION_COUNTDOWN</span>
-                             <CountdownTerminal date={selectedEvent.date} />
-                          </div>
-                       )}
-                       
-                       {selectedEvent.status === 'LIVE' && (
-                          <div className="flex items-center gap-8 p-10 bg-red-600/5 border border-red-600/20">
-                             <motion.div 
-                               animate={{ scale: [1, 1.2, 1], opacity: [1, 0.6, 1] }}
-                               transition={{ duration: 1, repeat: Infinity }}
-                               className="w-4 h-4 bg-red-600 rounded-full"
-                             />
-                             <div className="flex flex-col">
-                                <span className="font-syncopate text-red-600 text-[10px] font-black tracking-[0.6em] uppercase">TRANSMISSION_ACTIVE</span>
-                                <h3 className="font-syncopate text-2xl font-bold text-white uppercase mt-2">LIVE MATCH IN PROGRESS</h3>
-                             </div>
-                          </div>
-                       )}
-
-                       {selectedEvent.status === 'FINISHED' && (
-                          <div className="flex items-center gap-8 p-10 bg-slate-900 border border-slate-800 grayscale">
-                             <Shield size={32} className="text-slate-500" />
-                             <div className="flex flex-col">
-                                <span className="font-syncopate text-slate-500 text-[10px] font-black tracking-[0.6em] uppercase">OPERATION_CONCLUDED</span>
-                                <h3 className="font-syncopate text-2xl font-bold text-slate-400 uppercase mt-2">VOD REPLAYS AVAILABLE</h3>
-                             </div>
-                          </div>
-                       )}
-                    </div>
-
-                    {/* Action Bar */}
-                    <div className="flex flex-col sm:flex-row gap-6">
-                       {selectedEvent.status === 'LIVE' ? (
-                         <ArenaButton icon={<Radio size={18} className="animate-pulse" />} className="h-20 min-w-[280px]">
-                           WATCH LIVE FEED
-                         </ArenaButton>
-                       ) : selectedEvent.status === 'UPCOMING' ? (
-                         <ArenaButton icon={<Target size={18} />} className="h-20 min-w-[280px]">
-                           NOTIFY COMMAND
-                         </ArenaButton>
-                       ) : (
-                         <ArenaButton variant="outline" icon={<History size={18} />} className="h-20 min-w-[280px]">
-                           WATCH HIGHLIGHTS
-                         </ArenaButton>
-                       )}
-                       <ArenaButton variant="outline" className="h-20 min-w-[280px]" icon={<Info size={18} />}>
-                         MISSION_DETAILS
-                       </ArenaButton>
-                    </div>
-
-                    {/* Bottom HUD Labels */}
-                    <div className="absolute bottom-6 left-12 flex gap-12 opacity-20 group-hover:opacity-40 transition-opacity">
-                       <span className="font-mono text-[8px] uppercase">ENCRYPT_LEVEL: 09</span>
-                       <span className="font-mono text-[8px] uppercase">OPERATIVE: GEEKAY_SYSTEMS</span>
-                       <span className="font-mono text-[8px] uppercase">FEED_SYNC: STABLE</span>
-                    </div>
-                 </motion.div>
-               </AnimatePresence>
-            </div>
-
-          </div>
         </div>
       </section>
 

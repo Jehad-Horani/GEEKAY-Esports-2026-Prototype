@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Twitter, Twitch, Instagram, Youtube, LayoutGrid, Info, Briefcase, Calendar, Users, Home as HomeIcon } from 'lucide-react';
+import { Menu, X, Twitter, Twitch, Instagram, Youtube, LayoutGrid, Info, Briefcase, Calendar, Users, Home as HomeIcon, ChevronDown, ArrowRight } from 'lucide-react';
 
 // Pages
 import Home from './pages/Home';
@@ -10,6 +10,7 @@ import Schedule from './pages/Schedule';
 import Teams from './pages/Teams';
 import About from './pages/About';
 import Careers from './pages/Careers';
+import JobDetail from './pages/JobDetail';
 import Information from './pages/Information';
 import Socials from './pages/Socials';
 import News from './pages/News';
@@ -66,6 +67,118 @@ const CustomCursor = () => {
   );
 };
 
+const regions = [
+  { name: 'UAE', link: 'https://www.geekay.com/en/', sub: 'Official Store' },
+  { name: 'KSA', link: 'https://www.geekay.com/saudi_en/', sub: 'Official Store' },
+  { name: 'GLOBAL', link: 'https://www.geekay.com/global/', sub: 'Official Store' },
+];
+
+const DesktopShopDropdown = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div 
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <button className="bg-[#FFC400] text-black px-6 py-2 rounded-none font-syncopate text-[10px] font-bold hover:bg-yellow-400 transition-all skew-x-[-10deg] flex items-center gap-2">
+        <span className="skew-x-[10deg] flex items-center gap-1">
+          SHOP
+          <ChevronDown size={12} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        </span>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full right-0 pt-4 z-50 w-64"
+          >
+            <div className="bg-[#040E1E]/95 backdrop-blur-md border border-[#FFC400]/20 shadow-[0_20px_40px_rgba(0,0,0,0.6)] p-2">
+              <div className="px-4 py-3 border-b border-white/5 mb-2">
+                <span className="font-syncopate text-[8px] text-slate-400 tracking-[0.2em] uppercase">Select Region</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                {regions.map((region, i) => (
+                  <motion.a
+                    key={region.name}
+                    href={region.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 + 0.1 }}
+                    className="group relative flex items-center justify-between px-4 py-3 hover:bg-[#081B3A] transition-colors overflow-hidden"
+                  >
+                    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#FFC400] transform -translate-x-full group-hover:translate-x-0 transition-transform" />
+                    <div className="flex flex-col transform group-hover:translate-x-1 transition-transform duration-300">
+                      <span className="font-syncopate text-sm font-bold text-white">{region.name}</span>
+                      <span className="font-inter text-[10px] text-slate-500">{region.sub}</span>
+                    </div>
+                    <ArrowRight size={14} className="text-slate-600 group-hover:text-[#FFC400] transform group-hover:translate-x-1 transition-all duration-300" />
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const MobileShopDropdown = () => {
+  const [isShopOpen, setIsShopOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col">
+      <button 
+        onClick={() => setIsShopOpen(!isShopOpen)}
+        className="font-syncopate text-4xl font-bold flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
+      >
+        SHOP
+        <ChevronDown size={24} className={`transition-transform duration-300 ${isShopOpen ? 'rotate-180 text-[#FFC400]' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {isShopOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="flex flex-col gap-4 mt-6 pl-4 border-l-2 border-slate-800">
+              <span className="font-syncopate text-[10px] text-slate-500 tracking-[0.2em] uppercase mb-2">Select Region</span>
+              {regions.map((region, i) => (
+                <motion.a
+                  key={region.name}
+                  href={region.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="flex items-center justify-between group"
+                >
+                  <div className="flex flex-col">
+                    <span className="font-syncopate text-2xl font-bold text-white group-hover:text-[#FFC400] transition-colors">{region.name}</span>
+                    <span className="font-inter text-xs text-slate-500">{region.sub}</span>
+                  </div>
+                  <ArrowRight size={20} className="text-slate-600 group-hover:text-[#FFC400] transform group-hover:translate-x-2 transition-all" />
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -97,14 +210,7 @@ const Navbar = () => {
             <span className={`absolute -bottom-2 left-0 h-[2px] bg-[#FFC400] transition-all duration-300 ${location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'}`} />
           </Link>
         ))}
-        <a 
-          href="https://www.geekay.com/en/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="bg-[#FFC400] text-black px-6 py-2 rounded-none font-syncopate text-[10px] font-bold hover:bg-yellow-400 transition-all skew-x-[-10deg]"
-        >
-          <span className="skew-x-[10deg] block">SHOP</span>
-        </a>
+        <DesktopShopDropdown />
       </div>
 
       <button className="lg:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
@@ -134,15 +240,7 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <a 
-                href="https://www.geekay.com/en/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                className="font-syncopate text-4xl font-bold flex items-center gap-4 hover:text-[#FFC400] transition-colors"
-              >
-                SHOP
-              </a>
+              <MobileShopDropdown />
             </div>
           </motion.div>
         )}
@@ -159,7 +257,7 @@ export default function App() {
         <div className="fixed inset-0 bg-scanline pointer-events-none z-10 opacity-30"></div>
         <CustomCursor />
         <Navbar />
-        <main className="flex-grow pt-24 lg:pt-0 relative z-20">
+        <main className="flex-grow pt-24 relative z-20">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/news" element={<News />} />
@@ -168,6 +266,7 @@ export default function App() {
             <Route path="/teams" element={<Teams />} />
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/careers/:slug" element={<JobDetail />} />
             <Route path="/info" element={<Information />} />
             <Route path="/socials" element={<Socials />} />
           </Routes>

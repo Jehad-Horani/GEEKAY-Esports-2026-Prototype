@@ -16,6 +16,8 @@ export interface Player {
   role: string;
   photo: string;
   bio: string;
+  age?: string;
+  nationality?: string;
   stats: {
     kd: number;
     mvps: number;
@@ -28,6 +30,7 @@ export interface Player {
     twitter?: string;
     twitch?: string;
     instagram?: string;
+    youtube?: string;
   };
 }
 
@@ -42,6 +45,9 @@ export interface Team {
   id: string;
   name: string;
   game: string;
+  region?: string;
+  league?: string;
+  isContentCreators?: boolean;
   logo: string;
   banner: string;
   achievements: string[];
@@ -50,7 +56,6 @@ export interface Team {
   stats?: {
     winRate: string;
     rank: string;
-    earnings: string;
     championships: number;
     globalEvents: number;
     seasonRecord: string;
@@ -58,11 +63,30 @@ export interface Team {
   bio?: string;
 }
 
+export interface Creator {
+  id: string;
+  name: string;
+  nickname: string;
+  photo: string;
+  platforms: {
+    type: 'youtube' | 'twitch' | 'tiktok' | 'twitter' | 'instagram';
+    url: string;
+    handle: string;
+  }[];
+  metrics: {
+    followers: string;
+    totalReach: string;
+  };
+  focus: string; // Streaming / Gameplay / Commentary / Entertainment
+}
+
 export interface Event {
   id: string;
   title: string;
   game: string;
   date: string;
+  time?: string;
+  type?: 'MATCH' | 'TOURNAMENT';
   location: string;
   prizePool: string;
   status: 'LIVE' | 'UPCOMING' | 'FINISHED';
@@ -71,10 +95,16 @@ export interface Event {
 
 export interface Job {
   id: string;
+  slug: string;
   title: string;
   department: string;
   location: string;
-  type: string;
+  type: 'On-site' | 'Remote' | 'Hybrid';
+  summary: string;
+  responsibilities: string[];
+  requirements: string[];
+  niceToHave?: string[];
+  benefits: string[];
 }
 
 export interface NewsItem {

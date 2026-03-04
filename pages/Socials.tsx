@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Twitter, Twitch, Instagram, Youtube, Heart, MessageCircle, Share2, Users, Zap, TrendingUp, BarChart3, Globe, Play, ArrowRight, Activity, Share, Target, Cpu, RefreshCw, Shield } from 'lucide-react';
+import { Twitter, Twitch, Instagram, Youtube, Heart, MessageCircle, Share2, Users, Zap, TrendingUp, BarChart3, Globe, Play, ArrowRight, Activity, Share, Target, Cpu, RefreshCw, Shield, Maximize2, X as CloseIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import ArenaButton from '../components/ui/ArenaButton';
 
 // --- Components ---
@@ -42,178 +42,142 @@ const AnimatedCounter = ({ value, label, suffix = "" }: { value: number, label: 
   );
 };
 
-const PlatformDominationCard = ({ platform, icon, stats, growth, engagement }: any) => {
+const StatCard = ({ label, value, suffix = "" }: { label: string, value: number, suffix?: string }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          let start = 0;
+          const end = value;
+          const duration = 2000;
+          const increment = end / (duration / 16);
+          
+          const counter = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+              setCount(end);
+              clearInterval(counter);
+            } else {
+              setCount(Math.floor(start));
+            }
+          }, 16);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value, hasAnimated]);
+
+  return (
+    <motion.div 
+      ref={ref}
+      whileHover={{ y: -10 }}
+      className="bg-[#081B3A]/40 border border-slate-800 p-12 relative group overflow-hidden backdrop-blur-sm"
+    >
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400]/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#FFC400] group-hover:w-full transition-all duration-700" />
+      
+      <div className="relative z-10 text-center">
+        <div className="font-syncopate text-6xl md:text-8xl font-black text-white mb-4 tracking-tighter">
+          {count}{suffix}
+        </div>
+        <div className="inline-block">
+          <span className="font-syncopate text-[10px] text-slate-500 tracking-[0.5em] uppercase font-bold block mb-2">{label}</span>
+          <div className="h-[2px] w-12 bg-[#FFC400] mx-auto opacity-40 group-hover:opacity-100 transition-opacity" />
+        </div>
+      </div>
+      
+      <div className="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+        <BarChart3 size={160} />
+      </div>
+    </motion.div>
+  );
+};
+
+const PlatformCard = ({ platform, icon, followers, engagement, growth }: any) => {
   return (
     <motion.div
-      whileHover={{ y: -10, rotateX: -5, rotateY: 5 }}
-      style={{ perspective: 1000 }}
-      className="relative group bg-[#0A254D]/20 border border-slate-800 p-10 md:p-14 overflow-hidden transition-all duration-500"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -5 }}
+      className="bg-[#040E1E] border border-slate-800 p-8 relative group transition-all duration-300 hover:border-[#FFC400]/40"
     >
-      <div className="absolute inset-0 opacity-5 pointer-events-none flex items-end justify-center pb-10">
-        <div className="flex gap-1 h-32 items-end">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              animate={{ height: [10, Math.random() * 80 + 20, 10] }}
-              transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
-              className="w-1 bg-white"
-            />
-          ))}
+      <div className="absolute top-0 left-0 w-1 h-0 bg-[#FFC400] group-hover:h-full transition-all duration-500" />
+      
+      <div className="flex items-center justify-between mb-8">
+        <div className="p-3 bg-white/5 border border-slate-800 text-slate-400 group-hover:text-[#FFC400] group-hover:shadow-[0_0_20px_rgba(255,196,0,0.2)] transition-all duration-300">
+          {icon}
+        </div>
+        <div className="text-right">
+          <span className="font-syncopate text-[8px] text-slate-600 tracking-widest block uppercase mb-1">GROWTH</span>
+          <span className="font-syncopate text-xs font-bold text-green-500">{growth}</span>
         </div>
       </div>
 
-      <div className="absolute top-0 left-0 w-2 h-0 bg-[#FFC400] group-hover:h-full transition-all duration-700" />
-      <div className="absolute top-0 left-0 w-0 h-2 bg-[#FFC400] group-hover:w-full transition-all duration-700 delay-100" />
+      <div className="mb-6">
+        <h3 className="font-syncopate text-xl font-black text-white uppercase mb-1">{platform}</h3>
+        <p className="font-syncopate text-[10px] text-slate-500 tracking-widest uppercase">{followers}</p>
+      </div>
 
-      <div className="relative z-10">
-        <div className={`mb-12 text-slate-400 group-hover:text-white transition-colors`}>
-          {icon}
-        </div>
-        
-        <div className="mb-10">
-          <div className="font-syncopate text-5xl md:text-7xl font-black text-white mb-2 tracking-tighter group-hover:text-[#FFC400] transition-colors">
-            {stats}
-          </div>
-          <div className="font-syncopate text-[10px] text-slate-500 tracking-[0.5em] uppercase font-bold">
-            {platform} GLOBAL REACH
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-8 pt-8 border-t border-slate-800/50">
-          <div>
-            <div className="font-syncopate text-[8px] text-slate-600 tracking-widest uppercase mb-2">GROWTH</div>
-            <div className="flex items-center gap-2">
-              <TrendingUp size={14} className="text-green-500" />
-              <span className="font-syncopate text-sm font-bold text-white">{growth}</span>
-            </div>
-            <div className="mt-3 w-full h-[2px] bg-slate-800">
-               <motion.div 
-                 initial={{ width: 0 }}
-                 whileInView={{ width: '75%' }}
-                 transition={{ duration: 1.5, delay: 0.5 }}
-                 className="h-full bg-green-500" 
-               />
-            </div>
-          </div>
-          <div>
-            <div className="font-syncopate text-[8px] text-slate-600 tracking-widest uppercase mb-2">ENGAGEMENT</div>
-            <div className="flex items-center gap-2">
-              <Activity size={14} className="text-[#FFC400]" />
-              <span className="font-syncopate text-sm font-bold text-white">{engagement}</span>
-            </div>
-          </div>
+      <div className="pt-6 border-t border-slate-800/50">
+        <div className="flex justify-between items-center">
+          <span className="font-syncopate text-[8px] text-slate-600 tracking-widest uppercase">ENGAGEMENT</span>
+          <span className="font-syncopate text-xs font-bold text-white">{engagement}</span>
         </div>
       </div>
     </motion.div>
   );
 };
 
-const EcosystemGraph = () => {
-  const nodes = [
-    { icon: <Twitter size={20} />, angle: 0, label: "TWITTER", stats: "450K", color: "#1DA1F2" },
-    { icon: <Twitch size={20} />, angle: 60, label: "TWITCH", stats: "1.2M", color: "#9146FF" },
-    { icon: <Instagram size={20} />, angle: 120, label: "INSTAGRAM", stats: "620K", color: "#E1306C" },
-    { icon: <Youtube size={20} />, angle: 180, label: "YOUTUBE", stats: "180K", color: "#FF0000" },
-    { icon: <Zap size={20} />, angle: 240, label: "TIKTOK", stats: "800K", color: "#000000" },
-    { icon: <MessageCircle size={20} />, angle: 300, label: "DISCORD", stats: "150K", color: "#5865F2" },
-  ];
-
-  return (
-    <div className="relative w-full aspect-square max-w-3xl mx-auto flex items-center justify-center">
-      {/* Tactical Radar Circles */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[90%] h-[90%] border border-[#FFC400]/10 rounded-full"
-        />
-        <motion.div 
-          animate={{ rotate: -360 }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[70%] h-[70%] border border-[#FFC400]/5 rounded-full"
-        />
-        <div className="absolute w-[50%] h-[50%] border border-slate-800/30 rounded-full" />
-      </div>
-
-      {/* Center Command Node */}
-      <motion.div 
-        animate={{ scale: [1, 1.05, 1], boxShadow: ["0 0 20px rgba(255,196,0,0.1)", "0 0 50px rgba(255,196,0,0.3)", "0 0 20px rgba(255,196,0,0.1)"] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="w-40 h-40 md:w-56 md:h-56 bg-gradient-to-br from-[#FFC400] to-[#FF8C00] text-black rounded-full flex items-center justify-center z-20 skew-x-[-5deg] relative group cursor-pointer"
-      >
-        <div className="absolute inset-2 border border-black/20 rounded-full" />
-        <div className="flex flex-col items-center skew-x-[5deg]">
-          <span className="font-syncopate font-black text-2xl md:text-3xl tracking-tighter">GEEKAY</span>
-          <span className="font-syncopate text-[8px] tracking-[0.4em] font-bold mt-2 opacity-60">HQ_CENTRAL</span>
-        </div>
-      </motion.div>
-
-      {/* Orbiting Nodes */}
-      {nodes.map((node, i) => {
-        const radius = 320;
-        const x = Math.cos((node.angle * Math.PI) / 180) * radius;
-        const y = Math.sin((node.angle * Math.PI) / 180) * radius;
-
-        return (
-          <React.Fragment key={i}>
-            <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
-              <motion.line
-                initial={{ pathLength: 0, opacity: 0 }}
-                whileInView={{ pathLength: 1, opacity: 0.2 }}
-                transition={{ duration: 1.5, delay: i * 0.1 }}
-                x1="50%" y1="50%" 
-                x2={`calc(50% + ${x}px)`} 
-                y2={`calc(50% + ${y}px)`} 
-                stroke="#FFC400" 
-                strokeWidth="1"
-                strokeDasharray="4 4"
-              />
-              <motion.circle
-                animate={{ r: [0, 4, 0], opacity: [0, 0.5, 0] }}
-                transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                cx={`calc(50% + ${x/2}px)`}
-                cy={`calc(50% + ${y/2}px)`}
-                fill="#FFC400"
-              />
-            </svg>
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.1 + 0.5 }}
-              whileHover={{ scale: 1.1, zIndex: 50 }}
-              className="absolute group cursor-pointer z-30"
-              style={{ 
-                left: `calc(50% + ${x}px)`, 
-                top: `calc(50% + ${y}px)`,
-                transform: 'translate(-50%, -50%)' 
-              }}
-            >
-              <div className="bg-[#081B3A] border-2 border-slate-800 p-5 rounded-xl group-hover:border-[#FFC400] transition-all duration-300 relative overflow-hidden shadow-2xl">
-                 <div className="absolute top-0 left-0 w-1 h-full bg-[#FFC400]/20 group-hover:bg-[#FFC400] transition-all" />
-                 <div className="text-[#FFC400] group-hover:scale-110 transition-transform flex items-center justify-center">
-                   {node.icon}
-                 </div>
-              </div>
-              
-              {/* Data Tooltip (Visible on Hover) */}
-              <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 pointer-events-none">
-                <div className="bg-[#040E1E]/95 backdrop-blur-md px-6 py-4 border border-[#FFC400] rounded-none skew-x-[-10deg] shadow-[0_0_30px_rgba(255,196,0,0.2)]">
-                  <div className="skew-x-[10deg]">
-                    <div className="font-syncopate text-[9px] text-slate-500 mb-1 tracking-widest">{node.label}</div>
-                    <div className="font-syncopate text-lg text-white font-black">{node.stats}</div>
-                    <div className="font-syncopate text-[7px] text-[#FFC400] font-bold mt-2">LINK_STABLE // 100%</div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </React.Fragment>
-        );
-      })}
-    </div>
-  );
-};
+const GALLERY_IMAGES = [
+  { id: 1, category: 'TEAM PHOTOS', title: 'SQUAD_ALPHA_2026', url: 'https://picsum.photos/seed/esports1/1200/800' },
+  { id: 2, category: 'BOOTCAMP', title: 'TACTICAL_HUB_DUBAI', url: 'https://picsum.photos/seed/gaming1/1200/800' },
+  { id: 3, category: 'LAN EVENTS', title: 'VCT_TOKYO_STAGE', url: 'https://picsum.photos/seed/arena1/1200/800' },
+  { id: 4, category: 'TROPHY MOMENTS', title: 'CHAMPIONS_RISE', url: 'https://picsum.photos/seed/trophy1/1200/800' },
+  { id: 5, category: 'TEAM PHOTOS', title: 'ROSTER_REVEAL', url: 'https://picsum.photos/seed/esports2/1200/800' },
+  { id: 6, category: 'BOOTCAMP', title: 'LATE_NIGHT_STRATS', url: 'https://picsum.photos/seed/gaming2/1200/800' },
+  { id: 7, category: 'LAN EVENTS', title: 'CROWD_ENERGY', url: 'https://picsum.photos/seed/arena2/1200/800' },
+  { id: 8, category: 'TROPHY MOMENTS', title: 'GOLDEN_ERA', url: 'https://picsum.photos/seed/trophy2/1200/800' },
+  { id: 9, category: 'TEAM PHOTOS', title: 'OFFICIAL_JERSEY_2026', url: 'https://picsum.photos/seed/esports3/1200/800' },
+  { id: 10, category: 'BOOTCAMP', title: 'HARDWARE_SYNC', url: 'https://picsum.photos/seed/gaming3/1200/800' },
+  { id: 11, category: 'LAN EVENTS', title: 'MAIN_STAGE_LIGHTS', url: 'https://picsum.photos/seed/arena3/1200/800' },
+  { id: 12, category: 'TROPHY MOMENTS', title: 'VICTORY_ROAR', url: 'https://picsum.photos/seed/trophy3/1200/800' },
+  { id: 13, category: 'TEAM PHOTOS', title: 'SQUAD_BETA_2026', url: 'https://picsum.photos/seed/esports4/1200/800' },
+  { id: 14, category: 'BOOTCAMP', title: 'PERFORMANCE_LAB', url: 'https://picsum.photos/seed/gaming4/1200/800' },
+  { id: 15, category: 'LAN EVENTS', title: 'ARENA_ENTRANCE', url: 'https://picsum.photos/seed/arena4/1200/800' },
+  { id: 16, category: 'TROPHY MOMENTS', title: 'LEGACY_UNLOCKED', url: 'https://picsum.photos/seed/trophy4/1200/800' },
+  { id: 17, category: 'TEAM PHOTOS', title: 'COACHING_STAFF', url: 'https://picsum.photos/seed/esports5/1200/800' },
+  { id: 18, category: 'BOOTCAMP', title: 'RECOVERY_ZONE', url: 'https://picsum.photos/seed/gaming5/1200/800' },
+  { id: 19, category: 'LAN EVENTS', title: 'PRESS_CONFERENCE', url: 'https://picsum.photos/seed/arena5/1200/800' },
+  { id: 20, category: 'TROPHY MOMENTS', title: 'PODIUM_FINISH', url: 'https://picsum.photos/seed/trophy5/1200/800' },
+];
 
 const Media = () => {
+  const [filter, setFilter] = useState('ALL');
+  const [selectedImage, setSelectedImage] = useState<any>(null);
+
+  const filteredImages = useMemo(() => {
+    return filter === 'ALL' ? GALLERY_IMAGES : GALLERY_IMAGES.filter(img => img.category === filter);
+  }, [filter]);
+
+  const openLightbox = (img: any) => setSelectedImage(img);
+  const closeLightbox = () => setSelectedImage(null);
+
+  const navigateLightbox = (direction: 'prev' | 'next') => {
+    const currentIndex = GALLERY_IMAGES.findIndex(img => img.id === selectedImage.id);
+    let nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    if (nextIndex >= GALLERY_IMAGES.length) nextIndex = 0;
+    if (nextIndex < 0) nextIndex = GALLERY_IMAGES.length - 1;
+    setSelectedImage(GALLERY_IMAGES[nextIndex]);
+  };
   return (
     <div className="bg-[#0B1C2D] min-h-screen overflow-x-hidden selection:bg-[#FFC400] selection:text-black">
       
@@ -304,148 +268,158 @@ const Media = () => {
         </motion.div>
       </section>
 
-      {/* 🌍 SECTION 2: PLATFORM DOMINATION */}
-      <section className="py-32 md:py-60 px-6 bg-[#040E1E] border-y border-white/5 relative">
+      {/* 📊 SECTION 2: GLOBAL MEDIA REACH */}
+      <section className="py-32 md:py-60 px-6 bg-[#040E1E] relative border-y border-white/5">
         <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
         <div className="max-w-7xl mx-auto">
-          <div className="mb-24">
-             <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.5em] font-bold mb-4 block uppercase">SECTOR_ANALYSIS</span>
-             <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white">PLATFORM DOMINATION</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <PlatformDominationCard 
-              platform="TWITCH" 
-              icon={<Twitch size={48} />} 
-              stats="1.2M" 
-              growth="+18%" 
-              engagement="12.4%" 
-            />
-            <PlatformDominationCard 
-              platform="TWITTER" 
-              icon={<Twitter size={48} />} 
-              stats="450K" 
-              growth="+24%" 
-              engagement="8.2%" 
-            />
-            <PlatformDominationCard 
-              platform="INSTAGRAM" 
-              icon={<Instagram size={48} />} 
-              stats="620K" 
-              growth="+12%" 
-              engagement="15.1%" 
-            />
-            <PlatformDominationCard 
-              platform="YOUTUBE" 
-              icon={<Youtube size={48} />} 
-              stats="180K" 
-              growth="+30%" 
-              engagement="10.8%" 
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* 🧠 SECTION 3: CREATOR PROGRAM */}
-      <section className="py-32 md:py-60 px-6 bg-[#081B3A] border-y border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFC400]/5 rounded-full blur-[100px] -z-10" />
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-12"
-          >
-            <div>
-              <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.5em] font-bold mb-6 block uppercase">RECRUITMENT_PHASE</span>
-              <h2 className="font-syncopate text-4xl md:text-8xl font-bold uppercase tracking-tighter text-white leading-[0.85]">
-                BECOME <br /> THE MEDIA <br /> <span className="text-[#FFC400]">WEAPON.</span>
-              </h2>
-            </div>
-            <p className="text-slate-400 font-inter text-2xl font-light leading-relaxed max-w-xl uppercase tracking-wide">
-              We don't just sponsor creators. We integrate elite storytellers into the GEEKAY competitive matrix. Access world-class production, strategic growth data, and global exposure.
+          <div className="text-center mb-24">
+            <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.6em] font-bold mb-4 block uppercase">GLOBAL PRESENCE</span>
+            <h2 className="font-syncopate text-4xl md:text-7xl font-black text-white uppercase tracking-tighter mb-6">GLOBAL MEDIA REACH</h2>
+            <p className="text-slate-400 font-inter text-xl font-light tracking-wide max-w-2xl mx-auto uppercase">
+              Audience reach across Geekay platforms, teams, and creators.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative group p-1 bg-gradient-to-br from-[#FFC400] to-transparent"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <StatCard label="TOTAL REACH" value={24} suffix="M+" />
+            <StatCard label="TOTAL PLATFORMS" value={5} />
+            <StatCard label="COMBINED FOLLOWING" value={12} suffix="M+" />
+          </div>
+        </div>
+      </section>
+
+      {/* 📱 SECTION 3: PLATFORM BREAKDOWN */}
+      <section className="py-32 md:py-60 px-6 bg-[#081B3A] relative border-b border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-24">
+            <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.5em] font-bold mb-4 block uppercase">PERFORMANCE_METRICS</span>
+            <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-6">PLATFORM BREAKDOWN</h2>
+            <p className="text-slate-400 font-inter text-xl font-light tracking-wide max-w-2xl uppercase">
+              Performance metrics by platform.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            <PlatformCard platform="INSTAGRAM" icon={<Instagram size={24} />} followers="620K" engagement="15.1%" growth="+12%" />
+            <PlatformCard platform="X (TWITTER)" icon={<Twitter size={24} />} followers="450K" engagement="8.2%" growth="+24%" />
+            <PlatformCard platform="TIKTOK" icon={<Zap size={24} />} followers="800K" engagement="18.5%" growth="+45%" />
+            <PlatformCard platform="YOUTUBE" icon={<Youtube size={24} />} followers="180K" engagement="10.8%" growth="+30%" />
+            <PlatformCard platform="TWITCH" icon={<Twitch size={24} />} followers="1.2M" engagement="12.4%" growth="+18%" />
+          </div>
+        </div>
+      </section>
+
+      {/* 🖼 SECTION 4: MEDIA GALLERY */}
+      <section className="py-32 md:py-60 px-6 bg-[#040E1E] relative">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-24">
+            <div>
+              <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.5em] font-bold mb-4 block uppercase">VISUAL_ARCHIVE</span>
+              <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-6">MEDIA GALLERY</h2>
+              <p className="text-slate-400 font-inter text-xl font-light tracking-wide max-w-2xl uppercase">
+                Team moments, competition highlights, and behind-the-scenes media.
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap gap-3">
+              {['ALL', 'TEAM PHOTOS', 'BOOTCAMP', 'LAN EVENTS', 'TROPHY MOMENTS'].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`px-8 py-3 rounded-full font-syncopate text-[9px] font-black tracking-widest transition-all duration-300 border
+                    ${filter === cat 
+                      ? 'bg-[#FFC400] border-[#FFC400] text-black shadow-[0_0_20px_rgba(255,196,0,0.3)]' 
+                      : 'bg-transparent border-slate-800 text-slate-500 hover:border-slate-600 hover:text-white'}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-8 space-y-8">
+            <AnimatePresence mode="popLayout">
+              {filteredImages.map((img, idx) => (
+                <motion.div
+                  key={img.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  onClick={() => openLightbox(img)}
+                  className="relative group cursor-pointer overflow-hidden bg-slate-900 border border-slate-800"
+                >
+                  <img 
+                    src={img.url} 
+                    alt={img.title}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
+                    <div className="p-3 bg-[#FFC400] text-black rounded-full mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <Maximize2 size={20} />
+                    </div>
+                    <span className="font-syncopate text-[8px] text-[#FFC400] tracking-[0.4em] mb-2 block uppercase">{img.category}</span>
+                    <h4 className="font-syncopate text-sm font-black text-white uppercase tracking-tight">{img.title}</h4>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* 🔦 LIGHTBOX VIEWER */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6 md:p-12"
           >
-             <div className="bg-[#040E1E] p-12 md:p-20 flex flex-col items-center text-center">
-                <div className="w-20 h-20 bg-[#FFC400] rounded-full flex items-center justify-center mb-12 shadow-[0_0_30px_rgba(255,196,0,0.3)] animate-pulse">
-                   <Target size={32} className="text-black" />
-                </div>
-                <h3 className="font-syncopate text-2xl font-bold text-white uppercase mb-8 tracking-tight">OPERATIVE REGISTRATION OPEN</h3>
-                <p className="text-slate-500 font-syncopate text-[10px] tracking-[0.2em] uppercase mb-12 leading-loose">
-                  CURRENTLY ACCEPTING APPLICATIONS FOR <br /> 2026 CONTENT ROSTER IN MENA & GLOBAL.
-                </p>
-                <ArenaButton className="w-full h-24 text-xl">ENTER CREATOR PROGRAM</ArenaButton>
-             </div>
+            <button 
+              onClick={closeLightbox}
+              className="absolute top-24 right-12 w-14 h-14 bg-[#FFC400] text-black rounded-full flex items-center justify-center transition-all duration-300 z-[110] shadow-[0_0_30px_rgba(255,196,0,0.4)] hover:scale-110 active:scale-95"
+            >
+              <CloseIcon size={28} />
+            </button>
+
+            <button 
+              onClick={() => navigateLightbox('prev')}
+              className="absolute left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-[#FFC400] transition-colors z-[110]"
+            >
+              <ChevronLeft size={60} />
+            </button>
+
+            <button 
+              onClick={() => navigateLightbox('next')}
+              className="absolute right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-[#FFC400] transition-colors z-[110]"
+            >
+              <ChevronRight size={60} />
+            </button>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-6xl w-full h-full flex flex-col items-center justify-center"
+            >
+              <img 
+                src={selectedImage.url} 
+                alt={selectedImage.title}
+                className="max-w-full max-h-[65vh] object-contain shadow-[0_0_100px_rgba(255,196,0,0.1)]"
+                referrerPolicy="no-referrer"
+              />
+              <div className="mt-8 text-center">
+                <span className="font-syncopate text-[10px] text-[#FFC400] tracking-[0.6em] mb-4 block uppercase">{selectedImage.category}</span>
+                <h3 className="font-syncopate text-2xl md:text-4xl font-black text-white uppercase tracking-tighter">{selectedImage.title}</h3>
+              </div>
+            </motion.div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* 🏆 SECTION 4: THE ECOSYSTEM (REDESIGNED) */}
-      <section className="py-32 md:py-60 px-6 bg-black relative overflow-hidden">
-        {/* Decorative Grid and Tactical Elements */}
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC400]/20 animate-pulse" />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-32">
-             <div className="inline-flex items-center gap-4 mb-8">
-                <div className="h-[1px] w-12 bg-[#FFC400]/40" />
-                <span className="text-[#FFC400] font-syncopate text-[11px] tracking-[0.6em] font-bold uppercase">NETWORK_TOPOLOGY</span>
-                <div className="h-[1px] w-12 bg-[#FFC400]/40" />
-             </div>
-             <h2 className="font-syncopate text-5xl md:text-[120px] font-black uppercase tracking-tighter text-white leading-none">
-                THE <br className="md:hidden" /> <span className="text-[#FFC400]">ECOSYSTEM</span>
-             </h2>
-             <p className="mt-8 text-slate-500 font-syncopate text-[10px] tracking-[0.4em] uppercase font-bold max-w-xl mx-auto leading-relaxed">
-               INTEGRATED COMMAND STRUCTURE ACROSS ALL PRIMARY MEDIA SECTORS.
-             </p>
-          </div>
-
-          <div className="relative">
-             {/* Graph Background HUD */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none overflow-visible hidden lg:block">
-                <div className="absolute top-0 left-0 border-l border-t border-[#FFC400]/20 w-32 h-32" />
-                <div className="absolute bottom-0 right-0 border-r border-b border-[#FFC400]/20 w-32 h-32" />
-                
-                {/* Coordinates labels */}
-                <div className="absolute top-4 left-4 font-mono text-[8px] text-[#FFC400]/40 uppercase">LAT: 25.0719° N // LONG: 55.1311° E</div>
-                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-[#FFC400]/40 uppercase">ENCRYPT_LEVEL: 09 // SECTOR: DELTA</div>
-             </div>
-
-             <EcosystemGraph />
-          </div>
-          
-          <div className="mt-40 grid grid-cols-1 md:grid-cols-4 gap-8">
-             {[
-               { icon: <Globe size={20} />, label: "GEOGRAPHIC REACH", val: "GLOBAL" },
-               { icon: <Cpu size={20} />, label: "API UPTIME", val: "99.9%" },
-               { icon: <RefreshCw size={20} />, label: "DATA REFRESH", val: "REAL-TIME" },
-               { icon: <Shield size={20} />, label: "CORE SECURITY", val: "VERIFIED" },
-             ].map((stat, i) => (
-               <motion.div 
-                 key={i}
-                 initial={{ opacity: 0, y: 20 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 transition={{ delay: i * 0.1 }}
-                 className="p-8 border border-slate-900 bg-[#081B3A]/20 backdrop-blur-sm group hover:border-[#FFC400]/40 transition-all"
-               >
-                 <div className="text-[#FFC400]/50 group-hover:text-[#FFC400] mb-6 transition-colors">
-                   {stat.icon}
-                 </div>
-                 <div className="font-syncopate text-[8px] text-slate-600 tracking-widest uppercase mb-2 font-bold">{stat.label}</div>
-                 <div className="font-syncopate text-2xl font-black text-white">{stat.val}</div>
-               </motion.div>
-             ))}
-          </div>
-        </div>
-      </section>
+        )}
+      </AnimatePresence>
 
       {/* 🚀 FINAL CTA SECTION */}
       <section className="py-40 md:py-60 px-6 bg-[#FFC400] text-black relative overflow-hidden flex flex-col items-center justify-center text-center">

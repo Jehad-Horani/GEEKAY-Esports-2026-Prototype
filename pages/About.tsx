@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Play, ArrowRight, Activity, ChevronRight, ChevronLeft, Zap, Target, Shield, Cpu } from 'lucide-react';
+import { Play, ArrowRight, Activity, ChevronRight, ChevronLeft, Zap, Target, Shield, Cpu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ArenaButton from '../components/ui/ArenaButton';
 
@@ -113,54 +113,59 @@ const HUDStatCard = ({ label, value, index, isPriority = false }: { label: strin
 );
 
 const About = () => {
-  const [activeYearIndex, setActiveYearIndex] = useState(4); 
-  
-  const milestones = [
-    { 
-      year: '2018', 
-      title: 'FOUNDATION', 
-      desc: 'GEEKAY is established in Dubai with a mission to unify MENA. We began as a small cadre of specialists with a global vision.',
-      image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200&h=800'
-    },
-    { 
-      year: '2019', 
-      title: 'DOMINANCE', 
-      desc: 'Within 12 months, GEEKAY secured major trophies. Our standard of play redefined what was possible in regional leagues.',
-      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=800'
-    },
-    { 
-      year: '2021', 
-      title: 'BREAKTHROUGH', 
-      desc: 'Broken into the Global Top 10. Our performance at international majors signaled the arrival of a new power player.',
-      image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=1200&h=800'
-    },
-    { 
-      year: '2023', 
-      title: 'INFRASTRUCTURE', 
-      desc: 'Inauguration of the GEEKAY Performance Center. A hub dedicated to biometric analysis and elite tactical conditioning.',
-      image: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=1200&h=800'
-    },
-    { 
-      year: '2026', 
-      title: 'ELITE STATUS', 
-      desc: 'GEEKAY represents the pinnacle of operations. We don’t just compete; we dictate the meta. Global dominance is reality.',
-      image: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&q=80&w=1200&h=800'
-    },
+  const timelineData = [
+    { year: '2021', title: 'BREAKTHROUGH', desc: 'Broken into the Global Top 10.' },
+    { year: '2022', title: 'EXPANSION', desc: 'Launched multiple new divisions.' },
+    { year: '2023', title: 'INFRASTRUCTURE', desc: 'Inauguration of the Performance Center.' },
+    { year: '2024', title: 'DOMINANCE', desc: 'Secured major international trophies.' },
+    { year: '2025', title: 'GLOBAL REACH', desc: 'Expanded operations to new regions.' },
+    { year: '2026', title: 'ELITE STATUS', desc: 'Dictating the meta. Global dominance.' },
   ];
 
-  const leadership = [
-    { name: "SAMIR AL-FASSI", role: "CEO / FOUNDER", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500&h=600", quote: "Excellence is not an act, but a standard we live by every single game. We built GEEKAY to win." },
-    { name: "ELENA CHEN", role: "CHIEF STRATEGY OFFICER", photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=500&h=600", quote: "Data is our weapon. Winning is our only metric. We engineer every rotation." },
-    { name: "MARCUS THORNE", role: "HEAD OF PERFORMANCE", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=500&h=600", quote: "Pressure doesn't break us. It focuses us. We train under simulation to thrive." }
+  const leadershipData = [
+    { 
+      name: "KISHAN", 
+      role: "CEO / FOUNDER", 
+      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500&h=600", 
+      preview: "Visionary leader driving global expansion.",
+      desc: "Kishan founded Geekay Esports with a singular vision: to put MENA on the global esports map. Under his leadership, the organization has grown from a regional contender to a globally recognized powerhouse.",
+      linkedin: "#"
+    },
+    { 
+      name: "IHAB", 
+      role: "CHIEF STRATEGY OFFICER", 
+      photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=500&h=600", 
+      preview: "Architect of competitive dominance.",
+      desc: "Ihab oversees the strategic direction of all competitive divisions. His data-driven approach to roster building and tactical analysis has secured multiple international championships.",
+      linkedin: "#"
+    },
+    { 
+      name: "RAGHEED", 
+      role: "HEAD OF OPERATIONS", 
+      photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=500&h=600", 
+      preview: "Ensuring operational excellence.",
+      desc: "Ragheed manages the day-to-day operations of the Geekay Performance Center, ensuring that players and staff have the infrastructure needed to perform at the highest level.",
+      linkedin: "#"
+    },
+    { 
+      name: "ALI", 
+      role: "COMMERCIAL DIRECTOR", 
+      photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=500&h=600", 
+      preview: "Driving brand partnerships.",
+      desc: "Ali leads the commercial strategy, forging partnerships with global brands and expanding Geekay's footprint in the esports ecosystem.",
+      linkedin: "#"
+    },
+    { 
+      name: "AOY", 
+      role: "CREATIVE DIRECTOR", 
+      photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=500&h=600", 
+      preview: "Shaping the Geekay identity.",
+      desc: "Aoy is the creative force behind the Geekay brand. From apparel design to content production, she ensures the organization's visual identity remains elite and uncompromising.",
+      linkedin: "#"
+    }
   ];
 
-  const nextYear = () => {
-    setActiveYearIndex(prev => Math.min(prev + 1, milestones.length - 1));
-  };
-
-  const prevYear = () => {
-    setActiveYearIndex(prev => Math.max(prev - 1, 0));
-  };
+  const [selectedLeader, setSelectedLeader] = useState<typeof leadershipData[0] | null>(null);
 
   return (
     <div className="bg-[#081B3A] overflow-x-hidden selection:bg-[#FFC400] selection:text-black">
@@ -400,98 +405,48 @@ const About = () => {
         </div>
       </section>
 
-      {/* 🧭 SECTION — OUR JOURNEY (CINEMATIC & STRUCTURED) */}
+      {/* 🧭 SECTION — OUR JOURNEY (TIMELINE FIX) */}
       <section className="py-24 md:py-40 bg-[#081B3A] border-b border-white/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           <SectionTitle subtitle="TIMELINE_CHRONOLOGY" title="OUR" titleAccent="JOURNEY" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-stretch mt-12 md:mt-24">
-            {/* Left Content Column */}
-            <div className="flex flex-col justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeYearIndex}
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.6, ease: "circOut" }}
-                  className="space-y-8"
-                >
-                  <div className="flex items-center gap-6">
-                    <span className="font-syncopate text-[#FFC400] text-3xl md:text-5xl font-black tracking-tighter">
-                      {milestones[activeYearIndex].year}
-                    </span>
-                    <div className="h-[2px] flex-grow bg-slate-800" />
-                  </div>
-                  
-                  <h3 className="font-syncopate text-3xl md:text-5xl font-bold text-white uppercase tracking-tighter leading-none">
-                    {milestones[activeYearIndex].title}
-                  </h3>
-                  
-                  <p className="text-slate-400 text-lg md:text-xl font-light leading-relaxed max-w-xl">
-                    {milestones[activeYearIndex].desc}
-                  </p>
-
-                  <div className="pt-8 flex items-center gap-4">
-                    <button 
-                      onClick={prevYear}
-                      disabled={activeYearIndex === 0}
-                      className={`p-4 border transition-all duration-300 ${activeYearIndex === 0 ? 'border-slate-800 text-slate-800' : 'border-slate-700 text-white hover:border-[#FFC400] hover:text-[#FFC400] hover:shadow-[0_0_15px_rgba(255,196,0,0.2)]'}`}
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <button 
-                      onClick={nextYear}
-                      disabled={activeYearIndex === milestones.length - 1}
-                      className={`p-4 border transition-all duration-300 ${activeYearIndex === milestones.length - 1 ? 'border-slate-800 text-slate-800' : 'border-slate-700 text-white hover:border-[#FFC400] hover:text-[#FFC400] hover:shadow-[0_0_15px_rgba(255,196,0,0.2)]'}`}
-                    >
-                      <ChevronRight size={20} />
-                    </button>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+          <div className="relative mt-20 md:mt-32">
+            {/* Connector line */}
+            <div className="absolute top-0 md:top-6 left-[15px] md:left-0 w-[2px] md:w-full h-full md:h-[2px] bg-slate-800/50 z-0" />
+            
+            <div className="flex flex-col md:flex-row justify-between gap-12 md:gap-4">
+              {timelineData.map((item, idx) => {
+                const isActive = item.year === '2026';
+                return (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1, duration: 0.5 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="relative z-10 flex md:flex-col items-start md:items-center gap-8 md:gap-6 flex-1"
+                  >
+                    {/* Node */}
+                    <div className={`w-8 h-8 rounded-full border-4 bg-[#081B3A] z-10 flex-shrink-0 flex items-center justify-center transition-all duration-500 ${isActive ? 'border-[#FFC400] shadow-[0_0_20px_rgba(255,196,0,0.4)] scale-110' : 'border-slate-700'}`}>
+                      {isActive && <div className="w-2 h-2 bg-[#FFC400] rounded-full" />}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="md:text-center md:px-2 pt-1 md:pt-0">
+                      <h3 className={`font-syncopate text-3xl md:text-4xl font-black tracking-tighter mb-2 transition-colors duration-500 ${isActive ? 'text-[#FFC400]' : 'text-white'}`}>
+                        {item.year}
+                      </h3>
+                      <h4 className="font-syncopate text-xs font-bold text-white uppercase tracking-widest mb-3">
+                        {item.title}
+                      </h4>
+                      <p className="text-slate-400 text-sm font-light leading-relaxed max-w-[200px] md:mx-auto">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
-
-            {/* Right Image Column */}
-            <div className="relative aspect-[4/5] md:aspect-auto h-[400px] md:h-full overflow-hidden border border-slate-800 group">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeYearIndex}
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.05 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="absolute inset-0"
-                >
-                  <img 
-                    src={milestones[activeYearIndex].image} 
-                    alt={milestones[activeYearIndex].title}
-                    className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-transparent to-transparent opacity-80" />
-                  
-                  <div className="absolute top-8 right-8 text-white/20">
-                    <Zap size={32} />
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Bottom Timeline Bar */}
-          <div className="mt-24 md:mt-32 w-full flex justify-between gap-4 md:gap-8 overflow-x-auto no-scrollbar py-4 border-t border-slate-800/50">
-            {milestones.map((m, idx) => (
-              <button 
-                key={idx}
-                onClick={() => setActiveYearIndex(idx)}
-                className="flex flex-col gap-4 group min-w-max"
-              >
-                <div className={`h-[3px] transition-all duration-500 ${activeYearIndex === idx ? 'w-24 bg-[#FFC400]' : 'w-12 bg-slate-800 group-hover:w-24 group-hover:bg-slate-700'}`} />
-                <span className={`font-syncopate text-[10px] font-bold tracking-[0.2em] transition-colors ${activeYearIndex === idx ? 'text-[#FFC400]' : 'text-slate-600 group-hover:text-slate-400'}`}>
-                  {m.year}
-                </span>
-              </button>
-            ))}
           </div>
         </div>
       </section>
@@ -501,37 +456,96 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           <SectionTitle subtitle="COMMAND_HIERARCHY" title="LEADERSHIP" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
-            {leadership.map((leader, i) => (
-              <motion.div 
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-20">
+            {leadershipData.map((leader, i) => (
+              <div 
                 key={i}
-                whileHover={{ y: -10 }}
-                className="group relative aspect-[4/5] overflow-hidden border border-slate-800 bg-slate-900/10 transition-all duration-500 shadow-2xl"
+                onClick={() => setSelectedLeader(leader)}
+                className="group relative aspect-[3/4] overflow-hidden border border-slate-800 bg-slate-900/10 cursor-pointer transition-all duration-300 hover:border-[#FFC400]/50 hover:shadow-[0_0_30px_rgba(255,196,0,0.15)]"
               >
                 <img 
                   src={leader.photo} 
                   alt={leader.name} 
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 brightness-50 group-hover:brightness-100" 
+                  className="w-full h-full object-cover grayscale transition-transform duration-300 group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#040E1E] via-transparent to-transparent opacity-90 group-hover:opacity-70 transition-all" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#040E1E] via-[#040E1E]/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
                 
-                <div className="absolute bottom-0 left-0 right-0 p-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-[2px] w-8 bg-[#FFC400]" />
-                    <span className="text-[#FFC400] font-syncopate text-[9px] tracking-[0.4em] font-bold uppercase">{leader.role}</span>
-                  </div>
-                  <h3 className="font-syncopate text-2xl md:text-3xl font-bold text-white mb-6 uppercase tracking-tighter leading-none">{leader.name}</h3>
-                  <div className="overflow-hidden h-0 group-hover:h-auto opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <p className="text-slate-400 italic text-sm font-light leading-relaxed mb-6">
-                      "{leader.quote}"
+                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="font-syncopate text-xl font-bold text-white mb-1 uppercase tracking-tighter leading-none">{leader.name}</h3>
+                  <div className="h-0 overflow-hidden group-hover:h-auto opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <span className="text-[#FFC400] font-syncopate text-[8px] tracking-[0.2em] font-bold uppercase block mb-3">{leader.role}</span>
+                    <p className="text-slate-300 text-xs font-light leading-relaxed">
+                      {leader.preview}
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Leadership Modal */}
+      <AnimatePresence>
+        {selectedLeader && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedLeader(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className="relative z-10 w-full max-w-3xl bg-[#040E1E] border border-[#FFC400]/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col md:flex-row overflow-hidden"
+            >
+              <button 
+                onClick={() => setSelectedLeader(null)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white z-20"
+              >
+                <X size={24} />
+              </button>
+              
+              <div className="w-full md:w-2/5 aspect-square md:aspect-auto relative">
+                <img src={selectedLeader.photo} alt={selectedLeader.name} className="w-full h-full object-cover grayscale" />
+                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#040E1E] to-transparent" />
+              </div>
+              
+              <div className="w-full md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
+                <h3 className="font-syncopate text-3xl md:text-5xl font-bold text-white uppercase tracking-tighter mb-2">
+                  {selectedLeader.name}
+                </h3>
+                <h4 className="font-syncopate text-xs text-[#FFC400] tracking-[0.3em] font-bold uppercase mb-6">
+                  {selectedLeader.role}
+                </h4>
+                <div className="w-12 h-[1px] bg-white/20 mb-6" />
+                <p className="text-slate-400 text-sm leading-relaxed font-light mb-8">
+                  {selectedLeader.desc}
+                </p>
+                
+                {selectedLeader.linkedin && (
+                  <motion.a 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    href={selectedLeader.linkedin} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-slate-400 hover:text-[#FFC400] transition-colors text-sm font-syncopate"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    LINKEDIN
+                  </motion.a>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* ⚫ FINAL STATEMENT SECTION */}
       <section className="py-32 md:py-60 px-6 bg-black relative overflow-hidden flex items-center justify-center text-center">

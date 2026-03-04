@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Briefcase, ChevronRight, Search, Zap, Target, Shield, Globe, TrendingUp, Cpu, Award, ZapOff, Trophy, Users, DollarSign, Activity, Play } from 'lucide-react';
+import { MapPin, Briefcase, ChevronRight, Search, Zap, Target, Shield, Globe, TrendingUp, Cpu, Award, ZapOff, Trophy, Users, DollarSign, Activity, Play, ArrowRight } from 'lucide-react';
 import { MOCK_JOBS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
 import { Link } from 'react-router-dom';
@@ -294,89 +294,141 @@ const ContactUs = () => {
         </div>
       </section>
 
-      {/* 🎯 SECTION 6: OPEN ROLES (REDESIGNED FOR PRESTIGE) */}
+      {/* 🎯 SECTION 6: JOB OPENINGS (PREMIUM VACANCIES LIST) */}
       <section className="py-32 md:py-60 px-6 bg-[#040E1E] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto">
           <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12">
             <div>
               <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.6em] font-bold mb-4 block uppercase">ACTIVE_RECRUITMENT</span>
-              <h2 className="font-syncopate text-4xl md:text-8xl font-bold uppercase tracking-tighter text-white">OPEN ROLES</h2>
-            </div>
-            
-            <div className="relative w-full md:w-[450px]">
-              <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-[#FFC400]" size={20} />
-              <input 
-                type="text" 
-                placeholder="FILTER_BY_OPERATIONAL_UNIT..." 
-                className="w-full bg-[#081B3A] border border-slate-800 py-8 pl-18 pr-8 text-white font-syncopate text-[10px] tracking-[0.4em] focus:outline-none focus:border-[#FFC400] transition-all skew-x-[-10deg] placeholder:text-slate-600" 
-              />
+              <h2 className="font-syncopate text-4xl md:text-8xl font-bold uppercase tracking-tighter text-white">JOB OPENINGS</h2>
             </div>
           </div>
 
-          <div className="space-y-4">
-            {MOCK_JOBS.map((job) => (
+          <div className="grid grid-cols-1 gap-6">
+            {MOCK_JOBS.map((job, index) => (
               <motion.div 
                 key={job.id}
-                whileHover={{ x: 15, borderColor: 'rgba(255, 196, 0, 0.4)', backgroundColor: 'rgba(255, 196, 0, 0.02)' }}
-                className="bg-[#0A254D]/10 border border-slate-800 p-10 md:p-16 flex flex-col lg:flex-row lg:items-center justify-between gap-10 group relative transition-all duration-500 overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group relative"
               >
-                {/* Visual HUD Accents */}
-                <div className="absolute top-0 left-0 w-2 h-0 bg-[#FFC400] group-hover:h-full transition-all duration-500" />
-                <div className="absolute top-4 right-8 font-syncopate text-[8px] text-slate-800 group-hover:text-[#FFC400]/20 transition-colors uppercase font-bold">GK_UNIT_PENDING</div>
+                <Link to={`/careers/${job.slug}`}>
+                  <div className="bg-[#0A254D]/10 border border-slate-800 p-10 md:p-16 flex flex-col lg:flex-row lg:items-center justify-between gap-10 transition-all duration-500 hover:border-[#FFC400]/40 hover:bg-[#FFC400]/[0.02] overflow-hidden">
+                    {/* Visual HUD Accents */}
+                    <div className="absolute top-0 left-0 w-2 h-0 bg-[#FFC400] group-hover:h-full transition-all duration-500" />
+                    
+                    <div className="relative z-10 flex-grow">
+                      <div className="flex items-center gap-6 mb-8">
+                        <span className="bg-[#FFC400] text-black px-6 py-2 font-syncopate text-[10px] font-black tracking-[0.3em] uppercase skew-x-[-15deg]">
+                          <span className="block skew-x-[15deg]">{job.department}</span>
+                        </span>
+                        <div className="h-[1px] w-12 bg-slate-800" />
+                        <div className="flex gap-8 text-slate-500">
+                          <span className="flex items-center gap-3 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase transition-colors group-hover:text-white">
+                            <MapPin size={14} className="text-[#FFC400]" /> {job.location}
+                          </span>
+                          <span className="flex items-center gap-3 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase transition-colors group-hover:text-white">
+                            <Briefcase size={14} className="text-[#FFC400]" /> 
+                            <span className="px-3 py-1 border border-slate-800 rounded-full text-[8px] group-hover:border-[#FFC400]/50 transition-colors">
+                              {job.type}
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <h3 className="font-syncopate text-4xl md:text-5xl font-bold text-white uppercase tracking-tighter group-hover:text-[#FFC400] transition-colors leading-none">
+                        {job.title}
+                      </h3>
+                    </div>
 
-                <div className="relative z-10 flex-grow">
-                  <div className="flex items-center gap-6 mb-8">
-                    <span className="bg-[#FFC400] text-black px-6 py-2 font-syncopate text-[10px] font-black tracking-[0.3em] uppercase skew-x-[-15deg]">
-                      <span className="block skew-x-[15deg]">{job.department}</span>
-                    </span>
-                    <div className="h-[1px] w-12 bg-slate-800" />
-                    <div className="flex gap-8 text-slate-500">
-                      <span className="flex items-center gap-3 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase transition-colors group-hover:text-white"><MapPin size={14} className="text-[#FFC400]" /> {job.location}</span>
-                      <span className="flex items-center gap-3 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase transition-colors group-hover:text-white"><Briefcase size={14} className="text-[#FFC400]" /> {job.type}</span>
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-4 font-syncopate text-[10px] font-bold text-[#FFC400] tracking-[0.4em] group-hover:translate-x-4 transition-transform duration-500">
+                        VIEW_DETAILS <ChevronRight size={20} />
+                      </div>
                     </div>
                   </div>
-                  
-                  <h3 className="font-syncopate text-4xl md:text-5xl font-bold text-white uppercase tracking-tighter group-hover:text-[#FFC400] transition-colors leading-none">
-                    {job.title}
-                  </h3>
-                </div>
-
-                <div className="relative z-10">
-                  <ArenaButton icon={<ChevronRight className="group-hover:translate-x-3 transition-transform" size={20} />} className="min-w-[260px] h-20 shadow-[0_0_20px_rgba(0,0,0,0.3)] group-hover:shadow-[0_0_40px_rgba(255,196,0,0.2)]">
-                    APPLY_PROTOCOL
-                  </ArenaButton>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 🚀 SECTION 7: OPEN APPLICATION CTA (FINAL STRIKE) */}
-      <section className="bg-[#FFC400] py-40 md:py-60 px-6 text-black relative overflow-hidden flex flex-col items-center justify-center text-center">
-        {/* Animated Background Text */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10">
-          <h2 className="font-syncopate text-[25vw] font-black tracking-tighter uppercase whitespace-nowrap">JOIN_US</h2>
-        </div>
+      {/* 📞 SECTION 7: CONTACT CHANNELS (PREMIUM COMMAND PANEL) */}
+      <section className="py-32 md:py-60 px-6 bg-[#081B3A] border-t border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-24">
+            <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.6em] font-bold mb-4 block uppercase">OFFICIAL_PROTOCOLS</span>
+            <h2 className="font-syncopate text-4xl md:text-8xl font-bold uppercase tracking-tighter text-white mb-6">CONTACT CHANNELS</h2>
+            <p className="text-slate-500 font-syncopate text-[10px] tracking-[0.3em] uppercase font-bold">Official communication lines — choose the right channel.</p>
+          </div>
 
-        <div className="max-w-4xl relative z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-syncopate text-5xl md:text-[120px] font-black mb-12 leading-[0.85] tracking-tighter uppercase">
-              DON'T SEE <br /> YOUR ROLE? <br />
-              <span className="text-white drop-shadow-2xl">CREATE IT.</span>
-            </h2>
-            <p className="font-syncopate text-xs md:text-xl font-bold tracking-[0.5em] uppercase mb-20 opacity-90 max-w-3xl mx-auto leading-relaxed">
-              IF YOU ARE THE TOP 0.1% IN YOUR FIELD, WE HAVE A SEAT FOR YOU. <br /> SUBMIT YOUR PROFILE FOR COMMAND REVIEW.
-            </p>
-            
-            <button className="bg-black text-[#FFC400] px-24 py-10 font-syncopate text-sm font-black tracking-[0.6em] uppercase hover:bg-slate-900 transition-all duration-500 shadow-[0_40px_80px_rgba(0,0,0,0.3)] skew-x-[-15deg]">
-              <span className="block skew-x-[15deg]">SUBMIT_PROFILE</span>
-            </button>
-          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'GENERAL INQUIRIES',
+                email: 'general@geekay.com',
+                purpose: 'Questions, support, and general requests.',
+                icon: <Globe size={32} />
+              },
+              {
+                title: 'PARTNERSHIPS',
+                email: 'partnerships@geekay.com',
+                purpose: 'Sponsorships, collaborations, brand deals.',
+                icon: <Trophy size={32} />
+              },
+              {
+                title: 'BUSINESS CONTACT',
+                email: 'business@geekay.com',
+                purpose: 'Corporate communication and official business matters.',
+                icon: <Shield size={32} />
+              }
+            ].map((channel, i) => (
+              <motion.a
+                key={i}
+                href={`mailto:${channel.email}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="group relative bg-[#0A254D]/20 border border-slate-800/50 p-12 flex flex-col items-center text-center transition-all duration-500 hover:y-[-10px] hover:border-[#FFC400]/40 hover:shadow-[0_20px_50px_rgba(255,196,0,0.1)]"
+              >
+                {/* Executive Command Panel Design */}
+                <div className="text-[#FFC400] mb-8 group-hover:scale-110 transition-transform duration-500">
+                  {channel.icon}
+                </div>
+                
+                <div className="h-[1px] w-12 bg-[#FFC400]/30 mb-8 group-hover:w-24 transition-all duration-500" />
+
+                <h3 className="font-syncopate text-sm font-bold text-white tracking-[0.3em] uppercase mb-4 group-hover:text-[#FFC400] transition-colors">
+                  {channel.title}
+                </h3>
+                
+                <p className="text-slate-500 font-inter text-sm mb-8 leading-relaxed">
+                  {channel.purpose}
+                </p>
+
+                <div className="relative">
+                  <span className="text-white font-syncopate text-[10px] font-bold tracking-widest relative">
+                    {channel.email}
+                    <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
+                  </span>
+                </div>
+
+                <div className="mt-12 flex items-center gap-3 text-[#FFC400] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                  <span className="font-syncopate text-[8px] font-black tracking-[0.4em] uppercase">OPEN CHANNEL</span>
+                  <ArrowRight size={14} />
+                </div>
+
+                <div className="absolute bottom-4 right-8 opacity-20 group-hover:opacity-100 transition-opacity">
+                   <span className="font-syncopate text-[7px] text-slate-500 font-bold tracking-widest uppercase">Typical response: 24–48h</span>
+                </div>
+              </motion.a>
+            ))}
+          </div>
         </div>
       </section>
 
