@@ -15,7 +15,7 @@ const AdminGallery = () => {
   }, []);
 
   const fetchItems = async () => {
-    const res = await fetch('/api/gallery');
+    const res = await fetch('/api/gallery', { credentials: 'include' });
     const data = await res.json();
     setItems(data);
     setLoading(false);
@@ -29,6 +29,7 @@ const AdminGallery = () => {
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(editingItem),
     });
     
@@ -38,7 +39,7 @@ const AdminGallery = () => {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this gallery item?')) return;
-    await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
+    await fetch(`/api/gallery/${id}`, { method: 'DELETE', credentials: 'include' });
     fetchItems();
   };
 

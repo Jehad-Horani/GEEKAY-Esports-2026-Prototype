@@ -16,7 +16,7 @@ const AdminJobs = () => {
   }, []);
 
   const fetchJobs = async () => {
-    const res = await fetch('/api/jobs');
+    const res = await fetch('/api/jobs', { credentials: 'include' });
     const data = await res.json();
     setJobs(data);
     setLoading(false);
@@ -30,6 +30,7 @@ const AdminJobs = () => {
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(editingJob),
     });
     
@@ -39,7 +40,7 @@ const AdminJobs = () => {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete job opening?')) return;
-    await fetch(`/api/jobs/${id}`, { method: 'DELETE' });
+    await fetch(`/api/jobs/${id}`, { method: 'DELETE', credentials: 'include' });
     fetchJobs();
   };
 
