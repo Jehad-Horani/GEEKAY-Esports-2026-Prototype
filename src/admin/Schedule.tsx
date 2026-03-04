@@ -15,7 +15,7 @@ const AdminSchedule = () => {
   }, []);
 
   const fetchItems = async () => {
-    const res = await fetch('/api/events');
+    const res = await fetch('/api/events', { credentials: 'include' });
     const data = await res.json();
     setItems(data);
     setLoading(false);
@@ -29,6 +29,7 @@ const AdminSchedule = () => {
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(editingItem),
     });
     
@@ -38,7 +39,7 @@ const AdminSchedule = () => {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this event?')) return;
-    await fetch(`/api/events/${id}`, { method: 'DELETE' });
+    await fetch(`/api/events/${id}`, { method: 'DELETE', credentials: 'include' });
     fetchItems();
   };
 

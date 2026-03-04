@@ -14,7 +14,7 @@ const AdminCreators = () => {
   }, []);
 
   const fetchItems = async () => {
-    const res = await fetch('/api/creators');
+    const res = await fetch('/api/creators', { credentials: 'include' });
     const data = await res.json();
     setItems(data);
     setLoading(false);
@@ -28,6 +28,7 @@ const AdminCreators = () => {
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(editingItem),
     });
     
@@ -37,7 +38,7 @@ const AdminCreators = () => {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this creator?')) return;
-    await fetch(`/api/creators/${id}`, { method: 'DELETE' });
+    await fetch(`/api/creators/${id}`, { method: 'DELETE', credentials: 'include' });
     fetchItems();
   };
 
