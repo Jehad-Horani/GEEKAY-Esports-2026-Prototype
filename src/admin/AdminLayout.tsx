@@ -18,29 +18,18 @@ import {
 } from 'lucide-react';
 
 const AdminLayout = () => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>({ username: 'admin', role: 'admin' });
+  const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    fetch('/api/auth/me', { credentials: 'include' })
-      .then(res => {
-        if (res.ok) return res.json();
-        throw new Error('Unauthorized');
-      })
-      .then(data => {
-        setUser(data.user);
-        setLoading(false);
-      })
-      .catch(() => {
-        navigate('/admin/login');
-      });
-  }, [navigate]);
+    // Auth disabled as requested
+    setLoading(false);
+  }, []);
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
     navigate('/admin/login');
   };
 

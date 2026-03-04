@@ -17,71 +17,131 @@ import ArenaButton from '../../components/ui/ArenaButton';
 
 const AdminTeams = () => {
   const [teams, setTeams] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [editingTeam, setEditingTeam] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedTeamId, setExpandedTeamId] = useState<number | null>(null);
   const [players, setPlayers] = useState<any[]>([]);
   const [editingPlayer, setEditingPlayer] = useState<any>(null);
 
-  useEffect(() => {
-    fetchTeams();
-  }, []);
-
   const fetchTeams = async () => {
-    const res = await fetch('/api/teams', { credentials: 'include' });
-    const data = await res.json();
-    setTeams(data);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/teams');
+      if (res.ok) {
+        const data = await res.json();
+        setTeams(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch teams:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchTeams();
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const fetchPlayers = async (teamId: number) => {
-    const res = await fetch(`/api/teams/${teamId}/players`, { credentials: 'include' });
+    const res = await fetch(`/api/teams/${teamId}/players`);
     const data = await res.json();
     setPlayers(data);
   };
 
   const handleSaveTeam = async (e: React.FormEvent) => {
     e.preventDefault();
-    const method = editingTeam.id ? 'PUT' : 'POST';
-    const url = editingTeam.id ? `/api/teams/${editingTeam.id}` : '/api/teams';
+    setSaving(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
     
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(editingTeam),
-    });
-    
-    setIsModalOpen(false);
-    fetchTeams();
+    try {
+      const method = editingTeam.id ? 'PUT' : 'POST';
+      const url = editingTeam.id ? `/api/teams/${editingTeam.id}` : '/api/teams';
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingTeam),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to save team');
+      }
+      
+      setIsModalOpen(false);
+      fetchTeams();
+    } catch (err: any) {
+      console.error('Save team error:', err);
+      if (err.name === 'AbortError') {
+        alert('Request timed out. The server might be busy.');
+      } else {
+        alert(err.message);
+      }
+    } finally {
+      setSaving(false);
+      clearTimeout(timeoutId);
+    }
   };
 
   const handleDeleteTeam = async (id: number) => {
     if (!confirm('Are you sure you want to delete this team and all its players?')) return;
-    await fetch(`/api/teams/${id}`, { method: 'DELETE', credentials: 'include' });
-    fetchTeams();
+    try {
+      await fetch(`/api/teams/${id}`, { method: 'DELETE' });
+      fetchTeams();
+    } catch (err: any) {
+      alert('Failed to delete team');
+    }
   };
 
   const handleSavePlayer = async (e: React.FormEvent) => {
     e.preventDefault();
-    const method = editingPlayer.id ? 'PUT' : 'POST';
-    const url = editingPlayer.id ? `/api/players/${editingPlayer.id}` : '/api/players';
+    setSaving(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
     
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ ...editingPlayer, team_id: expandedTeamId }),
-    });
-    
-    setEditingPlayer(null);
-    if (expandedTeamId) fetchPlayers(expandedTeamId);
+    try {
+      const method = editingPlayer.id ? 'PUT' : 'POST';
+      const url = editingPlayer.id ? `/api/players/${editingPlayer.id}` : '/api/players';
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...editingPlayer, team_id: expandedTeamId }),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to save player');
+      }
+      
+      setEditingPlayer(null);
+      if (expandedTeamId) fetchPlayers(expandedTeamId);
+    } catch (err: any) {
+      console.error('Save player error:', err);
+      if (err.name === 'AbortError') {
+        alert('Request timed out. The server might be busy.');
+      } else {
+        alert(err.message);
+      }
+    } finally {
+      setSaving(false);
+      clearTimeout(timeoutId);
+    }
   };
 
   const handleDeletePlayer = async (id: number) => {
     if (!confirm('Delete player?')) return;
-    await fetch(`/api/players/${id}`, { method: 'DELETE', credentials: 'include' });
+    await fetch(`/api/players/${id}`, { method: 'DELETE' });
     if (expandedTeamId) fetchPlayers(expandedTeamId);
   };
 
@@ -282,7 +342,9 @@ const AdminTeams = () => {
 
               <div className="pt-8 border-t border-white/5 flex justify-end gap-4">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-8 py-4 font-syncopate text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Cancel</button>
-                <ArenaButton type="submit">SAVE_TEAM</ArenaButton>
+                <ArenaButton type="submit" disabled={saving}>
+                  {saving ? 'SAVING...' : 'SAVE_TEAM'}
+                </ArenaButton>
               </div>
             </form>
           </motion.div>
@@ -364,7 +426,9 @@ const AdminTeams = () => {
 
               <div className="pt-8 border-t border-white/5 flex justify-end gap-4">
                 <button type="button" onClick={() => setEditingPlayer(null)} className="px-8 py-4 font-syncopate text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Cancel</button>
-                <ArenaButton type="submit">SAVE_PLAYER</ArenaButton>
+                <ArenaButton type="submit" disabled={saving}>
+                  {saving ? 'SAVING...' : 'SAVE_PLAYER'}
+                </ArenaButton>
               </div>
             </form>
           </motion.div>

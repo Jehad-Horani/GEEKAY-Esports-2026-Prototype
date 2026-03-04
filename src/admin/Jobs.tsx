@@ -6,41 +6,74 @@ import ArenaButton from '../../components/ui/ArenaButton';
 
 const AdminJobs = () => {
   const [jobs, setJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [editingJob, setEditingJob] = useState<any>(null);
   const [search, setSearch] = useState('');
   const [filterDept, setFilterDept] = useState('ALL');
 
+  const fetchJobs = async () => {
+    try {
+      const res = await fetch('/api/jobs');
+      if (res.ok) {
+        const data = await res.json();
+        setJobs(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch jobs:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchJobs();
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
   }, []);
-
-  const fetchJobs = async () => {
-    const res = await fetch('/api/jobs', { credentials: 'include' });
-    const data = await res.json();
-    setJobs(data);
-    setLoading(false);
-  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const method = editingJob.id ? 'PUT' : 'POST';
-    const url = editingJob.id ? `/api/jobs/${editingJob.id}` : '/api/jobs';
+    setSaving(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
     
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(editingJob),
-    });
-    
-    setEditingJob(null);
-    fetchJobs();
+    try {
+      const method = editingJob.id ? 'PUT' : 'POST';
+      const url = editingJob.id ? `/api/jobs/${editingJob.id}` : '/api/jobs';
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingJob),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to save job');
+      }
+      
+      setEditingJob(null);
+      fetchJobs();
+    } catch (err: any) {
+      console.error('Save job error:', err);
+      if (err.name === 'AbortError') {
+        alert('Request timed out. The server might be busy.');
+      } else {
+        alert(err.message);
+      }
+    } finally {
+      setSaving(false);
+      clearTimeout(timeoutId);
+    }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete job opening?')) return;
-    await fetch(`/api/jobs/${id}`, { method: 'DELETE', credentials: 'include' });
+    await fetch(`/api/jobs/${id}`, { method: 'DELETE' });
     fetchJobs();
   };
 
@@ -236,7 +269,9 @@ const AdminJobs = () => {
 
               <div className="pt-8 border-t border-white/5 flex justify-end gap-4">
                 <button type="button" onClick={() => setEditingJob(null)} className="px-8 py-4 font-syncopate text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Cancel</button>
-                <ArenaButton type="submit">SAVE_JOB_OPENING</ArenaButton>
+                <ArenaButton type="submit" disabled={saving}>
+                  {saving ? 'SAVING...' : 'SAVE_JOB_OPENING'}
+                </ArenaButton>
               </div>
             </form>
           </motion.div>

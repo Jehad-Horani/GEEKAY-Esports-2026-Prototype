@@ -6,7 +6,7 @@ import ArenaButton from '../../components/ui/ArenaButton';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [editingUser, setEditingUser] = useState<any>(null);
 
   useEffect(() => {

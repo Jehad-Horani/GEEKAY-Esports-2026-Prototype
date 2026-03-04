@@ -6,40 +6,73 @@ import ArenaButton from '../../components/ui/ArenaButton';
 
 const AdminGallery = () => {
   const [items, setItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [filterCat, setFilterCat] = useState('ALL');
 
+  const fetchItems = async () => {
+    try {
+      const res = await fetch('/api/gallery');
+      if (res.ok) {
+        const data = await res.json();
+        setItems(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch gallery:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchItems();
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
   }, []);
-
-  const fetchItems = async () => {
-    const res = await fetch('/api/gallery', { credentials: 'include' });
-    const data = await res.json();
-    setItems(data);
-    setLoading(false);
-  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const method = editingItem.id ? 'PUT' : 'POST';
-    const url = editingItem.id ? `/api/gallery/${editingItem.id}` : '/api/gallery';
+    setSaving(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
     
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(editingItem),
-    });
-    
-    setEditingItem(null);
-    fetchItems();
+    try {
+      const method = editingItem.id ? 'PUT' : 'POST';
+      const url = editingItem.id ? `/api/gallery/${editingItem.id}` : '/api/gallery';
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingItem),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to save gallery item');
+      }
+      
+      setEditingItem(null);
+      fetchItems();
+    } catch (err: any) {
+      console.error('Save gallery error:', err);
+      if (err.name === 'AbortError') {
+        alert('Request timed out. The server might be busy.');
+      } else {
+        alert(err.message);
+      }
+    } finally {
+      setSaving(false);
+      clearTimeout(timeoutId);
+    }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this gallery item?')) return;
-    await fetch(`/api/gallery/${id}`, { method: 'DELETE', credentials: 'include' });
+    await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
     fetchItems();
   };
 
@@ -179,7 +212,9 @@ const AdminGallery = () => {
 
               <div className="pt-8 border-t border-white/5 flex justify-end gap-4">
                 <button type="button" onClick={() => setEditingItem(null)} className="px-8 py-4 font-syncopate text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Cancel</button>
-                <ArenaButton type="submit">SAVE_MEDIA</ArenaButton>
+                <ArenaButton type="submit" disabled={saving}>
+                  {saving ? 'SAVING...' : 'SAVE_MEDIA'}
+                </ArenaButton>
               </div>
             </form>
           </motion.div>

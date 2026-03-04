@@ -16,22 +16,58 @@ import {
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<any>({ teams: 0, players: 0, events: 0, gallery: 0, jobs: 0 });
   const [activity, setActivity] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dbStatus, setDbStatus] = useState<any>(null);
+  const [testingDb, setTestingDb] = useState(false);
+
+  const fetchDbStatus = async () => {
+    try {
+      const res = await fetch('/api/health');
+      if (res.ok) setDbStatus(await res.json());
+    } catch (err) {
+      console.error('Failed to fetch health status:', err);
+    }
+  };
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/stats', { credentials: 'include' }).then(res => res.json()),
-      fetch('/api/activity', { credentials: 'include' }).then(res => res.json())
-    ]).then(([statsData, activityData]) => {
-      setStats(statsData);
-      setActivity(activityData);
-      setLoading(false);
-    });
+    const fetchData = async () => {
+      try {
+        const [statsRes, activityRes] = await Promise.all([
+          fetch('/api/stats'),
+          fetch('/api/activity'),
+          fetchDbStatus()
+        ]);
+        
+        if (statsRes.ok) setStats(await statsRes.json());
+        if (activityRes.ok) setActivity(await activityRes.json());
+      } catch (err) {
+        console.error('Failed to fetch dashboard data:', err);
+        setStats({ teams: 0, players: 0, events: 0, gallery: 0, jobs: 0 });
+        setActivity([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (loading) return <div className="animate-pulse">Loading dashboard...</div>;
+  const handleTestWrite = async () => {
+    setTestingDb(true);
+    await fetchDbStatus();
+    setTestingDb(false);
+  };
+
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center h-64 space-y-4">
+      <div className="w-8 h-8 border-2 border-[#FFC400] border-t-transparent rounded-full animate-spin"></div>
+      <div className="text-slate-500 font-syncopate text-[10px] tracking-widest uppercase animate-pulse">Initializing Dashboard...</div>
+    </div>
+  );
 
   const statCards = [
     { label: 'Total Teams', value: stats.teams, icon: <Trophy size={24} />, color: 'text-blue-500', path: '/admin/teams' },
@@ -121,19 +157,37 @@ const Dashboard = () => {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="font-syncopate text-[10px] text-slate-400 font-bold uppercase tracking-widest">Database</span>
-                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 font-syncopate text-[8px] font-bold uppercase tracking-widest rounded-full">Connected</span>
+                <span className={`px-3 py-1 font-syncopate text-[8px] font-bold uppercase tracking-widest rounded-full ${dbStatus?.db === 'writable' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'}`}>
+                  {dbStatus?.db === 'writable' ? 'Connected & Writable' : 'Read-Only or Error'}
+                </span>
+              </div>
+              {dbStatus?.error && (
+                <p className="text-[8px] text-red-500 font-syncopate uppercase tracking-widest leading-relaxed">
+                  Error: {dbStatus.error}
+                </p>
+              )}
+              <div className="flex justify-between items-center">
+                <span className="font-syncopate text-[10px] text-slate-400 font-bold uppercase tracking-widest">Environment</span>
+                <span className="px-3 py-1 bg-blue-500/10 text-blue-500 font-syncopate text-[8px] font-bold uppercase tracking-widest rounded-full">
+                  {dbStatus?.isVercel ? 'Vercel Serverless' : 'Local Node.js'}
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="font-syncopate text-[10px] text-slate-400 font-bold uppercase tracking-widest">Storage</span>
-                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 font-syncopate text-[8px] font-bold uppercase tracking-widest rounded-full">Operational</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-syncopate text-[10px] text-slate-400 font-bold uppercase tracking-widest">Auth Service</span>
-                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 font-syncopate text-[8px] font-bold uppercase tracking-widest rounded-full">Active</span>
+                <span className="font-syncopate text-[10px] text-slate-400 font-bold uppercase tracking-widest">DB Path</span>
+                <span className="text-slate-600 font-syncopate text-[8px] font-bold uppercase tracking-widest">
+                  {dbStatus?.dbPath}
+                </span>
               </div>
             </div>
 
-            <div className="pt-8 border-t border-white/5">
+            <div className="pt-8 border-t border-white/5 space-y-4">
+              <button 
+                onClick={handleTestWrite}
+                disabled={testingDb}
+                className="w-full py-3 bg-white/5 border border-white/10 text-white font-syncopate text-[8px] font-bold uppercase tracking-widest hover:bg-[#FFC400] hover:text-black transition-all disabled:opacity-50"
+              >
+                {testingDb ? 'TESTING...' : 'TEST_DATABASE_WRITE'}
+              </button>
               <p className="text-[10px] text-slate-500 font-syncopate uppercase tracking-widest leading-relaxed">
                 All systems are operating within normal parameters. Last security audit: {new Date().toLocaleDateString()}.
               </p>

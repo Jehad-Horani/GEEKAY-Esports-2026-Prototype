@@ -17,16 +17,50 @@ const AdminSettings = () => {
     site_announcement: '',
     announcement_active: false
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (Object.keys(data).length > 0) {
+          setSettings((prev: any) => ({ ...prev, ...data }));
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    // In a real app, you'd save these to the settings table
-    setTimeout(() => {
-      setLoading(false);
+    setSaving(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!res.ok) throw new Error('Failed to save settings');
+      
       alert('Settings saved successfully');
-    }, 1000);
+    } catch (err: any) {
+      console.error('Save settings error:', err);
+      if (err.name === 'AbortError') {
+        alert('Request timed out. The server might be busy.');
+      } else {
+        alert(err.message);
+      }
+    } finally {
+      setSaving(false);
+      clearTimeout(timeoutId);
+    }
   };
 
   return (
@@ -113,8 +147,8 @@ const AdminSettings = () => {
         </div>
 
         <div className="pt-12 border-t border-white/5 flex justify-end">
-          <ArenaButton type="submit" disabled={loading}>
-            <Save size={18} className="mr-2" /> {loading ? 'SAVING...' : 'SAVE_GLOBAL_SETTINGS'}
+          <ArenaButton type="submit" disabled={saving || loading}>
+            <Save size={18} className="mr-2" /> {saving ? 'SAVING...' : 'SAVE_GLOBAL_SETTINGS'}
           </ArenaButton>
         </div>
       </form>

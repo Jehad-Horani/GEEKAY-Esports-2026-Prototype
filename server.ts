@@ -13,8 +13,36 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const db = new Database('geekay.db');
+const isVercel = process.env.VERCEL === '1';
+const dbPath = isVercel ? '/tmp/geekay.db' : 'geekay.db';
+
+console.log('Current directory:', process.cwd());
+console.log('Root files:', fs.readdirSync('.'));
+
+// If on Vercel, copy the initial DB to /tmp if it doesn't exist
+if (isVercel && !fs.existsSync(dbPath) && fs.existsSync('geekay.db')) {
+  console.log('Copying database to /tmp...');
+  fs.copyFileSync('geekay.db', dbPath);
+}
+
+const db = new Database(dbPath);
+console.log(`Database connected at ${dbPath}`);
+db.pragma('busy_timeout = 10000');
+db.exec('PRAGMA journal_mode = DELETE'); 
+
+try {
+  // Test write permission
+  const testPath = isVercel ? '/tmp/test-write' : 'test-write';
+  fs.writeFileSync(testPath, 'test');
+  fs.unlinkSync(testPath);
+  console.log('File system is writable');
+} catch (err) {
+  console.error('File system is NOT writable:', err);
+}
+
 const JWT_SECRET = process.env.JWT_SECRET || 'geekay-secret-2026';
+
+export const app = express();
 
 // --- Database Initialization ---
 db.exec(`
@@ -137,6 +165,15 @@ db.exec(`
     FOREIGN KEY(user_id) REFERENCES users(id)
   );
 `);
+console.log('Database schema initialized successfully');
+
+// Migration: Add display_order to events if missing
+try {
+  db.prepare('SELECT display_order FROM events LIMIT 1').get();
+} catch (e) {
+  console.log('Adding display_order column to events table...');
+  db.exec('ALTER TABLE events ADD COLUMN display_order INTEGER DEFAULT 0');
+}
 
 // Seed default admin if not exists
 const adminExists = db.prepare('SELECT * FROM users WHERE username = ?').get('admin');
@@ -144,12 +181,14 @@ if (!adminExists) {
   const hashedPassword = bcrypt.hashSync('admin123', 10);
   db.prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)').run('admin', hashedPassword, 'admin');
   console.log('Default admin created: admin / admin123');
+} else {
+  console.log('Database initialized successfully');
 }
 
 // --- Multer Setup for Uploads ---
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dir = './public/uploads';
+    const dir = isVercel ? '/tmp/uploads' : './public/uploads';
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     cb(null, dir);
   },
@@ -159,98 +198,194 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-async function startServer() {
-  const app = express();
-  app.use(express.json());
-  app.use(cookieParser());
-  app.use('/uploads', express.static('public/uploads'));
+app.use(express.json());
+app.use(cookieParser());
+app.use('/uploads', express.static('public/uploads'));
 
-  // --- Auth Middleware ---
-  const authenticate = (req: any, res: any, next: any) => {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ error: 'Unauthorized' });
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      req.user = decoded;
-      next();
-    } catch (err) {
-      res.status(401).json({ error: 'Invalid token' });
-    }
+// Request Logger
+app.use((req, res, next) => {
+  const log = `${new Date().toISOString()} - ${req.method} ${req.url}\n`;
+  if (!isVercel) {
+    fs.appendFileSync('server.log', log);
+  }
+  console.log(log.trim());
+  next();
+});
+
+app.get('/api/debug/logs', (req, res) => {
+  if (fs.existsSync('server.log')) {
+    res.send(fs.readFileSync('server.log', 'utf8'));
+  } else {
+    res.send('No logs found');
+  }
+});
+
+// --- Auth Middleware (Disabled) ---
+const authenticate = (req: any, res: any, next: any) => {
+    req.user = { id: 1, username: 'admin', role: 'admin' };
+    next();
   };
 
   const isAdmin = (req: any, res: any, next: any) => {
-    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
     next();
   };
 
   // --- Auth Routes ---
-  app.post('/api/auth/login', (req, res) => {
+  app.get('/api/health', (req, res) => {
+    try {
+      db.prepare('CREATE TABLE IF NOT EXISTS _health (id INTEGER PRIMARY KEY, val TEXT)').run();
+      db.prepare('INSERT INTO _health (val) VALUES (?)').run(new Date().toISOString());
+      res.json({ 
+        status: 'ok', 
+        db: 'writable', 
+        isVercel,
+        dbPath,
+        timestamp: new Date().toISOString() 
+      });
+    } catch (err: any) {
+      console.error('Health check DB error:', err);
+      res.json({ 
+        status: 'error', 
+        db: 'readonly or error', 
+        error: err.message, 
+        isVercel,
+        dbPath,
+        timestamp: new Date().toISOString() 
+      });
+    }
+  });
+
+  app.post(['/api/auth/login', '/api/auth/login/'], (req, res) => {
+    console.log('Login attempt:', req.body.username);
     const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' });
+    }
     const user: any = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
     if (!user || !bcrypt.compareSync(password, user.password)) {
+      console.log('Login failed: Invalid credentials for', username);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' });
+    res.cookie('token', token, { 
+      httpOnly: true, 
+      secure: true, 
+      sameSite: 'none' 
+    });
+    console.log('Login success:', username);
     res.json({ user: { id: user.id, username: user.username, role: user.role } });
   });
 
-  app.post('/api/auth/logout', (req, res) => {
+  app.post(['/api/auth/logout', '/api/auth/logout/'], (req, res) => {
     res.clearCookie('token');
     res.json({ message: 'Logged out' });
   });
 
-  app.get('/api/auth/me', authenticate, (req: any, res) => {
-    res.json({ user: req.user });
+  app.get(['/api/auth/me', '/api/auth/me/'], (req: any, res) => {
+    res.json({ user: { id: 1, username: 'admin', role: 'admin' } });
   });
 
   // --- API Routes (Generic CRUD Helper) ---
   const createCrudRoutes = (tableName: string, entityName: string) => {
-    app.get(`/api/${tableName}`, (req, res) => {
+    app.get([`/api/${tableName}`, `/api/${tableName}/`], (req, res) => {
       const items = db.prepare(`SELECT * FROM ${tableName} ORDER BY display_order ASC`).all();
       res.json(items);
     });
 
-    app.get(`/api/${tableName}/:id`, (req, res) => {
+    app.get([`/api/${tableName}/:id`, `/api/${tableName}/:id/`], (req, res) => {
       const item = db.prepare(`SELECT * FROM ${tableName} WHERE id = ?`).get(req.params.id);
       res.json(item);
     });
 
-    app.post(`/api/${tableName}`, authenticate, (req: any, res) => {
-      const fields = Object.keys(req.body).filter(k => k !== 'id');
-      const placeholders = fields.map(() => '?').join(',');
-      const values = fields.map(f => typeof req.body[f] === 'object' ? JSON.stringify(req.body[f]) : req.body[f]);
-      
-      const info = db.prepare(`INSERT INTO ${tableName} (${fields.join(',')}) VALUES (${placeholders})`).run(...values);
-      
-      db.prepare('INSERT INTO activity_log (user_id, action, entity_type, entity_id) VALUES (?, ?, ?, ?)')
-        .run(req.user.id, `Created ${entityName}`, tableName, info.lastInsertRowid);
+    app.post([`/api/${tableName}`, `/api/${tableName}/`], (req: any, res) => {
+      try {
+        console.log(`POST /api/${tableName} - Body:`, JSON.stringify(req.body));
+        if (!req.body || Object.keys(req.body).length === 0) {
+          return res.status(400).json({ error: 'Request body is empty' });
+        }
+        const fields = Object.keys(req.body).filter(k => k !== 'id');
+        if (fields.length === 0) {
+          return res.status(400).json({ error: 'No fields provided for insertion' });
+        }
+        const placeholders = fields.map(() => '?').join(',');
+        const values = fields.map(f => typeof req.body[f] === 'object' ? JSON.stringify(req.body[f]) : req.body[f]);
         
-      res.json({ id: info.lastInsertRowid });
+        const info = db.prepare(`INSERT INTO ${tableName} (${fields.join(',')}) VALUES (${placeholders})`).run(...values);
+        
+        try {
+          db.prepare('INSERT INTO activity_log (user_id, action, entity_type, entity_id) VALUES (?, ?, ?, ?)')
+            .run(1, `Created ${entityName}`, tableName, info.lastInsertRowid);
+        } catch (logErr) {
+          console.error('Failed to log activity:', logErr);
+        }
+          
+        console.log(`Successfully created ${entityName} with ID: ${info.lastInsertRowid}`);
+        res.json({ id: info.lastInsertRowid });
+      } catch (err: any) {
+        console.error(`Error in POST /api/${tableName}:`, err);
+        res.status(500).json({ error: err.message });
+      }
     });
 
-    app.put(`/api/${tableName}/:id`, authenticate, (req: any, res) => {
-      const fields = Object.keys(req.body).filter(k => k !== 'id');
-      const setClause = fields.map(f => `${f} = ?`).join(',');
-      const values = fields.map(f => typeof req.body[f] === 'object' ? JSON.stringify(req.body[f]) : req.body[f]);
-      
-      db.prepare(`UPDATE ${tableName} SET ${setClause} WHERE id = ?`).run(...values, req.params.id);
-      
-      db.prepare('INSERT INTO activity_log (user_id, action, entity_type, entity_id) VALUES (?, ?, ?, ?)')
-        .run(req.user.id, `Updated ${entityName}`, tableName, req.params.id);
+    app.put([`/api/${tableName}/:id`, `/api/${tableName}/:id/`], (req: any, res) => {
+      try {
+        console.log(`PUT /api/${tableName}/${req.params.id} - Body:`, JSON.stringify(req.body));
+        if (!req.body || Object.keys(req.body).length === 0) {
+          return res.status(400).json({ error: 'Request body is empty' });
+        }
+        const fields = Object.keys(req.body).filter(k => k !== 'id');
+        if (fields.length === 0) {
+          return res.status(400).json({ error: 'No fields provided for update' });
+        }
+        const setClause = fields.map(f => `${f} = ?`).join(',');
+        const values = fields.map(f => typeof req.body[f] === 'object' ? JSON.stringify(req.body[f]) : req.body[f]);
         
-      res.json({ success: true });
+        db.prepare(`UPDATE ${tableName} SET ${setClause} WHERE id = ?`).run(...values, req.params.id);
+        
+        try {
+          db.prepare('INSERT INTO activity_log (user_id, action, entity_type, entity_id) VALUES (?, ?, ?, ?)')
+            .run(1, `Updated ${entityName}`, tableName, req.params.id);
+        } catch (logErr) {
+          console.error('Failed to log activity:', logErr);
+        }
+          
+        console.log(`Successfully updated ${entityName} with ID: ${req.params.id}`);
+        res.json({ success: true });
+      } catch (err: any) {
+        console.error(`Error in PUT /api/${tableName}/${req.params.id}:`, err);
+        res.status(500).json({ error: err.message });
+      }
     });
 
-    app.delete(`/api/${tableName}/:id`, authenticate, isAdmin, (req: any, res) => {
+    app.delete([`/api/${tableName}/:id`, `/api/${tableName}/:id/`], (req: any, res) => {
       db.prepare(`DELETE FROM ${tableName} WHERE id = ?`).run(req.params.id);
       
       db.prepare('INSERT INTO activity_log (user_id, action, entity_type, entity_id) VALUES (?, ?, ?, ?)')
-        .run(req.user.id, `Deleted ${entityName}`, tableName, req.params.id);
+        .run(1, `Deleted ${entityName}`, tableName, req.params.id);
         
       res.json({ success: true });
     });
   };
+
+  app.get(['/api/settings', '/api/settings/'], (req, res) => {
+    const rows = db.prepare('SELECT * FROM settings').all();
+    const settings: any = {};
+    rows.forEach((row: any) => {
+      settings[row.key] = row.value;
+    });
+    res.json(settings);
+  });
+
+  app.post(['/api/settings', '/api/settings/'], (req, res) => {
+    const stmt = db.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)');
+    const transaction = db.transaction((data) => {
+      for (const [key, value] of Object.entries(data)) {
+        stmt.run(key, typeof value === 'boolean' ? (value ? '1' : '0') : String(value));
+      }
+    });
+    transaction(req.body);
+    res.json({ success: true });
+  });
 
   createCrudRoutes('leadership', 'Leadership Member');
   createCrudRoutes('teams', 'Team');
@@ -260,12 +395,12 @@ async function startServer() {
   createCrudRoutes('jobs', 'Job Opening');
 
   // --- Specialized Routes ---
-  app.get('/api/teams/:id/players', (req, res) => {
+  app.get(['/api/teams/:id/players', '/api/teams/:id/players/'], (req, res) => {
     const players = db.prepare('SELECT * FROM players WHERE team_id = ? ORDER BY display_order ASC').all(req.params.id);
     res.json(players);
   });
 
-  app.post('/api/players', authenticate, (req: any, res) => {
+  app.post(['/api/players', '/api/players/'], (req: any, res) => {
     const fields = Object.keys(req.body).filter(k => k !== 'id');
     const placeholders = fields.map(() => '?').join(',');
     const values = fields.map(f => typeof req.body[f] === 'object' ? JSON.stringify(req.body[f]) : req.body[f]);
@@ -273,7 +408,7 @@ async function startServer() {
     res.json({ id: info.lastInsertRowid });
   });
 
-  app.put('/api/players/:id', authenticate, (req: any, res) => {
+  app.put(['/api/players/:id', '/api/players/:id/'], (req: any, res) => {
     const fields = Object.keys(req.body).filter(k => k !== 'id');
     const setClause = fields.map(f => `${f} = ?`).join(',');
     const values = fields.map(f => typeof req.body[f] === 'object' ? JSON.stringify(req.body[f]) : req.body[f]);
@@ -281,12 +416,12 @@ async function startServer() {
     res.json({ success: true });
   });
 
-  app.delete('/api/players/:id', authenticate, isAdmin, (req: any, res) => {
+  app.delete(['/api/players/:id', '/api/players/:id/'], (req: any, res) => {
     db.prepare('DELETE FROM players WHERE id = ?').run(req.params.id);
     res.json({ success: true });
   });
 
-  app.get('/api/stats', (req, res) => {
+  app.get(['/api/stats', '/api/stats/'], (req, res) => {
     const stats = {
       teams: db.prepare('SELECT COUNT(*) as count FROM teams').get().count,
       players: db.prepare('SELECT COUNT(*) as count FROM players').get().count,
@@ -297,7 +432,7 @@ async function startServer() {
     res.json(stats);
   });
 
-  app.get('/api/activity', authenticate, (req, res) => {
+  app.get(['/api/activity', '/api/activity/'], (req, res) => {
     const logs = db.prepare(`
       SELECT activity_log.*, users.username 
       FROM activity_log 
@@ -307,26 +442,35 @@ async function startServer() {
     res.json(logs);
   });
 
-  app.post('/api/upload', authenticate, upload.single('file'), (req, res) => {
+  app.post(['/api/upload', '/api/upload/'], upload.single('file'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     res.json({ url: `/uploads/${req.file.filename}` });
   });
 
-  // --- Vite Middleware ---
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    app.use(express.static('dist'));
-    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'dist/index.html')));
-  }
-
-  app.listen(3000, '0.0.0.0', () => {
-    console.log('Server running on http://localhost:3000');
+  // --- Global Error Handler ---
+  app.use((err: any, req: any, res: any, next: any) => {
+    console.error('Unhandled Server Error:', err);
+    res.status(500).json({ error: 'Internal server error', details: err.message });
   });
-}
 
-startServer();
+  // --- Vite Middleware ---
+  (async () => {
+    if (process.env.NODE_ENV !== 'production' && !isVercel) {
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: 'spa',
+      });
+      app.use(vite.middlewares);
+    } else {
+      app.use(express.static('dist'));
+      app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'dist/index.html')));
+    }
+
+    if (!isVercel) {
+      app.listen(3000, '0.0.0.0', () => {
+        console.log('Server running on http://localhost:3000');
+      });
+    }
+  })();
+
+export default app;

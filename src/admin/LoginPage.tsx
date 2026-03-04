@@ -15,27 +15,12 @@ const LoginPage = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (res.ok) {
-        navigate('/admin');
-      } else {
-        const data = await res.json();
-        setError(data.error || 'Login failed');
-      }
-    } catch (err) {
-      setError('Connection error');
-    } finally {
+    
+    // Bypass login as requested
+    setTimeout(() => {
+      navigate('/admin');
       setLoading(false);
-    }
+    }, 500);
   };
 
   return (
