@@ -12,6 +12,17 @@ import About from './pages/About';
 import Careers from './pages/Careers';
 import JobDetail from './pages/JobDetail';
 import Information from './pages/Information';
+import AdminLayout from './src/admin/AdminLayout';
+import AdminDashboard from './src/admin/Dashboard';
+import AdminLogin from './src/admin/LoginPage';
+import AdminTeams from './src/admin/Teams';
+import AdminCreators from './src/admin/Creators';
+import AdminSchedule from './src/admin/Schedule';
+import AdminGallery from './src/admin/Gallery';
+import AdminJobs from './src/admin/Jobs';
+import AdminLeadership from './src/admin/Leadership';
+import AdminSettings from './src/admin/Settings';
+import AdminUsers from './src/admin/Users';
 import Socials from './pages/Socials';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
@@ -269,6 +280,20 @@ export default function App() {
             <Route path="/careers/:slug" element={<JobDetail />} />
             <Route path="/info" element={<Information />} />
             <Route path="/socials" element={<Socials />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="leadership" element={<AdminLeadership />} />
+              <Route path="teams" element={<AdminTeams />} />
+              <Route path="creators" element={<AdminCreators />} />
+              <Route path="schedule" element={<AdminSchedule />} />
+              <Route path="gallery" element={<AdminGallery />} />
+              <Route path="jobs" element={<AdminJobs />} />
+              <Route path="settings" element={<AdminSettings />} />
+              <Route path="users" element={<AdminUsers />} />
+            </Route>
           </Routes>
         </main>
         <footer className="bg-[#040E1E] border-t border-slate-800 py-20 px-6 md:px-12 relative z-20">

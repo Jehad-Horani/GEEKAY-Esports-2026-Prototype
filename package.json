@@ -1,23 +1,36 @@
-
 {
   "name": "geekay-esports-2026",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "tsx server.ts",
     "build": "tsc && vite build",
     "lint": "tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.6.2",
+    "clsx": "^2.1.1",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
+    "framer-motion": "^10.12.16",
+    "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^0.221.0",
+    "multer": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
-    "lucide-react": "^0.221.0",
-    "framer-motion": "^10.12.16"
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
@@ -25,6 +38,7 @@
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
   }

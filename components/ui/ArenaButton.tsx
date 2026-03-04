@@ -2,11 +2,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface ArenaButtonProps {
+interface ArenaButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> {
   children: React.ReactNode;
   variant?: 'primary' | 'outline' | 'ghost';
-  onClick?: () => void;
-  className?: string;
   icon?: React.ReactNode;
 }
 
@@ -15,9 +13,12 @@ const ArenaButton: React.FC<ArenaButtonProps> = ({
   variant = 'primary', 
   onClick, 
   className = '',
-  icon
+  icon,
+  type = 'button',
+  disabled,
+  ...props
 }) => {
-  const baseStyles = "relative px-10 py-5 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase overflow-hidden transition-all duration-300 flex items-center justify-center gap-3 group skew-x-[-15deg]";
+  const baseStyles = "relative px-10 py-5 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase overflow-hidden transition-all duration-300 flex items-center justify-center gap-3 group skew-x-[-15deg] disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
     primary: "bg-[#FFC400] text-black hover:bg-yellow-400 border border-[#FFC400]",
@@ -27,10 +28,13 @@ const ArenaButton: React.FC<ArenaButtonProps> = ({
 
   return (
     <motion.button 
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={!disabled ? { scale: 1.05 } : {}}
+      whileTap={!disabled ? { scale: 0.95 } : {}}
       onClick={onClick}
+      type={type}
+      disabled={disabled}
       className={`${baseStyles} ${variants[variant]} ${className}`}
+      {...props}
     >
       <span className="relative z-10 flex items-center gap-2 skew-x-[15deg]">
         {children}
