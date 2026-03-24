@@ -1,7 +1,7 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, Briefcase, ChevronRight, Search, Zap, Target, Shield, Globe, TrendingUp, Cpu, Award, ZapOff, Trophy, Users, DollarSign, Activity, Play, ArrowRight } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Briefcase, ChevronRight, Search, Zap, Target, Shield, Globe, TrendingUp, Cpu, Award, ZapOff, Trophy, Users, DollarSign, Activity, Play, ArrowRight, ChevronDown } from 'lucide-react';
 import { MOCK_JOBS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
 import { Link } from 'react-router-dom';
@@ -20,19 +20,24 @@ const BenefitCard = ({ icon, title, index }: { icon: React.ReactNode, title: str
     <h3 className="font-syncopate text-[10px] md:text-xs font-bold text-white tracking-[0.3em] uppercase leading-relaxed">
       {title}
     </h3>
-    <div className="absolute top-0 right-0 p-4 font-syncopate text-[8px] text-slate-800 group-hover:text-[#FFC400]/20 transition-colors">
-      GK_0{index + 1}
-    </div>
   </motion.div>
 );
 
-const ContactUs = () => {
+const Careers = () => {
+  const [filter, setFilter] = useState('ALL');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const departments = ['ALL', ...Array.from(new Set(MOCK_JOBS.map(job => job.department)))];
+
+  const filteredJobs = useMemo(() => {
+    return filter === 'ALL' ? MOCK_JOBS : MOCK_JOBS.filter(job => job.department === filter);
+  }, [filter]);
+
   return (
     <div className="bg-[#081B3A] min-h-screen overflow-x-hidden selection:bg-[#FFC400] selection:text-black">
       
-      {/* 🎬 SECTION 1: ULTIMATE HERO (POWERFUL RECRUITMENT MANIFESTO) */}
+      {/* 🎬 SECTION 1: HERO */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-        {/* Background Visuals Layer */}
         <div className="absolute inset-0 z-0">
           <motion.div 
             initial={{ scale: 1.1 }}
@@ -44,19 +49,8 @@ const ContactUs = () => {
               <source src="https://assets.mixkit.co/videos/preview/mixkit-electronic-sports-players-shaking-hands-4467-large.mp4" type="video/mp4" />
             </video>
           </motion.div>
-          {/* Overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-[#081B3A]/80 to-[#081B3A]/40 z-10" />
           <div className="absolute inset-0 bg-grid opacity-10 z-10" />
-          
-          {/* Ghost Typography */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <h2 
-              className="font-syncopate text-[30vw] font-black text-transparent select-none opacity-[0.02] tracking-tighter"
-              style={{ WebkitTextStroke: '2px white' }}
-            >
-              RECRUIT
-            </h2>
-          </div>
         </div>
 
         <div className="container mx-auto px-6 relative z-20 flex flex-col items-center text-center">
@@ -72,39 +66,20 @@ const ContactUs = () => {
               className="w-[1px] h-20 bg-[#FFC400] mx-auto mb-10 origin-top"
             />
 
-            <motion.span 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.7 }}
-              className="font-syncopate text-[#FFC400] text-[10px] md:text-xs font-bold mb-10 block uppercase tracking-[0.8em]"
-            >
-              MISSION_PROTOCOL_GK_2026
-            </motion.span>
-            
-            {/* Sequential Typography */}
             <div className="flex flex-col gap-2 mb-12 items-center">
-              <motion.span 
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 1 }}
-                className="font-syncopate text-white text-3xl md:text-6xl font-black uppercase tracking-tight"
-              >
-                GET IN TOUCH.
-              </motion.span>
-              
               <div className="relative inline-block mt-4">
                 <motion.h1 
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 1, delay: 1.5, ease: "circOut" }}
+                  transition={{ duration: 1, delay: 0.7, ease: "circOut" }}
                   className="font-syncopate text-white text-6xl md:text-[140px] font-black leading-[0.85] tracking-tighter uppercase"
                 >
-                  CONTACT <span className="text-[#FFC400] drop-shadow-[0_0_50px_rgba(255,196,0,0.4)]">US.</span>
+                  CAREERS<span className="text-[#FFC400] drop-shadow-[0_0_50px_rgba(255,196,0,0.4)]">.</span>
                 </motion.h1>
                 <motion.div 
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ duration: 1.5, delay: 2, ease: "circOut" }}
+                  transition={{ duration: 1.5, delay: 1.2, ease: "circOut" }}
                   className="absolute -bottom-4 left-0 right-0 h-2 bg-[#FFC400] origin-left shadow-[0_0_20px_rgba(255,196,0,0.5)]"
                 />
               </div>
@@ -113,7 +88,7 @@ const ContactUs = () => {
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 0.6, y: 0 }}
-              transition={{ duration: 1, delay: 2.5 }}
+              transition={{ duration: 1, delay: 1.5 }}
               className="text-white font-syncopate text-xs md:text-xl mb-16 font-light leading-loose max-w-3xl mx-auto tracking-[0.2em]"
             >
               WE DON’T HIRE EMPLOYEES. <br className="hidden md:block" />
@@ -123,16 +98,14 @@ const ContactUs = () => {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 3 }}
-              className="flex flex-col sm:flex-row gap-8 justify-center items-center"
+              transition={{ delay: 2 }}
+              className="flex justify-center items-center"
             >
-              <ArenaButton className="h-20 min-w-[280px]">JOIN THE ARENA</ArenaButton>
-              <ArenaButton variant="outline" className="h-20 min-w-[280px]">VIEW OPEN ROLES</ArenaButton>
+              <ArenaButton className="h-20 min-w-[280px]" onClick={() => document.getElementById('jobs-section')?.scrollIntoView({ behavior: 'smooth' })}>View</ArenaButton>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -142,87 +115,11 @@ const ContactUs = () => {
         </motion.div>
       </section>
 
-      {/* 🧠 SECTION 2: MISSION & VISION */}
-      <section className="py-32 md:py-60 px-6 bg-[#040E1E] relative border-y border-white/5">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-40 items-start">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <div className="h-[2px] w-12 bg-[#FFC400]" />
-              <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.5em] font-bold uppercase">MISSION</span>
-            </div>
-            <h2 className="font-syncopate text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter leading-tight">
-              WE ENGINEER SYSTEMS <br /> 
-              THAT <span className="text-[#FFC400]">OUTLAST</span> SEASONS.
-            </h2>
-            <motion.div 
-              initial={{ width: 0 }}
-              whileInView={{ width: '100%' }}
-              transition={{ duration: 1.5, delay: 0.5 }}
-              className="h-[2px] bg-[#FFC400]/20"
-            />
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8 lg:mt-32"
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <div className="h-[2px] w-12 bg-[#FFC400]" />
-              <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.5em] font-bold uppercase">VISION</span>
-            </div>
-            <h2 className="font-syncopate text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter leading-tight">
-              THE MOST DISCIPLINED <br />
-              <span className="text-[#FFC400]">ECOSYSTEM</span> IN MENA.
-            </h2>
-            <p className="text-slate-500 font-inter text-lg leading-relaxed font-light uppercase tracking-wide">
-              OUR SCOPE IS GLOBAL. OUR EXECUTION IS ABSOLUTE.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 👥 SECTION 3: TEAM IMAGE (MANIFESTO) */}
-      <section className="relative h-[60vh] min-h-[500px] w-full flex items-center justify-center overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000" 
-          alt="GEEKAY Team" 
-          className="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.3]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#040E1E] via-transparent to-[#040E1E]" />
-        
-        <div className="relative z-10 text-center px-6">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <h2 className="font-syncopate text-4xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
-              THIS ISN’T A TEAM.<br />
-              IT’S A <span className="text-[#FFC400]">STANDARD.</span>
-            </h2>
-            <p className="text-slate-300 font-syncopate text-[10px] tracking-[0.3em] uppercase max-w-xl mx-auto opacity-80 font-bold">
-              Every member is selected for discipline, intelligence, and hunger.
-            </p>
-            <ArenaButton variant="outline" className="min-w-[250px]">MEET THE STAFF</ArenaButton>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 🏛 SECTION 4: STAFF BENEFITS */}
+      {/* 🏛 SECTION 2: STAFF BENEFITS */}
       <section className="py-32 md:py-48 px-6 bg-[#040E1E]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-24">
             <div>
-              <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.6em] font-bold mb-4 block uppercase">STAFF_PROTOCOL</span>
               <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white">WHY JOIN GEEKAY?</h2>
             </div>
             <div className="h-[2px] hidden lg:block flex-grow mx-16 bg-slate-800" />
@@ -239,73 +136,52 @@ const ContactUs = () => {
         </div>
       </section>
 
-      {/* 🧩 SECTION 5: WORK ENVIRONMENT (REFINED COMMAND CENTER) */}
-      <section className="py-32 md:py-60 px-6 bg-[#081B3A] overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-32 items-center">
-          <div className="lg:col-span-7 relative group aspect-video lg:aspect-square overflow-hidden border border-slate-800 bg-[#040E1E] shadow-[0_0_100px_rgba(0,0,0,0.5)]">
-            {/* High-Tech Tactical Command Image */}
-            <motion.img 
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 1.5 }}
-              src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" 
-              className="w-full h-full object-cover grayscale brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000"
-              alt="Command Center"
-            />
-            {/* HUD Overlay Visuals */}
-            <div className="absolute top-8 left-8 flex flex-col gap-2">
-              <div className="h-1 w-12 bg-[#FFC400]" />
-              <span className="font-syncopate text-[8px] text-[#FFC400] font-bold">OPERATIONAL_FEED_01</span>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#040E1E] via-transparent to-transparent opacity-60" />
-          </div>
-
-          <div className="lg:col-span-5 space-y-12">
-            <div>
-              <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.5em] font-bold mb-6 block uppercase">THE_ENVIRONMENT</span>
-              <h2 className="font-syncopate text-4xl md:text-6xl font-bold uppercase tracking-tighter text-white leading-none">COMMAND <br /> CENTER</h2>
-              <p className="text-slate-400 font-inter text-xl font-light leading-relaxed mt-10">
-                We operate like a championship roster. Precision isn't a goal, it's our minimum standard. Every operative is given the tools to dictate the future.
-              </p>
-            </div>
-
-            <ul className="space-y-8">
-              {[
-                { title: 'PRECISION', sub: 'Zero-waste operational efficiency.' },
-                { title: 'ACCOUNTABILITY', sub: 'Radical transparency at every level.' },
-                { title: 'INTENSITY', sub: 'High-pressure performance scenarios.' },
-                { title: 'SUPPORT', sub: 'World-class wellness and mental health.' }
-              ].map((item, i) => (
-                <motion.li 
-                  key={i} 
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex flex-col gap-2 group cursor-default"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="h-[1px] w-8 bg-[#FFC400] group-hover:w-16 transition-all duration-300" />
-                    <span className="font-syncopate text-sm font-bold text-white group-hover:text-[#FFC400] transition-colors tracking-widest">{item.title}</span>
-                  </div>
-                  <p className="text-slate-500 text-[10px] pl-12 font-light uppercase tracking-[0.3em] group-hover:text-slate-300 transition-colors">{item.sub}</p>
-                </motion.li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* 🎯 SECTION 6: JOB OPENINGS (PREMIUM VACANCIES LIST) */}
-      <section className="py-32 md:py-60 px-6 bg-[#040E1E] border-t border-white/5 relative">
+      {/* 🎯 SECTION 3: JOB OPENINGS */}
+      <section id="jobs-section" className="py-32 md:py-60 px-6 bg-[#040E1E] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto">
           <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12">
             <div>
-              <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.6em] font-bold mb-4 block uppercase">ACTIVE_RECRUITMENT</span>
               <h2 className="font-syncopate text-4xl md:text-8xl font-bold uppercase tracking-tighter text-white">JOB OPENINGS</h2>
+            </div>
+
+            {/* Department Filter Dropdown */}
+            <div className="relative min-w-[240px]">
+              <button 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full bg-[#0A254D]/20 border border-slate-800 px-6 py-4 flex items-center justify-between text-white font-syncopate text-[10px] font-bold tracking-widest uppercase hover:border-[#FFC400]/40 transition-all"
+              >
+                {filter === 'ALL' ? 'FILTER BY DEPARTMENT' : filter}
+                <ChevronDown size={16} className={`text-[#FFC400] transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute top-full left-0 w-full mt-2 bg-[#040E1E] border border-slate-800 z-50 shadow-2xl"
+                  >
+                    {departments.map((dept) => (
+                      <button
+                        key={dept}
+                        onClick={() => {
+                          setFilter(dept);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`w-full text-left px-6 py-4 font-syncopate text-[10px] font-bold tracking-widest uppercase transition-colors hover:bg-[#FFC400] hover:text-black ${filter === dept ? 'bg-[#FFC400]/10 text-[#FFC400]' : 'text-slate-400'}`}
+                      >
+                        {dept}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-6">
-            {MOCK_JOBS.map((job, index) => (
+            {filteredJobs.map((job, index) => (
               <motion.div 
                 key={job.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -316,7 +192,6 @@ const ContactUs = () => {
               >
                 <Link to={`/careers/${job.slug}`}>
                   <div className="bg-[#0A254D]/10 border border-slate-800 p-10 md:p-16 flex flex-col lg:flex-row lg:items-center justify-between gap-10 transition-all duration-500 hover:border-[#FFC400]/40 hover:bg-[#FFC400]/[0.02] overflow-hidden">
-                    {/* Visual HUD Accents */}
                     <div className="absolute top-0 left-0 w-2 h-0 bg-[#FFC400] group-hover:h-full transition-all duration-500" />
                     
                     <div className="relative z-10 flex-grow">
@@ -356,84 +231,8 @@ const ContactUs = () => {
         </div>
       </section>
 
-      {/* 📞 SECTION 7: CONTACT CHANNELS (PREMIUM COMMAND PANEL) */}
-      <section className="py-32 md:py-60 px-6 bg-[#081B3A] border-t border-white/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-24">
-            <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.6em] font-bold mb-4 block uppercase">OFFICIAL_PROTOCOLS</span>
-            <h2 className="font-syncopate text-4xl md:text-8xl font-bold uppercase tracking-tighter text-white mb-6">CONTACT CHANNELS</h2>
-            <p className="text-slate-500 font-syncopate text-[10px] tracking-[0.3em] uppercase font-bold">Official communication lines — choose the right channel.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'GENERAL INQUIRIES',
-                email: 'general@geekay.com',
-                purpose: 'Questions, support, and general requests.',
-                icon: <Globe size={32} />
-              },
-              {
-                title: 'PARTNERSHIPS',
-                email: 'partnerships@geekay.com',
-                purpose: 'Sponsorships, collaborations, brand deals.',
-                icon: <Trophy size={32} />
-              },
-              {
-                title: 'BUSINESS CONTACT',
-                email: 'business@geekay.com',
-                purpose: 'Corporate communication and official business matters.',
-                icon: <Shield size={32} />
-              }
-            ].map((channel, i) => (
-              <motion.a
-                key={i}
-                href={`mailto:${channel.email}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="group relative bg-[#0A254D]/20 border border-slate-800/50 p-12 flex flex-col items-center text-center transition-all duration-500 hover:y-[-10px] hover:border-[#FFC400]/40 hover:shadow-[0_20px_50px_rgba(255,196,0,0.1)]"
-              >
-                {/* Executive Command Panel Design */}
-                <div className="text-[#FFC400] mb-8 group-hover:scale-110 transition-transform duration-500">
-                  {channel.icon}
-                </div>
-                
-                <div className="h-[1px] w-12 bg-[#FFC400]/30 mb-8 group-hover:w-24 transition-all duration-500" />
-
-                <h3 className="font-syncopate text-sm font-bold text-white tracking-[0.3em] uppercase mb-4 group-hover:text-[#FFC400] transition-colors">
-                  {channel.title}
-                </h3>
-                
-                <p className="text-slate-500 font-inter text-sm mb-8 leading-relaxed">
-                  {channel.purpose}
-                </p>
-
-                <div className="relative">
-                  <span className="text-white font-syncopate text-[10px] font-bold tracking-widest relative">
-                    {channel.email}
-                    <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
-                  </span>
-                </div>
-
-                <div className="mt-12 flex items-center gap-3 text-[#FFC400] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                  <span className="font-syncopate text-[8px] font-black tracking-[0.4em] uppercase">OPEN CHANNEL</span>
-                  <ArrowRight size={14} />
-                </div>
-
-                <div className="absolute bottom-4 right-8 opacity-20 group-hover:opacity-100 transition-opacity">
-                   <span className="font-syncopate text-[7px] text-slate-500 font-bold tracking-widest uppercase">Typical response: 24–48h</span>
-                </div>
-              </motion.a>
-            ))}
-          </div>
-        </div>
-      </section>
-
     </div>
   );
 };
 
-export default ContactUs;
+export default Careers;

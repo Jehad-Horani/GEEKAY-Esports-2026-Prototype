@@ -46,7 +46,7 @@ const JobDetail = () => {
             className="group flex items-center gap-4 text-slate-500 hover:text-[#FFC400] transition-colors font-syncopate text-[10px] tracking-[0.4em] font-bold uppercase"
           >
             <ChevronLeft size={16} className="group-hover:-translate-x-2 transition-transform" />
-            BACK_TO_JOB_OPENINGS
+            BACK TO JOB OPENINGS
           </Link>
         </motion.div>
 
@@ -81,7 +81,6 @@ const JobDetail = () => {
                 {/* Responsibilities */}
                 <section>
                   <h2 className="font-syncopate text-xl text-white font-bold tracking-[0.4em] uppercase mb-10 flex items-center gap-4">
-                    <div className="w-8 h-[1px] bg-[#FFC400]" />
                     RESPONSIBILITIES
                   </h2>
                   <ul className="space-y-6">
@@ -97,7 +96,6 @@ const JobDetail = () => {
                 {/* Requirements */}
                 <section>
                   <h2 className="font-syncopate text-xl text-white font-bold tracking-[0.4em] uppercase mb-10 flex items-center gap-4">
-                    <div className="w-8 h-[1px] bg-[#FFC400]" />
                     REQUIREMENTS
                   </h2>
                   <ul className="space-y-6">
@@ -114,8 +112,7 @@ const JobDetail = () => {
                 {job.niceToHave && job.niceToHave.length > 0 && (
                   <section>
                     <h2 className="font-syncopate text-xl text-white font-bold tracking-[0.4em] uppercase mb-10 flex items-center gap-4">
-                      <div className="w-8 h-[1px] bg-[#FFC400]" />
-                      NICE_TO_HAVE
+                      NICE TO HAVE
                     </h2>
                     <ul className="space-y-6">
                       {job.niceToHave.map((item, i) => (
@@ -131,8 +128,7 @@ const JobDetail = () => {
                 {/* Benefits */}
                 <section>
                   <h2 className="font-syncopate text-xl text-white font-bold tracking-[0.4em] uppercase mb-10 flex items-center gap-4">
-                    <div className="w-8 h-[1px] bg-[#FFC400]" />
-                    WHAT_YOU_GET
+                    WHAT YOU GET
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {job.benefits.map((item, i) => (
@@ -159,7 +155,7 @@ const JobDetail = () => {
                 <div className="absolute top-0 left-0 w-full h-1 bg-[#FFC400]" />
                 
                 <h3 className="font-syncopate text-2xl font-black text-white uppercase tracking-tighter mb-8">
-                  APPLY_NOW
+                  APPLY NOW
                 </h3>
                 
                 <p className="text-slate-400 font-inter text-sm leading-relaxed mb-10">
@@ -168,7 +164,6 @@ const JobDetail = () => {
 
                 <div className="space-y-6 mb-12">
                   <div className="flex flex-col gap-2">
-                    <span className="font-syncopate text-[8px] text-slate-500 font-bold tracking-[0.3em] uppercase">EMAIL_DIRECT</span>
                     <a 
                       href={mailtoLink}
                       className="text-[#FFC400] font-syncopate text-sm font-bold tracking-widest hover:underline underline-offset-8 transition-all"
@@ -177,7 +172,6 @@ const JobDetail = () => {
                     </a>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <span className="font-syncopate text-[8px] text-slate-500 font-bold tracking-[0.3em] uppercase">SUBJECT_LINE</span>
                     <span className="text-white font-inter text-xs opacity-60 italic">
                       {mailtoSubject}
                     </span>

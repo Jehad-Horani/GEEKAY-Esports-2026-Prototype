@@ -107,7 +107,7 @@ const DesktopShopDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full right-0 pt-4 z-50 w-64"
+            className="absolute top-full right-0 pt-4 z-[100] w-64"
           >
             <div className="bg-[#040E1E]/95 backdrop-blur-md border border-[#FFC400]/20 shadow-[0_20px_40px_rgba(0,0,0,0.6)] p-2">
               <div className="px-4 py-3 border-b border-white/5 mb-2">
@@ -200,11 +200,11 @@ const Navbar = () => {
     { name: 'TEAMS', path: '/teams' },
     { name: 'SCHEDULE', path: '/schedule' },
     { name: 'MEDIA', path: '/socials' },
-    { name: 'CONTACT US', path: '/careers' },
+    { name: 'CAREERS', path: '/careers' },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 md:px-12 flex justify-between items-center bg-gradient-to-b from-[#081B3A] to-transparent">
+    <nav className="fixed top-0 left-0 w-full z-[100] px-6 py-6 md:px-12 flex justify-between items-center bg-gradient-to-b from-[#081B3A] to-transparent">
       <Link to="/" className="flex items-center gap-3 group">
         <div className="w-10 h-10 bg-[#FFC400] rounded-none flex items-center justify-center font-syncopate font-bold text-black group-hover:scale-110 transition-transform skew-x-[-10deg]">GK</div>
         <span className="font-syncopate font-bold text-xl tracking-tighter hidden sm:block">GEEKAY <span className="text-[#FFC400]">2026</span></span>
@@ -264,11 +264,11 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col selection:bg-[#FFC400] selection:text-black bg-grid bg-[#081B3A]">
+      <div className="min-h-screen flex flex-col selection:bg-[#FFC400] selection:text-black bg-grid bg-[#081B3A] overflow-x-hidden">
         <div className="fixed inset-0 bg-scanline pointer-events-none z-10 opacity-30"></div>
         <CustomCursor />
         <Navbar />
-        <main className="flex-grow pt-24 relative z-20">
+        <main className="flex-grow relative z-20">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/news" element={<News />} />
