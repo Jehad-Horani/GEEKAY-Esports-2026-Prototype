@@ -37,9 +37,9 @@ export const MOCK_TEAMS: Team[] = [
       {
         id: 'p1',
         name: 'Abosalih',
-        nickname: 'SPECTRE',
+        nickname: 'Abosalih',
         role: 'Duelist',
-        photo: 'https://drive.google.com/drive/folders/1f8JEliVbAwajDfqcPpJuKmCIqBRWDq4T',
+        photo: '/assets/Abosalih.png',
         bio: 'The unmatched entry fragger known for his aggressive map control and clutch ability in high-pressure finals.',
         stats: { kd: 1.45, mvps: 12, tournaments: 24, winRate: '68%' },
         achievements: [
