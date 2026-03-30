@@ -11,11 +11,11 @@ export const BRAND_COLORS = {
 
 export const MOCK_TEAMS: Team[] = [
   {
-    id: 'val-1',
-    name: 'VALORANT PRO',
-    game: 'VALORANT',
+    id: 'cod-1',
+    name: 'Call of Duty Warzone',
+    game: 'Call of Duty Warzone',
     region: 'MENA',
-    league: 'VALORANT CHALLENGERS',
+    league: 'Call of Duty Warzone CHALLENGERS',
     logo: 'https://images.unsplash.com/photo-1624138784614-87fd1b6528f8?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['VCT Masters 2025 Winner', 'Regional League Champions'],
@@ -36,10 +36,10 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'p1',
-        name: 'Alex Johnson',
+        name: 'Abosalih',
         nickname: 'SPECTRE',
         role: 'Duelist',
-        photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: 'https://drive.google.com/drive/folders/1f8JEliVbAwajDfqcPpJuKmCIqBRWDq4T',
         bio: 'The unmatched entry fragger known for his aggressive map control and clutch ability in high-pressure finals.',
         stats: { kd: 1.45, mvps: 12, tournaments: 24, winRate: '68%' },
         achievements: [
