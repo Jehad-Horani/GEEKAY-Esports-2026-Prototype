@@ -1,5 +1,5 @@
 
-import { Team, Event, Job, NewsItem, Creator } from './types';
+import { Team, Event, Job, NewsItem, Creator, Product } from './types';
 
 export const BRAND_COLORS = {
   primary: '#081B3A', // Tactical Navy
@@ -730,5 +730,48 @@ export const MOCK_NEWS: NewsItem[] = [
     excerpt: 'Strategic reinforcements have arrived. Meet the new operatives joining our championship-winning divisions.',
     image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=1200&h=800',
     content: 'Full article content for major roster announcement...'
+  }
+];
+
+export const MOCK_PRODUCTS: Product[] = [
+  {
+    id: 'p1',
+    name: 'Geekay Esports Jersey 2025',
+    price: '119.00',
+    link: 'https://www.geekay.com/en/geekay-esports-jersey-2025',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_2.png',
+    category: 'Apparel'
+  },
+  {
+    id: 'p2',
+    name: 'Geekay Esports Frame – Rocket League Edition',
+    price: 'TBA',
+    link: 'https://www.geekay.com/en/geekay-esports-frame-rocket-league-edition-oaly',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_1.png',
+    category: 'Collectibles'
+  },
+  {
+    id: 'p3',
+    name: 'Geekay Esports Chair/Play Mat',
+    price: '99.00',
+    link: 'https://www.geekay.com/en/geekay-esports-chair-mat',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_4.png',
+    category: 'Accessories'
+  },
+  {
+    id: 'p4',
+    name: 'Geekay Esports Desk Mat Mouse Pad',
+    price: '49.00',
+    link: 'https://www.geekay.com/en/geekay-e-sports-desk-mat-mouse-pad',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_0.png',
+    category: 'Accessories'
+  },
+  {
+    id: 'p5',
+    name: 'GamerTek Esports Bag – Black',
+    price: '149.00',
+    link: 'https://www.geekay.com/en/gamertek-esports-bag-black',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_3.png',
+    category: 'Gear'
   }
 ];

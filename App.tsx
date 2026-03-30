@@ -204,7 +204,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-[100] px-6 py-6 md:px-12 flex justify-between items-center bg-gradient-to-b from-[#081B3A] to-transparent">
+    <nav className="fixed top-0 left-0 w-full z-[100] px-6 py-4 md:px-12 flex justify-between items-center bg-[#081B3A]/80 backdrop-blur-md border-b border-white/5">
       <Link to="/" className="flex items-center gap-3 group">
         <div className="w-10 h-10 bg-[#FFC400] rounded-none flex items-center justify-center font-syncopate font-bold text-black group-hover:scale-110 transition-transform skew-x-[-10deg]">GK</div>
         <span className="font-syncopate font-bold text-xl tracking-tighter hidden sm:block">GEEKAY <span className="text-[#FFC400]">2026</span></span>

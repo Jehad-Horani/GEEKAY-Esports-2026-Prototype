@@ -118,3 +118,12 @@ export interface NewsItem {
   image: string;
   content?: string;
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  price?: string;
+  link: string;
+  image: string;
+  category?: string;
+}

@@ -3,9 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import { ChevronRight, ChevronDown, PlayCircle, Search, BarChart3, Globe, Shield, X, Twitter, Twitch, Cpu, Target, Layers, Zap, ArrowDown, ArrowRight, Clock, Calendar, MapPin, Trophy } from 'lucide-react';
 import ArenaButton from '../components/ui/ArenaButton';
-import { MOCK_EVENTS, MOCK_TEAMS, MOCK_NEWS } from '../constants';
+import { MOCK_EVENTS, MOCK_TEAMS, MOCK_NEWS, MOCK_PRODUCTS } from '../constants';
 import { Link } from 'react-router-dom';
-import { Player, NewsItem } from '../types';
+import { Player, NewsItem, Product } from '../types';
 
 // --- Components ---
 
@@ -24,10 +24,10 @@ const HeroShopDropdown = () => {
       onMouseLeave={() => setIsOpen(false)}
     >
       <ArenaButton 
-        className="h-16 md:h-20 min-w-[240px] md:min-w-[260px] text-base md:text-lg"
+        className="h-12 md:h-14 min-w-[180px] md:min-w-[200px] text-xs md:text-sm px-6"
         variant="primary"
         onClick={() => setIsOpen(!isOpen)}
-        icon={<ChevronDown size={20} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />}
+        icon={<ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />}
       >
         SHOP
       </ArenaButton>
@@ -128,7 +128,6 @@ const Shockwave = ({ trigger }: { trigger: boolean }) => (
 );
 
 const Hero = () => {
-  const [dominateTrigger, setDominateTrigger] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Mouse parallax movement
@@ -136,55 +135,48 @@ const Hero = () => {
   const handleMouseMove = (e: React.MouseEvent) => {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
-    const x = (clientX / innerWidth - 0.5) * 40;
-    const y = (clientY / innerHeight - 0.5) * 40;
+    const x = (clientX / innerWidth - 0.5) * 20;
+    const y = (clientY / innerHeight - 0.5) * 20;
     setMousePos({ x, y });
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDominateTrigger(true), 2200);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative h-screen flex items-center justify-center bg-[#0B1C2D] z-40"
+      className="relative min-h-[70vh] lg:min-h-[80vh] flex items-center justify-center bg-[#0B1C2D] z-40 pt-32 pb-24 lg:pt-40 lg:pb-32 border-t border-white/5 border-b-2 border-[#FFC400]/10 overflow-hidden"
     >
-      <ScanLine />
       <RadarDots />
-      <TacticalLines />
       
       {/* Background Grid */}
-      <div className="absolute inset-0 bg-grid opacity-10 z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-grid opacity-[0.05] z-0 pointer-events-none" />
       
       {/* Ambient Gradient Glow */}
       <motion.div 
         animate={{ 
-          opacity: [0.3, 0.5, 0.3],
-          scale: [1, 1.1, 1] 
+          opacity: [0.2, 0.3, 0.2],
+          scale: [1, 1.05, 1] 
         }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#FFC400]/5 rounded-full blur-[150px] z-0" 
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#FFC400]/5 rounded-full blur-[120px] z-0" 
       />
 
       <motion.div 
         className="container mx-auto px-6 md:px-12 relative z-[60]"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-24">
           
-          {/* LEFT: DRAMATIC HEADLINE */}
+          {/* LEFT: COMPACT HEADLINE */}
           <div className="flex flex-col items-start text-left">
-            <div className="relative mb-12 lg:mb-16">
-              <div className="flex flex-col gap-1 lg:gap-2">
+            <div className="relative mb-8 lg:mb-10">
+              <div className="flex flex-col gap-1">
                 {/* #GeekayWeGame */}
                 <motion.div
-                  initial={{ opacity: 0, x: -100, filter: "blur(20px)" }}
-                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  <h1 className="font-syncopate text-6xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-none">
+                  <h1 className="font-syncopate text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-none">
                     #Geekay<br />
                     <span className="text-[#FFC400]">WeGame</span>
                   </h1>
@@ -192,13 +184,13 @@ const Hero = () => {
 
                 {/* EST 2021 */}
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 1.5 }}
-                  className="flex items-center gap-4 mt-4"
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                  className="flex items-center gap-3 mt-3"
                 >
-                  <div className="w-12 h-[2px] bg-[#FFC400]" />
-                  <span className="font-syncopate text-xl md:text-2xl font-bold text-white/80 tracking-[0.3em] uppercase">
+                  <div className="w-8 h-[1px] bg-[#FFC400]/60" />
+                  <span className="font-syncopate text-xs md:text-sm font-bold text-white/60 tracking-[0.3em] uppercase">
                     EST 2021
                   </span>
                 </motion.div>
@@ -206,50 +198,50 @@ const Hero = () => {
             </div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.2, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-6"
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4"
             >
               <HeroShopDropdown />
 
               <Link to="/schedule">
-                <ArenaButton variant="outline" className="h-16 md:h-20 min-w-[240px] md:min-w-[260px] text-base md:text-lg" icon={<Calendar size={20} />}>
+                <ArenaButton variant="outline" className="h-12 md:h-14 min-w-[180px] md:min-w-[200px] text-xs md:text-sm px-6" icon={<Calendar size={16} />}>
                   SCHEDULE
                 </ArenaButton>
               </Link>
             </motion.div>
           </div>
 
-          {/* RIGHT: Match Panel */}
+          {/* RIGHT: Compact Match Panel */}
           <div className="hidden lg:flex items-center justify-center relative z-10">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, x: 50 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 1, delay: 2.8 }}
-              className="w-full max-w-md space-y-6"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="w-full max-w-md space-y-4"
             >
               {/* Upcoming Matches */}
-              <div className="bg-[#0A1A31]/60 backdrop-blur-md border border-[#FFC400]/20 p-6 relative overflow-hidden group">
+              <div className="bg-[#0A1A31]/60 backdrop-blur-md border border-[#FFC400]/20 p-4 relative overflow-hidden group">
                 <div className="absolute top-0 left-0 w-1 h-full bg-[#FFC400]/50" />
-                <h3 className="font-syncopate text-[10px] font-black text-[#FFC400] tracking-[0.4em] uppercase mb-6 flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#FFC400] animate-pulse" />
+                <h3 className="font-syncopate text-[8px] font-black text-[#FFC400] tracking-[0.4em] uppercase mb-3 flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#FFC400] animate-pulse" />
                   UPCOMING MATCHES
                 </h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {[
                     { game: 'VALORANT', opp: 'TEAM FALCONS', date: 'FEB 28', time: '18:00' },
                     { game: 'DOTA 2', opp: 'NIGMA GALAXY', date: 'MAR 02', time: '20:00' }
                   ].map((match, i) => (
-                    <div key={i} className="flex items-center justify-between border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                    <div key={i} className="flex items-center justify-between border-b border-white/5 pb-2 last:border-0 last:pb-0">
                       <div>
-                        <div className="text-[#FFC400] font-syncopate text-[8px] font-bold tracking-widest">{match.game}</div>
-                        <div className="text-white font-syncopate text-xs font-black tracking-tight">VS {match.opp}</div>
+                        <div className="text-[#FFC400] font-syncopate text-[7px] font-bold tracking-widest">{match.game}</div>
+                        <div className="text-white font-syncopate text-[10px] font-black tracking-tight">VS {match.opp}</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-white/60 font-syncopate text-[9px] tracking-widest">{match.date}</div>
-                        <div className="text-white/40 font-syncopate text-[8px] tracking-widest">{match.time} GST</div>
+                        <div className="text-white/60 font-syncopate text-[8px] tracking-widest">{match.date}</div>
+                        <div className="text-white/40 font-syncopate text-[7px] tracking-widest">{match.time} GST</div>
                       </div>
                     </div>
                   ))}
@@ -257,24 +249,24 @@ const Hero = () => {
               </div>
 
               {/* Past Results */}
-              <div className="bg-[#0A1A31]/60 backdrop-blur-md border border-white/10 p-6 relative overflow-hidden group">
-                <h3 className="font-syncopate text-[10px] font-black text-white/40 tracking-[0.4em] uppercase mb-6">
+              <div className="bg-[#0A1A31]/60 backdrop-blur-md border border-white/10 p-4 relative overflow-hidden group">
+                <h3 className="font-syncopate text-[8px] font-black text-white/40 tracking-[0.4em] uppercase mb-3">
                   PAST RESULTS
                 </h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {[
                     { game: 'VALORANT', opp: 'TEAM SECRET', res: 'WIN', score: '2-1' },
                     { game: 'DOTA 2', opp: 'OG', res: 'LOSS', score: '0-2' }
                   ].map((result, i) => (
-                    <div key={i} className="flex items-center justify-between border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                    <div key={i} className="flex items-center justify-between border-b border-white/5 pb-2 last:border-0 last:pb-0">
                       <div>
-                        <div className="text-white/40 font-syncopate text-[8px] font-bold tracking-widest">{result.game}</div>
-                        <div className="text-white/80 font-syncopate text-xs font-black tracking-tight">VS {result.opp}</div>
+                        <div className="text-white/40 font-syncopate text-[7px] font-bold tracking-widest">{result.game}</div>
+                        <div className="text-white/80 font-syncopate text-[10px] font-black tracking-tight">VS {result.opp}</div>
                       </div>
-                      <div className="text-right flex items-center gap-3">
-                        <div className="text-white font-syncopate text-xs font-black">{result.score}</div>
-                        <div className={`font-syncopate text-[9px] font-black px-2 py-0.5 ${result.res === 'WIN' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                      <div className="text-right flex items-center gap-2">
+                        <div className="text-white font-syncopate text-[10px] font-black">{result.score}</div>
+                        <div className={`font-syncopate text-[8px] font-black px-1.5 py-0.5 ${result.res === 'WIN' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                           {result.res}
                         </div>
                       </div>
@@ -284,268 +276,230 @@ const Hero = () => {
               </div>
 
               {/* Tactical Decor */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 border-t border-r border-[#FFC400]/10 pointer-events-none" />
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 border-b border-l border-[#FFC400]/10 pointer-events-none" />
+              <div className="absolute -top-2 -right-2 w-12 h-12 border-t border-r border-[#FFC400]/10 pointer-events-none" />
+              <div className="absolute -bottom-2 -left-2 w-12 h-12 border-b border-l border-[#FFC400]/10 pointer-events-none" />
             </motion.div>
           </div>
 
         </div>
+      </motion.div>
+      
+      {/* Scroll Indicator */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 1, repeat: Infinity, repeatType: "reverse" }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[70] flex flex-col items-center gap-2"
+      >
+        <span className="font-syncopate text-[8px] text-white/20 tracking-[0.3em] uppercase">Scroll</span>
+        <div className="w-[1px] h-6 bg-gradient-to-b from-[#FFC400] to-transparent" />
       </motion.div>
     </section>
   );
 };
 
-// --- Module Expansion Component ---
-
-const ModuleExpansion = ({ module, index }: { module: any, index: number }) => (
-  <motion.div
-    initial={{ height: 0, opacity: 0 }}
-    animate={{ height: 'auto', opacity: 1 }}
-    exit={{ height: 0, opacity: 0 }}
-    transition={{ duration: 0.5, ease: "circOut" }}
-    className="overflow-hidden bg-[#0A1A31] border-x border-b border-[#FFC400]/20 mb-12 relative"
-  >
-    <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
-    <div className="p-12 md:p-16 grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
-      <div className="space-y-10">
-        <motion.h4 
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="font-syncopate text-3xl font-black text-white uppercase"
-        >
-          {module.title} <span className="text-[#FFC400]">MISSION</span>
-        </motion.h4>
-        <ul className="space-y-6">
-          {module.bullets.map((bullet: string, i: number) => (
-            <motion.li 
-              key={i}
-              initial={{ x: -10, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 + (i * 0.1) }}
-              className="flex items-center gap-6"
-            >
-              <div className="w-1.5 h-1.5 bg-[#FFC400]" />
-              <span className="font-syncopate text-[10px] md:text-xs text-slate-300 tracking-widest uppercase font-bold">
-                {bullet}
-              </span>
-            </motion.li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="relative h-64 lg:h-auto flex items-center justify-center">
-         {/* Tactical Graphic Animation */}
-         <div className="relative w-48 h-48">
-            <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 border border-[#FFC400]/30 rounded-full"
-            />
-            <motion.div 
-              animate={{ rotate: -360 }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-4 border border-white/10 rounded-full"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-               <Target size={40} className="text-[#FFC400]/40 animate-pulse" />
-            </div>
-            {/* Procedure Line Drawing */}
-            <svg className="absolute inset-0 w-full h-full -rotate-90">
-              <motion.circle
-                cx="50%"
-                cy="50%"
-                r="45%"
-                fill="none"
-                stroke="#FFC400"
-                strokeWidth="2"
-                strokeDasharray="283"
-                initial={{ strokeDashoffset: 283 }}
-                whileInView={{ strokeDashoffset: 100 }}
-                transition={{ duration: 2, delay: 0.5 }}
-              />
-            </svg>
-         </div>
-      </div>
-    </div>
-  </motion.div>
-);
-
-// --- Tactical Module Panel Component ---
-
-const ModulePanel = ({ module, index, isActive, onToggle }: any) => {
+// --- ProductCard Component ---
+const ProductCard = ({ product }: { product: Product }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [showMobileRegions, setShowMobileRegions] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(localStorage.getItem('geekay_region'));
+
+  const regions = [
+    { name: 'UAE', link: product.link },
+    { name: 'KSA', link: 'https://www.geekay.com/saudi_en/' },
+    { name: 'GLOBAL', link: 'https://www.geekay.com/global/' },
+  ];
+
+  const handleRegionSelect = (region: string, link: string) => {
+    localStorage.setItem('geekay_region', region);
+    setSelectedRegion(region);
+    window.open(link, '_blank');
+    setShowMobileRegions(false);
+  };
 
   return (
-    <div className="flex flex-col">
+    <>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: index * 0.1, duration: 0.5 }}
+        className="group relative bg-[#0A1A31]/40 border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-500 overflow-hidden cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={onToggle}
-        whileHover={{ y: -6 }}
-        className={`relative p-10 md:p-14 bg-[#0A254D]/10 border transition-all duration-500 cursor-pointer overflow-hidden group
-          ${isActive ? 'border-[#FFC400] bg-[#0A254D]/30' : 'border-slate-800 hover:border-[#FFC400]/60'}`}
+        onClick={() => {
+          if (window.innerWidth < 1024) {
+            setShowMobileRegions(true);
+          }
+        }}
       >
-        {/* Module Index */}
-        <div className="absolute top-10 right-10 font-syncopate text-6xl font-black text-slate-800/20 group-hover:text-[#FFC400]/10 transition-colors pointer-events-none select-none">
-          0{index + 1}
+        {/* Product Image */}
+        <div className="aspect-square overflow-hidden relative">
+          <motion.img
+            src={product.image}
+            alt={product.name}
+            animate={{ scale: isHovered ? 1.1 : 1 }}
+            transition={{ duration: 0.6 }}
+            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${product.id}/600/600`;
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-transparent to-transparent opacity-60" />
+          
+          {/* Region Selector Overlay (Desktop) */}
+          <AnimatePresence>
+            {isHovered && window.innerWidth >= 1024 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="absolute inset-0 flex items-center justify-center bg-[#081B3A]/80 backdrop-blur-sm z-20 p-6"
+              >
+                <div className="w-full space-y-3">
+                  <p className="font-syncopate text-[8px] text-[#FFC400] tracking-[0.3em] text-center mb-4">SELECT REGION</p>
+                  {regions.map((r) => (
+                    <button
+                      key={r.name}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRegionSelect(r.name, r.link);
+                      }}
+                      className="w-full py-3 border border-white/10 hover:border-[#FFC400] hover:bg-[#FFC400]/10 text-white font-syncopate text-[10px] tracking-widest transition-all flex items-center justify-between px-4 group/btn"
+                    >
+                      {r.name}
+                      <ArrowRight size={12} className="opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Scan Line Animation (on hover) */}
-        <AnimatePresence>
-          {isHovered && (
-            <motion.div
-              initial={{ left: '-100%' }}
-              animate={{ left: '100%' }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-              className="absolute top-0 bottom-0 w-1 bg-[#FFC400] z-20 shadow-[0_0_20px_#FFC400] pointer-events-none"
-            />
-          )}
-        </AnimatePresence>
-
-        <div className="relative z-10 flex flex-col justify-between h-full">
-          <div>
-            <motion.div 
-              animate={isHovered ? { rotate: 8, scale: 1.1 } : { rotate: 0, scale: 1 }}
-              className="mb-12 text-[#FFC400]/60 group-hover:text-[#FFC400] transition-colors"
-            >
-              {module.icon}
-            </motion.div>
-            <h3 className="font-syncopate text-xl md:text-2xl font-bold text-white uppercase group-hover:text-[#FFC400] transition-colors mb-6 tracking-tight">
-              {module.title}
-            </h3>
-            <p className="text-slate-500 font-inter text-sm md:text-base leading-relaxed font-light tracking-wide uppercase group-hover:text-slate-400 transition-colors">
-              {module.desc}
-            </p>
+        {/* Product Info */}
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-2">
+            <span className="text-[#FFC400] font-syncopate text-[8px] font-black tracking-widest uppercase">{product.category}</span>
+            {selectedRegion && (
+              <span className="text-white/20 font-syncopate text-[7px] tracking-widest uppercase">SHIPPING TO: {selectedRegion}</span>
+            )}
           </div>
-
-          <div className="mt-12 h-6 flex items-center">
-            <AnimatePresence>
-              {(isHovered || isActive) && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  className="font-syncopate text-[9px] font-black text-[#FFC400] tracking-[0.3em] flex items-center gap-3 uppercase"
-                >
-                  {isActive ? 'CLOSE MODULE' : 'OPEN MODULE'} <ChevronRight size={14} className={isActive ? 'rotate-90' : ''} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <h4 className="font-syncopate text-sm font-bold text-white uppercase mb-4 line-clamp-2 group-hover:text-[#FFC400] transition-colors">
+            {product.name}
+          </h4>
+          <div className="flex justify-between items-center">
+            <span className="font-syncopate text-lg font-black text-white">
+              {product.price && product.price !== 'TBA' ? `AED ${product.price}` : 'TBA'}
+            </span>
+            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#FFC400] group-hover:bg-[#FFC400]/10 transition-all">
+              <ArrowRight size={14} className="text-white group-hover:text-[#FFC400]" />
+            </div>
           </div>
         </div>
+
+        {/* Corner Markers */}
+        <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-[#FFC400]/10 group-hover:border-[#FFC400]/40 transition-colors" />
       </motion.div>
+
+      {/* Mobile Bottom Sheet */}
       <AnimatePresence>
-        {isActive && <ModuleExpansion module={module} index={index} />}
+        {showMobileRegions && (
+          <div className="fixed inset-0 z-[200] lg:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowMobileRegions(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="absolute bottom-0 left-0 w-full bg-[#0A1A31] border-t border-[#FFC400]/30 p-8 rounded-t-3xl"
+            >
+              <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8" />
+              <h3 className="font-syncopate text-lg font-black text-white uppercase mb-2">SELECT REGION</h3>
+              <p className="text-white/40 font-syncopate text-[10px] tracking-widest uppercase mb-8">Choose your store for {product.name}</p>
+              
+              <div className="space-y-3">
+                {regions.map((r) => (
+                  <button
+                    key={r.name}
+                    onClick={() => handleRegionSelect(r.name, r.link)}
+                    className="w-full py-5 border border-white/10 active:border-[#FFC400] active:bg-[#FFC400]/10 text-white font-syncopate text-xs tracking-widest transition-all flex items-center justify-between px-6"
+                  >
+                    {r.name}
+                    <ArrowRight size={16} className="text-[#FFC400]" />
+                  </button>
+                ))}
+              </div>
+              
+              <button
+                onClick={() => setShowMobileRegions(false)}
+                className="w-full mt-6 py-4 text-white/40 font-syncopate text-[10px] tracking-widest uppercase"
+              >
+                CANCEL
+              </button>
+            </motion.div>
+          </div>
+        )}
       </AnimatePresence>
-    </div>
+    </>
   );
 };
 
-const TheGeekayEdge = () => {
-  const [activeModule, setActiveModule] = useState<number | null>(null);
-
-  const modules = [
-    { 
-      icon: <Search size={28} />, 
-      title: 'ELITE TALENT', 
-      desc: 'Rigorous performance-based scouting and growth protocols.',
-      bullets: ['BIOMETRIC TRAINING LOOPS', 'MENTAL CONDITIONING LABS', 'ROSTER DEPTH SCALING']
-    },
-    { 
-      icon: <BarChart3 size={28} />, 
-      title: 'DATA STRATEGY', 
-      desc: 'Optimizing tactical execution through advanced analytics.',
-      bullets: ['PREDICTIVE HEATMAPS', 'REAL-TIME META ANALYSIS', 'PROCEDURAL VOD REVIEW']
-    },
-    { 
-      icon: <Globe size={28} />, 
-      title: 'GLOBAL PRESENCE', 
-      desc: 'A relentless pursuit of dominance on the world stages.',
-      bullets: ['REGIONAL OPERATIONAL HUBS', 'GLOBAL FAN SYNC NODES', 'CROSS-BORDER LOGISTICS']
-    },
-    { 
-      icon: <Shield size={28} />, 
-      title: 'CHAMPION CULTURE', 
-      desc: 'Built on a foundation of collective accountability and elite mindset.',
-      bullets: ['RADICAL ACCOUNTABILITY', 'PRESSURE-TESTED LEADERSHIP', 'VICTORY-FIRST STANDARDS']
-    }
-  ];
-
+const ShopSection = () => {
   return (
-    <section className="py-40 md:py-60 px-6 bg-[#030C1A] border-b border-slate-900 relative z-10">
-      {/* Background Noise & Grain */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      
+    <section className="py-32 px-6 bg-[#030C1A] border-b border-slate-900 relative z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
       <div className="max-w-7xl mx-auto">
-        <div className="mb-24 flex flex-col items-start relative">
-          <div className="relative group">
-            <motion.h2 
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              className="font-syncopate text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-none mb-6"
-            >
-              THE GEEKAY <span 
-                className="text-transparent border-text-gold" 
-                style={{ WebkitTextStroke: '2px #FFC400', textShadow: '0 0 20px rgba(255,196,0,0.1)' }}
-              >EDGE</span>
-            </motion.h2>
-          </div>
-          
-          <motion.p 
+        <div className="mb-20 flex flex-col items-center text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-syncopate text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-6"
+          >
+            SHOP THE <span className="text-[#FFC400]">GEEKAY COLLECTION</span>
+          </motion.h2>
+          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 0.5 }}
             viewport={{ once: true }}
             className="text-white font-syncopate text-[10px] md:text-sm tracking-[0.5em] uppercase font-light"
           >
-            WHAT SEPARATES CONTENDERS FROM CHAMPIONS.
+            Official Gear. Built for Performance.
           </motion.p>
-
-          {/* Animated Loading Divider */}
           <motion.div 
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: "circOut", delay: 0.5 }}
-            className="absolute -bottom-8 left-0 w-full h-[1px] bg-gradient-to-r from-[#FFC400] to-transparent origin-left"
+            className="w-24 h-[2px] bg-[#FFC400] mt-8"
           />
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 lg:gap-4 mt-12">
-          {modules.map((m, i) => (
-            <ModulePanel 
-              key={i} 
-              module={m} 
-              index={i} 
-              isActive={activeModule === i}
-              onToggle={() => setActiveModule(activeModule === i ? null : i)}
-            />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          {MOCK_PRODUCTS.map((product, idx) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+            >
+              <ProductCard product={product} />
+            </motion.div>
           ))}
         </div>
 
-        {/* Console Footer Info */}
-        <div className="mt-20 flex justify-between items-center opacity-20 group">
-          <div className="flex gap-4 items-center">
-             <div className="w-1.5 h-1.5 bg-[#FFC400] animate-pulse" />
-          </div>
+        <div className="mt-20 flex justify-center">
+          <a href="https://www.geekay.com/en/" target="_blank" rel="noopener noreferrer">
+            <ArenaButton variant="outline" icon={<ArrowRight size={18} />}>
+              VIEW FULL STORE
+            </ArenaButton>
+          </a>
         </div>
       </div>
-
-      <style>{`
-        .border-text-gold {
-          -webkit-text-stroke: 1px #FFC400;
-        }
-        .bg-grid {
-          background-image: linear-gradient(to right, rgba(255, 196, 0, 0.05) 1px, transparent 1px),
-                            linear-gradient(to bottom, rgba(255, 196, 0, 0.05) 1px, transparent 1px);
-        }
-      `}</style>
     </section>
   );
 };
@@ -658,7 +612,7 @@ const NewsAnnouncements = () => {
   const others = news.slice(1); // RL Decals and Roster Announcements
 
   return (
-    <section className="py-32 px-6 bg-[#081B3A] relative z-10 overflow-hidden border-y border-slate-800/50">
+    <section className="py-32 px-6 bg-[#081B3A] relative z-10 overflow-hidden border-t border-white/5 border-b border-slate-800/50">
       <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
       <div className="max-w-7xl mx-auto">
         {/* Header Row */}
@@ -1118,7 +1072,7 @@ const Home = () => {
       <NewsAnnouncements />
       <AboutSnapshot />
       <LiveOperationsHighlight />
-      <TheGeekayEdge />
+      <ShopSection />
     </motion.div>
   );
 };
