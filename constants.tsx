@@ -71,7 +71,7 @@ export const MOCK_TEAMS: Team[] = [
         nickname: 'Kun3bood',
         name: 'Kun3bood',
         role: 'Controller',
-        photo: '/assets/Kun3bood.png',
+        photo: '/assets/kun3bood.png',
         bio: 'King of smokes and site denial. Vortex provides the anchors needed for the team to rotate effectively.',
         stats: { kd: 1.05, mvps: 5, tournaments: 18, winRate: '58%' },
         socials: { twitter: '#', twitch: '#' }
