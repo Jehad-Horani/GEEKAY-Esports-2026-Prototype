@@ -55,10 +55,10 @@ export const MOCK_TEAMS: Team[] = [
       },
       {
         id: 'p2',
-        name: 'Sarah Chen',
-        nickname: 'NOVA',
+        name: 'Almost',
+        nickname: 'Almost',
         role: 'Initiator',
-        photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/Almost.png',
         bio: 'Strategic mastermind behind some of the greatest comebacks in VCT history. Her utility usage is considered the gold standard.',
         stats: { kd: 1.12, mvps: 8, tournaments: 20, winRate: '62%' },
         achievements: [
@@ -68,30 +68,21 @@ export const MOCK_TEAMS: Team[] = [
       },
       {
         id: 'p3',
-        nickname: 'VORTEX',
-        name: 'Marcus Thorne',
+        nickname: 'Kun3bood',
+        name: 'Kun3bood',
         role: 'Controller',
-        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/Kun3bood.png',
         bio: 'King of smokes and site denial. Vortex provides the anchors needed for the team to rotate effectively.',
         stats: { kd: 1.05, mvps: 5, tournaments: 18, winRate: '58%' },
         socials: { twitter: '#', twitch: '#' }
       },
-      {
-        id: 'p4',
-        nickname: 'ECHO',
-        name: 'Elena Rossi',
-        role: 'Sentinel',
-        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=800',
-        bio: 'The unbreakable wall of GEEKAY defense. Elena holds sites alone while her team executes on the other side.',
-        stats: { kd: 1.28, mvps: 15, tournaments: 30, winRate: '71%' },
-        socials: { twitter: '#', instagram: '#' }
-      }
+      
     ]
   },
   {
-    id: 'dota-1',
-    name: 'DOTA 2 ELITE',
-    game: 'DOTA 2',
+    id: 'crossfire',
+    name: 'CROSSFIRE',
+    game: 'CROSSFIRE',
     region: 'GLOBAL',
     league: 'DPC DIVISION I',
     logo: 'https://images.unsplash.com/photo-1614027164847-1b280143eb9c?auto=format&fit=crop&q=80&w=100&h=100',
@@ -113,10 +104,10 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'dp1',
-        nickname: 'ZENITH',
-        name: 'Hiroshi Sato',
+        nickname: 'BOQCUTE',
+        name: 'BOQCUTE',
         role: 'Carry',
-        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/BOQCUTE.png',
         bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
         stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
         socials: { twitter: '#' }
