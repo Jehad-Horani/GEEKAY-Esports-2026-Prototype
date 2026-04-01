@@ -166,8 +166,8 @@ export const MOCK_TEAMS: Team[] = [
   },
   {
     id: 'cs-1',
-    name: 'CS2 SQUAD',
-    game: 'CS2',
+    name: 'EA SPORTS FC',
+    game: 'EA SPORTS FC',
     logo: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['Major Quarter-Finalist', 'Pro League Champions'],
@@ -186,59 +186,40 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'cp1',
-        nickname: 'HAWK',
-        name: 'Erik Nielsen',
+        nickname: 'Abdulrahman AL-Tamimi',
+        name: 'Abdulrahman AL-Tamimi',
         role: 'Sniper',
-        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/Abdulrahman.png',
         bio: 'One of the fastest AWP flick shots in the pro scene.',
         stats: { kd: 1.35, mvps: 15, tournaments: 35, winRate: '60%' },
         socials: { twitter: '#' }
       },
       {
         id: 'cp2',
-        nickname: 'GLITCH',
-        name: 'Simon Katz',
+        nickname: 'doo7i',
+        name: 'doo7i',
         role: 'Entry',
-        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/doo7i.png',
         bio: 'Fearless entry fragger with pinpoint AK-47 accuracy.',
         stats: { kd: 1.15, mvps: 8, tournaments: 30, winRate: '58%' },
         socials: { twitch: '#' }
       },
       {
         id: 'cp3',
-        nickname: 'CODE',
-        name: 'Julian Ross',
+        nickname: 'Lebrady_12',
+        name: 'Lebrady_12',
         role: 'IGL',
-        photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/Lebrady_12.png',
         bio: 'The tactician behind GEEKAY aggressive CT sides.',
         stats: { kd: 0.95, mvps: 4, tournaments: 50, winRate: '65%' },
         socials: { twitter: '#' }
       },
-      {
-        id: 'cp4',
-        nickname: 'PHANTOM',
-        name: 'Leo Silva',
-        role: 'Lurker',
-        photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600&h=800',
-        bio: 'Silent and deadly. Always appears behind the enemy at the worst time.',
-        stats: { kd: 1.25, mvps: 12, tournaments: 28, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'cp5',
-        nickname: 'SHIELD',
-        name: 'Toby Miller',
-        role: 'Support',
-        photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=600&h=800',
-        bio: 'Utility usage expert. Sets his team up for success every round.',
-        stats: { kd: 1.05, mvps: 2, tournaments: 33, winRate: '59%' },
-        socials: { twitch: '#' }
-      }
+     
     ]
   },
   {
     id: 'rl-1',
-    name: 'ROCKET STRIKE',
+    name: 'ROCKET League',
     game: 'Rocket League',
     logo: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200&h=600',
@@ -258,47 +239,90 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'rp1',
-        nickname: 'FLYER',
-        name: 'Zane Miller',
+        nickname: 'Apparently Jack',
+        name: 'Apparently Jack',
         role: 'Striker',
-        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/Apparently.png',
         bio: 'Master of the double-tap and flip resets.',
         stats: { kd: 2.5, mvps: 25, tournaments: 15, winRate: '85%' },
         socials: { twitter: '#' }
       },
       {
         id: 'rp2',
-        nickname: 'TURBO',
-        name: 'Marc Dubois',
+        nickname: 'eekso',
+        name: 'eekso',
         role: 'Midfield',
-        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/eekso.png',
         bio: 'Fastest car on the pitch. Unmatched challenge winner.',
         stats: { kd: 1.8, mvps: 12, tournaments: 18, winRate: '80%' },
         socials: { twitch: '#' }
       },
       {
         id: 'rp3',
-        nickname: 'GOALIE',
-        name: 'Sam Smith',
+        nickname: 'JOYO',
+        name: 'JOYO',
         role: 'Defense',
-        photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600&h=800',
+        photo: '/assets/Joyo.png',
         bio: 'The wall. Saves shots that seem impossible.',
         stats: { kd: 1.2, mvps: 8, tournaments: 20, winRate: '81%' },
         socials: { twitter: '#' }
-      }
+      },
+       {
+        id: 'rp4',
+        nickname: 'TempoH',
+        name: 'TempoH',
+        role: 'Defense',
+        photo: '/assets/TempoH.png',
+        bio: 'The wall. Saves shots that seem impossible.',
+        stats: { kd: 1.2, mvps: 8, tournaments: 20, winRate: '81%' },
+        socials: { twitter: '#' }
+      },
+     
     ]
   },
   {
     id: 'lol-1',
-    name: 'LEAGUE OF LEGENDS',
-    game: 'LEAGUE OF LEGENDS',
+    name: 'Fortnite',
+    game: 'Fortnite',
     region: 'MENA',
     league: 'ARABIAN LEAGUE',
     logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['Arabian League Champions', 'EMEA Masters Participant'],
-    players: [],
-    stats: { winRate: '70%', rank: '#1 MENA', championships: 3, globalEvents: 2, seasonRecord: '14-2' }
+   
+    stats: { winRate: '70%', rank: '#1 MENA', championships: 3, globalEvents: 2, seasonRecord: '14-2' },
+    players: [
+      {
+        id: 'fp1',
+        nickname: 'Adapter',
+        name: 'Adapter',
+        role: 'Sniper',
+        photo: '/assets/Adapter.png',
+        bio: 'One of the fastest AWP flick shots in the pro scene.',
+        stats: { kd: 1.35, mvps: 15, tournaments: 35, winRate: '60%' },
+        socials: { twitter: '#' }
+      },
+      {
+        id: 'fp2',
+        nickname: 'FKS',
+        name: 'FKS',
+        role: 'Entry',
+        photo: '/assets/FKS.png',
+        bio: 'Fearless entry fragger with pinpoint AK-47 accuracy.',
+        stats: { kd: 1.15, mvps: 8, tournaments: 30, winRate: '58%' },
+        socials: { twitch: '#' }
+      },
+      {
+        id: 'fp3',
+        nickname: 'Kakarot',
+        name: 'Kakarot',
+        role: 'IGL',
+        photo: '/assets/Kakarot.png',
+        bio: 'The tactician behind GEEKAY aggressive CT sides.',
+        stats: { kd: 0.95, mvps: 4, tournaments: 50, winRate: '65%' },
+        socials: { twitter: '#' }
+      }
+    ]
   },
   {
     id: 'r6-1',
