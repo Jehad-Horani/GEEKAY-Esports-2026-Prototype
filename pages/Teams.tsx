@@ -50,7 +50,7 @@ const PlayerModal: React.FC<{ player: Player, onClose: () => void }> = ({ player
         <img 
           src={player.photo} 
           alt={player.nickname} 
-          className="w-full h-full object-cover" 
+          className="w-full h-full object-cover object-top" 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1C2D] via-transparent to-transparent" />
         <div className="absolute bottom-6 left-8">
