@@ -126,7 +126,7 @@ const About = () => {
     { 
       name: "AOY", 
       role: "BIZDEV MANAGER", 
-      photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/assets/AOY.png", 
       desc: "Driving strategic partnerships and business growth in the KSA region.",
       linkedin: "#"
     },
