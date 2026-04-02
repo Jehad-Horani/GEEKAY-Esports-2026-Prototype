@@ -1136,7 +1136,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Jersey 2025',
     price: '119.00',
     link: 'https://www.geekay.com/en/geekay-esports-jersey-2025',
-    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_2.png',
+    image: '/assets/jearsy.png',
     category: 'Apparel'
   },
   {
@@ -1144,7 +1144,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Frame – Rocket League Edition',
     price: 'TBA',
     link: 'https://www.geekay.com/en/geekay-esports-frame-rocket-league-edition-oaly',
-    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_1.png',
+    image: '/assets/frame.png',
     category: 'Collectibles'
   },
   {
@@ -1152,7 +1152,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Chair/Play Mat',
     price: '99.00',
     link: 'https://www.geekay.com/en/geekay-esports-chair-mat',
-    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_4.png',
+    image: '/assets/mat.png',
     category: 'Accessories'
   },
   {
@@ -1160,7 +1160,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Desk Mat Mouse Pad',
     price: '49.00',
     link: 'https://www.geekay.com/en/geekay-e-sports-desk-mat-mouse-pad',
-    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_0.png',
+    image: '/assets/mouse.png',
     category: 'Accessories'
   },
   {
@@ -1168,7 +1168,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'GamerTek Esports Bag – Black',
     price: '149.00',
     link: 'https://www.geekay.com/en/gamertek-esports-bag-black',
-    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_3.png',
+    image: '/assets/bag.png',
     category: 'Gear'
   }
 ];
