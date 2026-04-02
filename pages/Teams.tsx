@@ -46,7 +46,7 @@ const PlayerModal: React.FC<{ player: Player, onClose: () => void }> = ({ player
       </button>
 
       {/* Header: Visual */}
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative h-68 overflow-hidden">
         <img 
           src={player.photo} 
           alt={player.nickname} 
