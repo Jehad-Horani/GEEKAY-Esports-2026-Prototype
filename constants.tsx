@@ -3,7 +3,7 @@ import { Team, Event, Job, NewsItem, Creator, Product } from './types';
 
 export const BRAND_COLORS = {
   primary: '#081B3A', // Tactical Navy
-  secondary: '#1652A3', // Performance Blue
+  secondary: '#0d3365', // Performance Blue
   accent: '#FFC400',  // High-Visibility Yellow
   accentGlow: 'rgba(255, 196, 0, 0.6)',
   surface: '#0A254D',
@@ -792,13 +792,13 @@ export const MOCK_TEAMS: Team[] = [
 export const MOCK_CREATORS: Creator[] = [
   {
     id: 'creator-1',
-    nickname: 'NINJA_X',
-    name: 'Tariq Al-Fahad',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=800',
+    nickname: 'Breezi',
+    name: 'Breezi',
+    photo: '/assets/Breezi.png',
     platforms: [
-      { type: 'twitch', url: '#', handle: '@ninja_x' },
-      { type: 'youtube', url: '#', handle: 'NinjaX' },
-      { type: 'twitter', url: '#', handle: '@ninja_x' }
+      { type: 'twitch', url: '#', handle: '@Breezi' },
+      { type: 'youtube', url: '#', handle: 'Breezi' },
+      { type: 'twitter', url: '#', handle: '@Breezi' }
     ],
     metrics: {
       followers: '1.2M',
@@ -808,13 +808,13 @@ export const MOCK_CREATORS: Creator[] = [
   },
   {
     id: 'creator-2',
-    nickname: 'LUNA',
-    name: 'Aisha Rahman',
-    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=800',
+    nickname: 'Jorhdys',
+    name: 'Jorhdys',
+    photo: '/assets/Jorhdys.png',
     platforms: [
-      { type: 'youtube', url: '#', handle: 'LunaPlays' },
-      { type: 'tiktok', url: '#', handle: '@luna_rahman' },
-      { type: 'instagram', url: '#', handle: '@luna.rahman' }
+      { type: 'youtube', url: '#', handle: 'Jorhdys' },
+      { type: 'tiktok', url: '#', handle: '@Jorhdys' },
+      { type: 'instagram', url: '#', handle: '@Jorhdys' }
     ],
     metrics: {
       followers: '850K',
@@ -824,9 +824,9 @@ export const MOCK_CREATORS: Creator[] = [
   },
   {
     id: 'creator-3',
-    nickname: 'VORTEX_CC',
-    name: 'Omar Khalid',
-    photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600&h=800',
+    nickname: 'durpee',
+    name: 'durpee',
+    photo: '/assets/durpee.png',
     platforms: [
       { type: 'twitch', url: '#', handle: '@vortex_cc' },
       { type: 'twitter', url: '#', handle: '@vortex_cc' }
@@ -837,21 +837,7 @@ export const MOCK_CREATORS: Creator[] = [
     },
     focus: 'Gameplay / Strategy'
   },
-  {
-    id: 'creator-4',
-    nickname: 'NOVA_MEDIA',
-    name: 'Sarah Chen',
-    photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600&h=800',
-    platforms: [
-      { type: 'youtube', url: '#', handle: 'NovaMedia' },
-      { type: 'instagram', url: '#', handle: '@nova_media' }
-    ],
-    metrics: {
-      followers: '2.1M',
-      totalReach: '4.2M+'
-    },
-    focus: 'Entertainment / Lifestyle'
-  }
+  
 ];
 
 export const MOCK_EVENTS: Event[] = [
