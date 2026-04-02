@@ -208,12 +208,12 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void }> = ({ team, onBack
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {team.players.map(player => (
-              <div
+              <div 
                 key={player.id}
-                className="group relative aspect-[3/4] overflow-hidden bg-slate-900 border border-slate-800 transition-all duration-300"
+                className="group relative aspect-[2/3] overflow-hidden bg-slate-900 border border-slate-800 transition-all duration-300"
               >
                 <img src={player.photo} alt={player.nickname} className="w-full h-full object-cover grayscale transition-transform duration-500 group-hover:scale-[1.05] group-hover:grayscale-0" />
-
+                
                 {/* Default State: IGN */}
                 <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-0">
                   <h3 className="font-syncopate text-3xl font-black text-white uppercase tracking-tighter">{player.nickname}</h3>
