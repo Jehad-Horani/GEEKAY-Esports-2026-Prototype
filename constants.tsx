@@ -490,7 +490,7 @@ export const MOCK_TEAMS: Team[] = [
         nickname: 'Xeno',
         name: 'Xeno',
         role: 'Hard Support',
-        photo: '/assets/Xeno.png',
+        photo: '/assets/Xeno.jpeg',
         bio: 'Strategic genius who manages the vision game like no other.',
         stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
         socials: { twitch: '#' }
@@ -513,7 +513,7 @@ export const MOCK_TEAMS: Team[] = [
         nickname: 'Aid',
         name: 'Aid',
         role: 'Carry',
-        photo: '/assets/Aid.jpeg',
+        photo: '/assets/Aid.png',
         bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
         stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
         socials: { twitter: '#' }
@@ -563,7 +563,7 @@ export const MOCK_TEAMS: Team[] = [
         nickname: 'LBBD7',
         name: 'LBBD7',
         role: 'Hard Support',
-        photo: '/assets/LBBD7.jpeg',
+        photo: '/assets/LBBD7.png',
         bio: 'Strategic genius who manages the vision game like no other.',
         stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
         socials: { twitch: '#' }
