@@ -37,7 +37,7 @@ const PlayerModal: React.FC<{ player: Player, onClose: () => void }> = ({ player
       animate={{ scale: 1, opacity: 1, y: 0 }}
       exit={{ scale: 0.9, opacity: 0, y: 20 }}
       transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className="bg-[#0B1C2D] border border-slate-800 w-full max-w-lg relative overflow-hidden shadow-2xl rounded-2xl flex flex-col max-h-[90vh]"
+      className="bg-[#0B1C2D] border border-slate-800 w-full max-w-lg relative overflow-hidden shadow-2xl rounded-2xl flex flex-col max-h-[94vh]"
       onClick={e => e.stopPropagation()}
     >
       {/* Close Button */}
