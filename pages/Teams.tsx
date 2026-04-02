@@ -46,11 +46,11 @@ const PlayerModal: React.FC<{ player: Player, onClose: () => void }> = ({ player
       </button>
 
       {/* Header: Visual */}
-      <div className="relative h-[420px] sm:h-[450px] md:h-[480px] overflow-hidden">
+      <div className="relative h-[460px] sm:h-[520px] md:h-[560px] overflow-hidden">
         <img 
           src={player.photo} 
           alt={player.nickname} 
-          className="w-full h-full object-cover object-[50%_14%] sm:object-[50%_12%] md:object-[50%_10%]" 
+          className="w-full h-full object-cover object-[center_5%] sm:object-[center_6%] md:object-[center_8%]" 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1C2D] via-transparent to-transparent" />
         <div className="absolute bottom-6 left-8">
