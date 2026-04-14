@@ -3,7 +3,7 @@ import { Team, Event, Job, NewsItem, Creator, Product } from './types';
 
 export const BRAND_COLORS = {
   primary: '#081B3A', // Tactical Navy
-  secondary: '#0d3365', // Performance Blue
+  secondary: '#1652A3', // Performance Blue
   accent: '#FFC400',  // High-Visibility Yellow
   accentGlow: 'rgba(255, 196, 0, 0.6)',
   surface: '#0A254D',
@@ -11,11 +11,11 @@ export const BRAND_COLORS = {
 
 export const MOCK_TEAMS: Team[] = [
   {
-    id: 'cod-1',
-    name: 'Call of Duty Warzone',
-    game: 'Call of Duty Warzone',
+    id: 'val-1',
+    name: 'VALORANT PRO',
+    game: 'VALORANT',
     region: 'MENA',
-    league: 'Call of Duty Warzone CHALLENGERS',
+    league: 'VALORANT CHALLENGERS',
     logo: 'https://images.unsplash.com/photo-1624138784614-87fd1b6528f8?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['VCT Masters 2025 Winner', 'Regional League Champions'],
@@ -36,10 +36,10 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'p1',
-        name: 'Abosalih',
-        nickname: 'Abosalih',
+        name: 'Alex Johnson',
+        nickname: 'SPECTRE',
         role: 'Duelist',
-        photo: '/assets/Abosalih.png',
+        photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'The unmatched entry fragger known for his aggressive map control and clutch ability in high-pressure finals.',
         stats: { kd: 1.45, mvps: 12, tournaments: 24, winRate: '68%' },
         achievements: [
@@ -55,10 +55,10 @@ export const MOCK_TEAMS: Team[] = [
       },
       {
         id: 'p2',
-        name: 'Almost',
-        nickname: 'Almost',
+        name: 'Sarah Chen',
+        nickname: 'NOVA',
         role: 'Initiator',
-        photo: '/assets/Almost.png',
+        photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'Strategic mastermind behind some of the greatest comebacks in VCT history. Her utility usage is considered the gold standard.',
         stats: { kd: 1.12, mvps: 8, tournaments: 20, winRate: '62%' },
         achievements: [
@@ -68,21 +68,30 @@ export const MOCK_TEAMS: Team[] = [
       },
       {
         id: 'p3',
-        nickname: 'Kun3bood',
-        name: 'Kun3bood',
+        nickname: 'VORTEX',
+        name: 'Marcus Thorne',
         role: 'Controller',
-        photo: '/assets/kun3bood.png',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'King of smokes and site denial. Vortex provides the anchors needed for the team to rotate effectively.',
         stats: { kd: 1.05, mvps: 5, tournaments: 18, winRate: '58%' },
         socials: { twitter: '#', twitch: '#' }
       },
-      
+      {
+        id: 'p4',
+        nickname: 'ECHO',
+        name: 'Elena Rossi',
+        role: 'Sentinel',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=800',
+        bio: 'The unbreakable wall of GEEKAY defense. Elena holds sites alone while her team executes on the other side.',
+        stats: { kd: 1.28, mvps: 15, tournaments: 30, winRate: '71%' },
+        socials: { twitter: '#', instagram: '#' }
+      }
     ]
   },
   {
-    id: 'crossfire',
-    name: 'CROSSFIRE',
-    game: 'CROSSFIRE',
+    id: 'dota-1',
+    name: 'DOTA 2 ELITE',
+    game: 'DOTA 2',
     region: 'GLOBAL',
     league: 'DPC DIVISION I',
     logo: 'https://images.unsplash.com/photo-1614027164847-1b280143eb9c?auto=format&fit=crop&q=80&w=100&h=100',
@@ -104,60 +113,50 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'dp1',
-        nickname: 'BOQCUTE',
-        name: 'BOQCUTE',
+        nickname: 'ZENITH',
+        name: 'Hiroshi Sato',
         role: 'Carry',
-        photo: '/assets/BOQCUTE.png',
+        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
         stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
         socials: { twitter: '#' }
       },
       {
         id: 'dp2',
-        nickname: 'Datchip',
-        name: 'Datchip',
+        nickname: 'MIRAGE',
+        name: 'Li Wei',
         role: 'Mid',
-        photo: '/assets/Datchip.png',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'Highly mechanical mid-laner with a signature Ember Spirit that terrifies opponents.',
         stats: { kd: 3.9, mvps: 18, tournaments: 40, winRate: '64%' },
         socials: { twitch: '#' }
       },
       {
         id: 'dp3',
-        nickname: 'Ductoan',
-        name: 'Ductoan',
+        nickname: 'IRON',
+        name: 'Dmitri Volkov',
         role: 'Offlane',
-        photo: '/assets/Ductoan.png',
+        photo: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'The captain and the rock of the team. Never loses his lane.',
         stats: { kd: 2.5, mvps: 10, tournaments: 55, winRate: '70%' },
         socials: { twitter: '#' }
       },
       {
         id: 'dp4',
-        nickname: 'KimBum',
-        name: 'Kim Bum',
+        nickname: 'PULSE',
+        name: 'Arjun Nair',
         role: 'Soft Support',
-        photo: '/assets/KimBum.png',
+        photo: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'Incredible map awareness. Always where he needs to be for a gank.',
         stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
         socials: { twitter: '#' }
       },
       {
         id: 'dp5',
-        nickname: 'PIEM',
-        name: 'PIEM',
+        nickname: 'AURA',
+        name: 'Sofia Martinez',
         role: 'Hard Support',
-        photo: '/assets/PIEM.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-        {
-        id: 'dp6',
-        nickname: 'Poo',
-        name: 'Poo',
-        role: 'Hard Support',
-        photo: '/assets/Poo.png',
+        photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'Strategic genius who manages the vision game like no other.',
         stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
         socials: { twitch: '#' }
@@ -166,8 +165,8 @@ export const MOCK_TEAMS: Team[] = [
   },
   {
     id: 'cs-1',
-    name: 'EA SPORTS FC',
-    game: 'EA SPORTS FC',
+    name: 'CS2 SQUAD',
+    game: 'CS2',
     logo: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['Major Quarter-Finalist', 'Pro League Champions'],
@@ -186,40 +185,59 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'cp1',
-        nickname: 'Abdulrahman AL-Tamimi',
-        name: 'Abdulrahman AL-Tamimi',
+        nickname: 'HAWK',
+        name: 'Erik Nielsen',
         role: 'Sniper',
-        photo: '/assets/Abdulrahman.png',
+        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'One of the fastest AWP flick shots in the pro scene.',
         stats: { kd: 1.35, mvps: 15, tournaments: 35, winRate: '60%' },
         socials: { twitter: '#' }
       },
       {
         id: 'cp2',
-        nickname: 'doo7i',
-        name: 'doo7i',
+        nickname: 'GLITCH',
+        name: 'Simon Katz',
         role: 'Entry',
-        photo: '/assets/doo7i.png',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'Fearless entry fragger with pinpoint AK-47 accuracy.',
         stats: { kd: 1.15, mvps: 8, tournaments: 30, winRate: '58%' },
         socials: { twitch: '#' }
       },
       {
         id: 'cp3',
-        nickname: 'Lebrady_12',
-        name: 'Lebrady_12',
+        nickname: 'CODE',
+        name: 'Julian Ross',
         role: 'IGL',
-        photo: '/assets/Lebrady_12.png',
+        photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'The tactician behind GEEKAY aggressive CT sides.',
         stats: { kd: 0.95, mvps: 4, tournaments: 50, winRate: '65%' },
         socials: { twitter: '#' }
       },
-     
+      {
+        id: 'cp4',
+        nickname: 'PHANTOM',
+        name: 'Leo Silva',
+        role: 'Lurker',
+        photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600&h=800',
+        bio: 'Silent and deadly. Always appears behind the enemy at the worst time.',
+        stats: { kd: 1.25, mvps: 12, tournaments: 28, winRate: '62%' },
+        socials: { twitter: '#' }
+      },
+      {
+        id: 'cp5',
+        nickname: 'SHIELD',
+        name: 'Toby Miller',
+        role: 'Support',
+        photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=600&h=800',
+        bio: 'Utility usage expert. Sets his team up for success every round.',
+        stats: { kd: 1.05, mvps: 2, tournaments: 33, winRate: '59%' },
+        socials: { twitch: '#' }
+      }
     ]
   },
   {
     id: 'rl-1',
-    name: 'ROCKET League',
+    name: 'ROCKET STRIKE',
     game: 'Rocket League',
     logo: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200&h=600',
@@ -239,566 +257,137 @@ export const MOCK_TEAMS: Team[] = [
     players: [
       {
         id: 'rp1',
-        nickname: 'Apparently Jack',
-        name: 'Apparently Jack',
+        nickname: 'FLYER',
+        name: 'Zane Miller',
         role: 'Striker',
-        photo: '/assets/Apparently.png',
+        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'Master of the double-tap and flip resets.',
         stats: { kd: 2.5, mvps: 25, tournaments: 15, winRate: '85%' },
         socials: { twitter: '#' }
       },
       {
         id: 'rp2',
-        nickname: 'eekso',
-        name: 'eekso',
+        nickname: 'TURBO',
+        name: 'Marc Dubois',
         role: 'Midfield',
-        photo: '/assets/eekso.png',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'Fastest car on the pitch. Unmatched challenge winner.',
         stats: { kd: 1.8, mvps: 12, tournaments: 18, winRate: '80%' },
         socials: { twitch: '#' }
       },
       {
         id: 'rp3',
-        nickname: 'JOYO',
-        name: 'JOYO',
+        nickname: 'GOALIE',
+        name: 'Sam Smith',
         role: 'Defense',
-        photo: '/assets/Joyo.png',
+        photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600&h=800',
         bio: 'The wall. Saves shots that seem impossible.',
         stats: { kd: 1.2, mvps: 8, tournaments: 20, winRate: '81%' },
-        socials: { twitter: '#' }
-      },
-       {
-        id: 'rp4',
-        nickname: 'TempoH',
-        name: 'TempoH',
-        role: 'Defense',
-        photo: '/assets/TempoH.png',
-        bio: 'The wall. Saves shots that seem impossible.',
-        stats: { kd: 1.2, mvps: 8, tournaments: 20, winRate: '81%' },
-        socials: { twitter: '#' }
-      },
-     
-    ]
-  },
-  {
-    id: 'lol-1',
-    name: 'Fortnite',
-    game: 'Fortnite',
-    region: 'MENA',
-    league: 'ARABIAN LEAGUE',
-    logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
-    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
-    achievements: ['Arabian League Champions', 'EMEA Masters Participant'],
-   
-    stats: { winRate: '70%', rank: '#1 MENA', championships: 3, globalEvents: 2, seasonRecord: '14-2' },
-    players: [
-      {
-        id: 'fp1',
-        nickname: 'Adapter',
-        name: 'Adapter',
-        role: 'Sniper',
-        photo: '/assets/Adapter.png',
-        bio: 'One of the fastest AWP flick shots in the pro scene.',
-        stats: { kd: 1.35, mvps: 15, tournaments: 35, winRate: '60%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'fp2',
-        nickname: 'FKS',
-        name: 'FKS',
-        role: 'Entry',
-        photo: '/assets/FKS.png',
-        bio: 'Fearless entry fragger with pinpoint AK-47 accuracy.',
-        stats: { kd: 1.15, mvps: 8, tournaments: 30, winRate: '58%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'fp3',
-        nickname: 'Kakarot',
-        name: 'Kakarot',
-        role: 'IGL',
-        photo: '/assets/Kakarot.png',
-        bio: 'The tactician behind GEEKAY aggressive CT sides.',
-        stats: { kd: 0.95, mvps: 4, tournaments: 50, winRate: '65%' },
         socials: { twitter: '#' }
       }
     ]
   },
   {
+    id: 'lol-1',
+    name: 'LEAGUE OF LEGENDS',
+    game: 'LEAGUE OF LEGENDS',
+    region: 'MENA',
+    league: 'ARABIAN LEAGUE',
+    logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
+    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+    achievements: ['Arabian League Champions', 'EMEA Masters Participant'],
+    players: [],
+    stats: { winRate: '70%', rank: '#1 MENA', championships: 3, globalEvents: 2, seasonRecord: '14-2' }
+  },
+  {
     id: 'r6-1',
-    name: 'HONOR OF KINGS',
-    game: 'HONOR OF KINGS',
+    name: 'RAINBOW SIX SIEGE',
+    game: 'R6 SIEGE',
     region: 'MENA',
     logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['MENA League Winner', 'Six Invitational Contender'],
-    players: [  
-      {
-        id: 'HOK1',
-        nickname: 'Broccoli',
-        name: 'Broccoli',
-        role: 'Carry',
-        photo: '/assets/Broccoli.png',
-        bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
-        stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'HOK2',
-        nickname: 'Chee',
-        name: 'Chee',
-        role: 'Mid',
-        photo: '/assets/Chee.png',
-        bio: 'Highly mechanical mid-laner with a signature Ember Spirit that terrifies opponents.',
-        stats: { kd: 3.9, mvps: 18, tournaments: 40, winRate: '64%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'HOK3',
-        nickname: 'GuiYu',
-        name: 'GuiYu',
-        role: 'Offlane',
-        photo: '/assets/GuiYu.png',
-        bio: 'The captain and the rock of the team. Never loses his lane.',
-        stats: { kd: 2.5, mvps: 10, tournaments: 55, winRate: '70%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'HOK4',
-        nickname: 'Jem',
-        name: 'Jem',
-        role: 'Soft Support',
-        photo: '/assets/Jem.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'HOK5',
-        nickname: 'Mopo',
-        name: 'Mopo',
-        role: 'Hard Support',
-        photo: '/assets/Mopo.jpeg',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-        {
-        id: 'HOK6',
-        nickname: 'MusangKing',
-        name: 'Musang King',
-        role: 'Hard Support',
-        photo: '/assets/MusangKing.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'HOK7',
-        nickname: 'ShiSan',
-        name: 'ShiSan',
-        role: 'Hard Support',
-        photo: '/assets/ShiSan.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-        {
-        id: 'HOK8',
-        nickname: 'Zhe',
-        name: 'Zhe',
-        role: 'Hard Support',
-        photo: '/assets/Zhe.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-    ],
+    players: [],
     stats: { winRate: '68%', rank: '#2 MENA', championships: 4, globalEvents: 3, seasonRecord: '12-4' }
   },
   {
-    id: 'mobile-legends-1',
-    name: 'Mobile Legends: Bang Bang',
-    game: 'Mobile Legends: Bang Bang',
+    id: 'apex-1',
+    name: 'APEX LEGENDS',
+    game: 'APEX LEGENDS',
     region: 'GLOBAL',
     logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['ALGS Split 1 Playoffs', 'EMEA Regional Finals'],
-     players: [  
-      {
-        id: 'ml1',
-        nickname: 'Aizn',
-        name: 'Aizn',
-        role: 'Carry',
-        photo: '/assets/Aizn.jpeg',
-        bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
-        stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'ml2',
-        nickname: 'Aody',
-        name: 'Aody',
-        role: 'Mid',
-        photo: '/assets/Aody.png',
-        bio: 'Highly mechanical mid-laner with a signature Ember Spirit that terrifies opponents.',
-        stats: { kd: 3.9, mvps: 18, tournaments: 40, winRate: '64%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'ml3',
-        nickname: 'Ghostarica',
-        name: 'Ghostarica',
-        role: 'Offlane',
-        photo: '/assets/Ghostarica.png',
-        bio: 'The captain and the rock of the team. Never loses his lane.',
-        stats: { kd: 2.5, mvps: 10, tournaments: 55, winRate: '70%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'ml4',
-        nickname: 'Pharaoh',
-        name: 'Pharaoh',
-        role: 'Soft Support',
-        photo: '/assets/Pharaoh.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'ml5',
-        nickname: 'Quanok',
-        name: 'Quanok',
-        role: 'Hard Support',
-        photo: '/assets/Quanok.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-        {
-        id: 'ml6',
-        nickname: 'Shen',
-        name: 'Shen',
-        role: 'Hard Support',
-        photo: '/assets/Shen.jpeg',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'ml7',
-        nickname: 'Xeno',
-        name: 'Xeno',
-        role: 'Hard Support',
-        photo: '/assets/Xeno.jpeg',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-      
-    ],
+    players: [],
     stats: { winRate: '55%', rank: '#8 EMEA', championships: 1, globalEvents: 5, seasonRecord: 'N/A' }
   },
   {
     id: 'pubgm-1',
-    name: 'Overwatch',
-    game: 'Overwatch',
-    region: 'MENA',
-    logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
-    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
-    achievements: ['PMPL Arabia Champions', 'PMGC Finalists'],
-     players: [  
-      {
-        id: 'OW1',
-        nickname: 'Aid',
-        name: 'Aid',
-        role: 'Carry',
-        photo: '/assets/Aid.png',
-        bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
-        stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'OW2',
-        nickname: 'AlphaYi',
-        name: 'AlphaYi',
-        role: 'Mid',
-        photo: '/assets/AlphaYi.png',
-        bio: 'Highly mechanical mid-laner with a signature Ember Spirit that terrifies opponents.',
-        stats: { kd: 3.9, mvps: 18, tournaments: 40, winRate: '64%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'OW3',
-        nickname: 'AOY',
-        name: 'AOY',
-        role: 'Offlane',
-        photo: '/assets/AOY.png',
-        bio: 'The captain and the rock of the team. Never loses his lane.',
-        stats: { kd: 2.5, mvps: 10, tournaments: 55, winRate: '70%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'OW4',
-        nickname: 'FiNN',
-        name: 'FiNN',
-        role: 'Soft Support',
-        photo: '/assets/FiNN.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'OW5',
-        nickname: 'Haku',
-        name: 'Haku',
-        role: 'Hard Support',
-        photo: '/assets/Haku.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-        {
-        id: 'OW6',
-        nickname: 'LBBD7',
-        name: 'LBBD7',
-        role: 'Hard Support',
-        photo: '/assets/LBBD7.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'OW7',
-        nickname: 'ZIYAD',
-        name: 'ZIYAD',
-        role: 'Hard Support',
-        photo: '/assets/ZIYAD.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-      
-    ],
-    stats: { winRate: '75%', rank: '#1 Arabia', championships: 5, globalEvents: 4, seasonRecord: 'N/A' }
-  },
-  {
-    id: 'ff-1',
     name: 'PUBG MOBILE',
     game: 'PUBG MOBILE',
     region: 'MENA',
     logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+    achievements: ['PMPL Arabia Champions', 'PMGC Finalists'],
+    players: [],
+    stats: { winRate: '75%', rank: '#1 Arabia', championships: 5, globalEvents: 4, seasonRecord: 'N/A' }
+  },
+  {
+    id: 'ff-1',
+    name: 'FREE FIRE',
+    game: 'FREE FIRE',
+    region: 'MENA',
+    logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
+    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['MEA League Winners', 'World Series Participants'],
-      players: [  
-      {
-        id: 'PM1',
-        nickname: 'EZ4BADBOY',
-        name: 'EZ4BADBOY',
-        role: 'Carry',
-        photo: '/assets/EZ4BADBOY.png',
-        bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
-        stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM2',
-        nickname: 'Feitan',
-        name: 'Feitan',
-        role: 'Mid',
-        photo: '/assets/Feitan.png',
-        bio: 'Highly mechanical mid-laner with a signature Ember Spirit that terrifies opponents.',
-        stats: { kd: 3.9, mvps: 18, tournaments: 40, winRate: '64%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'PM3',
-        nickname: 'KEVIN',
-        name: 'KEVIN',
-        role: 'Offlane',
-        photo: '/assets/KEVIN.png',
-        bio: 'The captain and the rock of the team. Never loses his lane.',
-        stats: { kd: 2.5, mvps: 10, tournaments: 55, winRate: '70%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM4',
-        nickname: 'RAGNAROK',
-        name: 'RAGNAROK',
-        role: 'Soft Support',
-        photo: '/assets/RAGNAROK.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM5',
-        nickname: 'SAFG',
-        name: 'SAFG',
-        role: 'Hard Support',
-        photo: '/assets/SAFG.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-        {
-        id: 'PM6',
-        nickname: 'SALEH',
-        name: 'SALEH',
-        role: 'Hard Support',
-        photo: '/assets/SALEH.png',
-        bio: 'Strategic genius who manages the vision game like no other.',
-        stats: { kd: 1.2, mvps: 4, tournaments: 28, winRate: '60%' },
-        socials: { twitch: '#' }
-      },
-    
-      
-    ],
+    players: [],
     stats: { winRate: '65%', rank: '#2 MEA', championships: 2, globalEvents: 2, seasonRecord: 'N/A' }
   },
   {
     id: 'ow2-1',
-    name: 'PUBG PC',
-    game: 'PUBG PC',
+    name: 'OVERWATCH 2',
+    game: 'OVERWATCH 2',
     region: 'EU',
     logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['OWCS EMEA Stage 1', 'Faceit League Contenders'],
-  players: [  
-      {
-        id: 'PM1',
-        nickname: 'AKaN',
-        name: 'AKaN',
-        role: 'Carry',
-        photo: '/assets/AKaN.png',
-        bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
-        stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM2',
-        nickname: 'EJ',
-        name: 'EJ',
-        role: 'Mid',
-        photo: '/assets/EJ.png',
-        bio: 'Highly mechanical mid-laner with a signature Ember Spirit that terrifies opponents.',
-        stats: { kd: 3.9, mvps: 18, tournaments: 40, winRate: '64%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'PM3',
-        nickname: 'Parkpro',
-        name: 'Parkpro',
-        role: 'Offlane',
-        photo: '/assets/Parkpro.png',
-        bio: 'The captain and the rock of the team. Never loses his lane.',
-        stats: { kd: 2.5, mvps: 10, tournaments: 55, winRate: '70%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM4',
-        nickname: 'Seongjang',
-        name: 'Seongjang',
-        role: 'Soft Support',
-        photo: '/assets/Seongjang.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-    
-    
-      
-    ],  
-      stats: { winRate: '60%', rank: '#5 EU', championships: 1, globalEvents: 1, seasonRecord: '10-5' }
+    players: [],
+    stats: { winRate: '60%', rank: '#5 EU', championships: 1, globalEvents: 1, seasonRecord: '10-5' }
   },
   {
     id: 'sf6-1',
-    name: 'Rainbow Six Siege',
-    game: 'Rainbow Six Siege',
+    name: 'STREET FIGHTER 6',
+    game: 'STREET FIGHTER 6',
     region: 'GLOBAL',
     logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
     banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
     achievements: ['Capcom Cup Qualified', 'Evo Top 8'],
-    players: [  
-      {
-        id: 'PM1',
-        nickname: 'AsK',
-        name: 'AsK',
-        role: 'Carry',
-        photo: '/assets/AsK.png',
-        bio: 'A farm-heavy carry known for flawless positioning in late-game teamfights.',
-        stats: { kd: 4.8, mvps: 22, tournaments: 45, winRate: '68%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM2',
-        nickname: 'Hungry',
-        name: 'Hungry',
-        role: 'Mid',
-        photo: '/assets/Hungry.png',
-        bio: 'Highly mechanical mid-laner with a signature Ember Spirit that terrifies opponents.',
-        stats: { kd: 3.9, mvps: 18, tournaments: 40, winRate: '64%' },
-        socials: { twitch: '#' }
-      },
-      {
-        id: 'PM3',
-        nickname: 'Pacbull',
-        name: 'Pacbull',
-        role: 'Offlane',
-        photo: '/assets/Pacbull.png',
-        bio: 'The captain and the rock of the team. Never loses his lane.',
-        stats: { kd: 2.5, mvps: 10, tournaments: 55, winRate: '70%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM4',
-        nickname: 'Rexhun',
-        name: 'Rexhun',
-        role: 'Soft Support',
-        photo: '/assets/Rexhun.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM4',
-        nickname: 'Sarks',
-        name: 'Sarks',
-        role: 'Soft Support',
-        photo: '/assets/Sarks.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-      {
-        id: 'PM4',
-        nickname: 'ShepparD',
-        name: 'ShepparD',
-        role: 'Soft Support',
-        photo: '/assets/ShepparD.png',
-        bio: 'Incredible map awareness. Always where he needs to be for a gank.',
-        stats: { kd: 1.8, mvps: 5, tournaments: 32, winRate: '62%' },
-        socials: { twitter: '#' }
-      },
-    
-    
-      
-    ],  
+    players: [],
     stats: { winRate: '80%', rank: '#3 Global', championships: 6, globalEvents: 10, seasonRecord: 'N/A' }
   },
- 
+  {
+    id: 't8-1',
+    name: 'TEKKEN 8',
+    game: 'TEKKEN 8',
+    region: 'GLOBAL',
+    logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
+    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+    achievements: ['TWT Finals Top 16', 'Combo Breaker Champion'],
+    players: [],
+    stats: { winRate: '72%', rank: '#6 Global', championships: 4, globalEvents: 8, seasonRecord: 'N/A' }
+  }
 ];
 
 export const MOCK_CREATORS: Creator[] = [
   {
     id: 'creator-1',
-    nickname: 'Breezi',
-    name: 'Breezi',
-    photo: '/assets/Breezi.png',
+    nickname: 'NINJA_X',
+    name: 'Tariq Al-Fahad',
+    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=800',
     platforms: [
-      { type: 'twitch', url: '#', handle: '@Breezi' },
-      { type: 'youtube', url: '#', handle: 'Breezi' },
-      { type: 'twitter', url: '#', handle: '@Breezi' }
+      { type: 'twitch', url: '#', handle: '@ninja_x' },
+      { type: 'youtube', url: '#', handle: 'NinjaX' },
+      { type: 'twitter', url: '#', handle: '@ninja_x' }
     ],
     metrics: {
       followers: '1.2M',
@@ -808,13 +397,13 @@ export const MOCK_CREATORS: Creator[] = [
   },
   {
     id: 'creator-2',
-    nickname: 'Jorhdys',
-    name: 'Jorhdys',
-    photo: '/assets/Jorhdys.png',
+    nickname: 'LUNA',
+    name: 'Aisha Rahman',
+    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=800',
     platforms: [
-      { type: 'youtube', url: '#', handle: 'Jorhdys' },
-      { type: 'tiktok', url: '#', handle: '@Jorhdys' },
-      { type: 'instagram', url: '#', handle: '@Jorhdys' }
+      { type: 'youtube', url: '#', handle: 'LunaPlays' },
+      { type: 'tiktok', url: '#', handle: '@luna_rahman' },
+      { type: 'instagram', url: '#', handle: '@luna.rahman' }
     ],
     metrics: {
       followers: '850K',
@@ -824,9 +413,9 @@ export const MOCK_CREATORS: Creator[] = [
   },
   {
     id: 'creator-3',
-    nickname: 'durpee',
-    name: 'durpee',
-    photo: '/assets/durpee.png',
+    nickname: 'VORTEX_CC',
+    name: 'Omar Khalid',
+    photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600&h=800',
     platforms: [
       { type: 'twitch', url: '#', handle: '@vortex_cc' },
       { type: 'twitter', url: '#', handle: '@vortex_cc' }
@@ -837,7 +426,21 @@ export const MOCK_CREATORS: Creator[] = [
     },
     focus: 'Gameplay / Strategy'
   },
-  
+  {
+    id: 'creator-4',
+    nickname: 'NOVA_MEDIA',
+    name: 'Sarah Chen',
+    photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600&h=800',
+    platforms: [
+      { type: 'youtube', url: '#', handle: 'NovaMedia' },
+      { type: 'instagram', url: '#', handle: '@nova_media' }
+    ],
+    metrics: {
+      followers: '2.1M',
+      totalReach: '4.2M+'
+    },
+    focus: 'Entertainment / Lifestyle'
+  }
 ];
 
 export const MOCK_EVENTS: Event[] = [
@@ -1136,7 +739,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Jersey 2025',
     price: '119.00',
     link: 'https://www.geekay.com/en/geekay-esports-jersey-2025',
-    image: '/assets/jearsy.png',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_2.png',
     category: 'Apparel'
   },
   {
@@ -1144,7 +747,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Frame – Rocket League Edition',
     price: 'TBA',
     link: 'https://www.geekay.com/en/geekay-esports-frame-rocket-league-edition-oaly',
-    image: '/assets/frame.png',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_1.png',
     category: 'Collectibles'
   },
   {
@@ -1152,7 +755,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Chair/Play Mat',
     price: '99.00',
     link: 'https://www.geekay.com/en/geekay-esports-chair-mat',
-    image: '/assets/mat.png',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_4.png',
     category: 'Accessories'
   },
   {
@@ -1160,7 +763,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Geekay Esports Desk Mat Mouse Pad',
     price: '49.00',
     link: 'https://www.geekay.com/en/geekay-e-sports-desk-mat-mouse-pad',
-    image: '/assets/mouse.png',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_0.png',
     category: 'Accessories'
   },
   {
@@ -1168,7 +771,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'GamerTek Esports Bag – Black',
     price: '149.00',
     link: 'https://www.geekay.com/en/gamertek-esports-bag-black',
-    image: '/assets/bag.png',
+    image: 'https://ais-dev-rthw7fevbvrp7nfgn7sczc-350071210829.europe-west2.run.app/input_file_3.png',
     category: 'Gear'
   }
 ];

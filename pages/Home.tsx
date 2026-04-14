@@ -945,9 +945,59 @@ const AboutSnapshot = () => {
             </motion.div>
           ))}
 
-       
+          {/* Box 5: Merged Stats (Total Staff + Nationalities) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+            whileHover={{ 
+              y: -8, 
+              backgroundColor: 'rgba(10, 26, 49, 0.9)',
+              boxShadow: '0 0 30px rgba(255, 196, 0, 0.15)'
+            }}
+            className="bg-[#0A1A31]/40 border border-slate-800 p-10 group transition-all duration-300 relative overflow-hidden flex flex-col justify-center"
+          >
+            <div className="absolute inset-0 border border-[#FFC400]/0 group-hover:border-[#FFC400]/20 transition-colors pointer-events-none" />
+            
+            <div className="space-y-12">
+              <div>
+                <div className="mb-2">
+                  <AnimatedNumber value="85+" className="font-syncopate text-4xl md:text-5xl lg:text-6xl font-bold text-white block tracking-tighter" />
+                </div>
+                <div className="font-syncopate text-[11px] text-white tracking-[0.3em] uppercase font-black group-hover:text-[#FFC400] transition-colors">
+                  TOTAL STAFF
+                </div>
+              </div>
 
-         
+              <div>
+                <div className="mb-2">
+                  <AnimatedNumber value="18" className="font-syncopate text-4xl md:text-5xl lg:text-6xl font-bold text-white block tracking-tighter" />
+                </div>
+                <div className="font-syncopate text-[11px] text-white tracking-[0.3em] uppercase font-black group-hover:text-[#FFC400] transition-colors">
+                  NATIONALITIES
+                </div>
+              </div>
+            </div>
+
+            {/* Tactical Corner Marker */}
+            <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-[#FFC400]/10 group-hover:border-[#FFC400]/30 transition-colors" />
+          </motion.div>
+
+          {/* Box 6: Empty */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 1.0, duration: 0.6 }}
+            className="bg-[#0A1A31]/20 border border-slate-800/50 p-10 flex items-center justify-center relative overflow-hidden"
+          >
+            <span className="font-syncopate text-[10px] text-white/20 tracking-[0.5em] uppercase font-black">
+              EMPTY
+            </span>
+            {/* Tactical Corner Marker */}
+            <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-white/5" />
+          </motion.div>
         </motion.div>
 
       </div>

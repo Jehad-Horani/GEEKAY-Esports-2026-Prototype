@@ -160,6 +160,23 @@ const GALLERY_IMAGES = [
   { id: 20, category: 'TROPHY MOMENTS', title: 'PODIUM_FINISH', url: 'https://picsum.photos/seed/trophy5/1200/800' },
 ];
 
+const SnapchatIcon = ({ size = 24, className = "" }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M12 3c-2.5 0-4.5 2-4.5 4.5 0 1.5.8 2.8 2 3.5-.5.5-1 1.2-1 2 0 1.1.9 2 2 2s2-.9 2-2c0-.8-.5-1.5-1-2 1.2-.7 2-2 2-3.5 0-2.5-2-4.5-4.5-4.5z" />
+    <path d="M12 15c-3.5 0-6.5 2-6.5 5 0 .5.5 1 1 1h11c.5 0 1-.5 1-1 0-3-3-5-6.5-5z" />
+  </svg>
+);
+
 const TikTokIcon = ({ size = 24, className = "" }) => (
   <svg 
     width={size} 
@@ -302,6 +319,7 @@ const Media = () => {
     ],
     facebook: { name: 'GEEKAY ESPORTS', handle: 'GeekayEsports', url: '#' },
     youtube: { name: 'GEEKAY ESPORTS', handle: 'GeekayEsports', url: '#' },
+    snapchat: { name: 'GEEKAY ESPORTS', handle: 'geekayesports', url: '#' },
   };
 
   const row1 = GALLERY_IMAGES.slice(0, 7);
@@ -390,6 +408,7 @@ const Media = () => {
                 <SocialDropdown platform="X (TWITTER)" accounts={socialAccounts.x} icon={Twitter} />
                 <SocialDropdown platform="FACEBOOK" accounts={socialAccounts.facebook} icon={Facebook} />
                 <SocialDropdown platform="YOUTUBE" accounts={socialAccounts.youtube} icon={Youtube} />
+                <SocialDropdown platform="SNAPCHAT" accounts={socialAccounts.snapchat} icon={SnapchatIcon} isCustom />
               </motion.div>
             </motion.div>
           </div>
@@ -542,6 +561,7 @@ const Media = () => {
             <PlatformCard platform="X (TWITTER)" icon={<Twitter size={24} />} followers="450K" engagement="8.2%" growth="+24%" />
             <PlatformCard platform="TIKTOK" icon={<Zap size={24} />} followers="800K" engagement="18.5%" growth="+45%" />
             <PlatformCard platform="YOUTUBE" icon={<Youtube size={24} />} followers="180K" engagement="10.8%" growth="+30%" />
+            <PlatformCard platform="SNAPCHAT" icon={<SnapchatIcon size={24} />} followers="350K" engagement="12.5%" growth="+15%" />
             <PlatformCard platform="TWITCH" icon={<Twitch size={24} />} followers="1.2M" engagement="12.4%" growth="+18%" />
           </div>
         </div>

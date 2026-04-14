@@ -14,6 +14,7 @@ const AdminSettings = () => {
     twitch_url: 'https://twitch.tv/geekayesports',
     instagram_url: 'https://instagram.com/geekayesports',
     youtube_url: 'https://youtube.com/geekayesports',
+    snapchat_url: 'https://snapchat.com/add/geekayesports',
     site_announcement: '',
     announcement_active: false
   });
@@ -100,7 +101,7 @@ const AdminSettings = () => {
               SOCIAL_PROTOCOLS
             </h2>
             <div className="bg-[#081B3A] border border-white/5 p-8 space-y-6">
-              {['twitter', 'twitch', 'instagram', 'youtube'].map(platform => (
+              {['twitter', 'twitch', 'instagram', 'youtube', 'snapchat'].map(platform => (
                 <div key={platform} className="space-y-2">
                   <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">{platform.toUpperCase()}_URL</label>
                   <input 
