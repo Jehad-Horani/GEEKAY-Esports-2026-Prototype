@@ -9,57 +9,131 @@ import { Player, NewsItem, Product } from '../types';
 
 // --- Components ---
 
-const HeroShopDropdown = () => {
+const ShopDropdown = ({ variant = "primary", className = "" }: { variant?: "primary" | "outline", className?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showMobileRegions, setShowMobileRegions] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(localStorage.getItem('geekay_region'));
+
   const regions = [
     { name: 'UAE', link: 'https://www.geekay.com/en/', sub: 'Official Store' },
     { name: 'KSA', link: 'https://www.geekay.com/saudi_en/', sub: 'Official Store' },
     { name: 'GLOBAL', link: 'https://www.geekay.com/global/', sub: 'Official Store' },
   ];
 
+  const handleRegionSelect = (name: string, link: string) => {
+    localStorage.setItem('geekay_region', name);
+    setSelectedRegion(name);
+    window.open(link, '_blank');
+    setIsOpen(false);
+    setShowMobileRegions(false);
+  };
+
+  const buttonText = selectedRegion ? `SHOP ${selectedRegion}` : 'SHOP';
+
   return (
-    <div 
-      className="relative"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
-      <ArenaButton 
-        className="h-12 md:h-14 min-w-[180px] md:min-w-[200px] text-xs md:text-sm px-6"
-        variant="primary"
-        onClick={() => setIsOpen(!isOpen)}
-        icon={<ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />}
+    <div className={`relative ${className}`}>
+      {/* Desktop Dropdown */}
+      <div 
+        className="hidden lg:block relative"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
       >
-        SHOP
-      </ArenaButton>
-      
+        <ArenaButton 
+          variant={variant}
+          className="h-12 md:h-14 min-w-[180px] md:min-w-[220px] text-xs md:text-sm px-6"
+          onClick={() => setIsOpen(!isOpen)}
+          icon={<ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />}
+        >
+          {buttonText}
+        </ArenaButton>
+        
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 mt-2 w-full bg-[#0A1A31]/95 backdrop-blur-xl border border-[#FFC400]/30 z-[999] shadow-2xl rounded-sm overflow-hidden"
+            >
+              <div className="p-1">
+                {regions.map((region) => (
+                  <button 
+                    key={region.name}
+                    onClick={() => handleRegionSelect(region.name, region.link)}
+                    className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#FFC400]/10 text-white font-syncopate text-[10px] tracking-widest transition-all group/item border-b border-white/5 last:border-0"
+                  >
+                    <div className="flex flex-col items-start">
+                      <span className="font-bold group-hover:text-[#FFC400] transition-colors">{region.name}</span>
+                      <span className="text-[8px] text-white/40 tracking-normal">{region.sub}</span>
+                    </div>
+                    <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:text-[#FFC400] transition-all -translate-x-2 group-hover:translate-x-0" />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Mobile Button */}
+      <div className="lg:hidden">
+        <ArenaButton 
+          variant={variant}
+          className="h-12 md:h-14 w-full min-w-[180px] text-xs md:text-sm px-6"
+          onClick={() => setShowMobileRegions(true)}
+          icon={<ChevronDown size={16} />}
+        >
+          {buttonText}
+        </ArenaButton>
+      </div>
+
+      {/* Mobile Bottom Sheet */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 mt-2 w-full bg-[#0A1A31] border border-[#FFC400]/30 z-[200] backdrop-blur-xl shadow-2xl"
-          >
-            <div className="p-2 space-y-1">
-              {regions.map((region) => (
-                <a 
-                  key={region.name}
-                  href={region.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between px-4 py-3 hover:bg-[#FFC400]/10 text-white font-syncopate text-[10px] tracking-widest transition-colors group/item"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <div className="flex flex-col">
-                    <span className="font-bold">{region.name}</span>
-                    <span className="text-[8px] text-white/40 tracking-normal">{region.sub}</span>
-                  </div>
-                  <ArrowRight size={12} className="opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                </a>
-              ))}
-            </div>
-          </motion.div>
+        {showMobileRegions && (
+          <div className="fixed inset-0 z-[1000] lg:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowMobileRegions(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="absolute bottom-0 left-0 w-full bg-[#0A1A31] border-t border-[#FFC400]/30 p-8 rounded-t-3xl"
+            >
+              <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8" />
+              <h3 className="font-syncopate text-lg font-black text-white uppercase mb-2">SELECT REGION</h3>
+              <p className="text-white/40 font-syncopate text-[10px] tracking-widest uppercase mb-8">Choose your official Geekay store</p>
+              
+              <div className="space-y-3">
+                {regions.map((r) => (
+                  <button
+                    key={r.name}
+                    onClick={() => handleRegionSelect(r.name, r.link)}
+                    className="w-full py-5 border border-white/10 active:border-[#FFC400] active:bg-[#FFC400]/10 text-white font-syncopate text-xs tracking-widest transition-all flex items-center justify-between px-6"
+                  >
+                    <div className="flex flex-col items-start">
+                      <span className="font-bold">{r.name}</span>
+                      <span className="text-[8px] text-white/40 tracking-normal">{r.sub}</span>
+                    </div>
+                    <ArrowRight size={16} className="text-[#FFC400]" />
+                  </button>
+                ))}
+              </div>
+              
+              <button
+                onClick={() => setShowMobileRegions(false)}
+                className="w-full mt-6 py-4 text-white/40 font-syncopate text-[10px] tracking-widest uppercase"
+              >
+                CANCEL
+              </button>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>
@@ -144,7 +218,7 @@ const Hero = () => {
     <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-[70vh] lg:min-h-[80vh] flex items-center justify-center bg-[#0B1C2D] z-40 pt-32 pb-24 lg:pt-40 lg:pb-32 border-t border-white/5 border-b-2 border-[#FFC400]/10 overflow-hidden"
+      className="relative min-h-[280px] md:min-h-[320px] flex items-center justify-center bg-[#0B1C2D] z-40 pt-[100px] pb-[40px] md:pt-[120px] md:pb-[60px] border-t border-white/5 border-b-2 border-[#FFC400]/10 overflow-visible"
     >
       <RadarDots />
       
@@ -162,13 +236,13 @@ const Hero = () => {
       />
 
       <motion.div 
-        className="container mx-auto px-6 md:px-12 relative z-[60]"
+        className="container mx-auto px-[20px] md:px-[60px] lg:px-[100px] relative z-[60]"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-24">
           
           {/* LEFT: COMPACT HEADLINE */}
           <div className="flex flex-col items-start text-left">
-            <div className="relative mb-8 lg:mb-10">
+            <div className="relative mb-4 lg:mb-6">
               <div className="flex flex-col gap-1">
                 {/* #GeekayWeGame */}
                 <motion.div
@@ -176,37 +250,37 @@ const Hero = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  <h1 className="font-syncopate text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-none">
+                  <h1 className="font-syncopate text-2xl md:text-3xl lg:text-4xl font-black text-white uppercase tracking-tighter leading-none">
                     #Geekay<br />
                     <span className="text-[#FFC400]">WeGame</span>
                   </h1>
                 </motion.div>
-
+ 
                 {/* EST 2021 */}
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.2 }}
-                  className="flex items-center gap-3 mt-3"
+                  className="flex items-center gap-3 mt-2"
                 >
-                  <div className="w-8 h-[1px] bg-[#FFC400]/60" />
-                  <span className="font-syncopate text-xs md:text-sm font-bold text-white/60 tracking-[0.3em] uppercase">
+                  <div className="w-6 h-[1px] bg-[#FFC400]/60" />
+                  <span className="font-syncopate text-[10px] md:text-xs font-bold text-white/60 tracking-[0.3em] uppercase">
                     EST 2021
                   </span>
                 </motion.div>
               </div>
             </div>
-
+ 
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-3"
             >
-              <HeroShopDropdown />
-
+              <ShopDropdown />
+ 
               <Link to="/schedule">
-                <ArenaButton variant="outline" className="h-12 md:h-14 min-w-[180px] md:min-w-[200px] text-xs md:text-sm px-6" icon={<Calendar size={16} />}>
+                <ArenaButton variant="outline" className="h-10 md:h-12 min-w-[150px] md:min-w-[180px] text-[10px] md:text-xs px-4" icon={<Calendar size={14} />}>
                   SCHEDULE
                 </ArenaButton>
               </Link>
@@ -350,7 +424,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="absolute inset-0 flex items-center justify-center bg-[#081B3A]/80 backdrop-blur-sm z-20 p-6"
+                className="absolute inset-0 flex items-center justify-center bg-[#081B3A]/90 backdrop-blur-md z-[500] p-6"
               >
                 <div className="w-full space-y-3">
                   <p className="font-syncopate text-[8px] text-[#FFC400] tracking-[0.3em] text-center mb-4">SELECT REGION</p>
@@ -401,7 +475,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* Mobile Bottom Sheet */}
       <AnimatePresence>
         {showMobileRegions && (
-          <div className="fixed inset-0 z-[200] lg:hidden">
+          <div className="fixed inset-0 z-[1000] lg:hidden">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -493,11 +567,7 @@ const ShopSection = () => {
         </div>
 
         <div className="mt-20 flex justify-center">
-          <a href="https://www.geekay.com/en/" target="_blank" rel="noopener noreferrer">
-            <ArenaButton variant="outline" icon={<ArrowRight size={18} />}>
-              VIEW FULL STORE
-            </ArenaButton>
-          </a>
+          <ShopDropdown variant="outline" />
         </div>
       </div>
     </section>
@@ -560,7 +630,7 @@ const PlayerDetailModal: React.FC<{ player: Player; onClose: () => void }> = ({ 
   </motion.div>
 );
 
-const AnimatedNumber: React.FC<{ value: string }> = ({ value }) => {
+const AnimatedNumber: React.FC<{ value: string; className?: string }> = ({ value, className }) => {
   const [displayValue, setDisplayValue] = useState(0);
   const targetValue = parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
   const isFloat = value.includes('.');
@@ -599,7 +669,7 @@ const AnimatedNumber: React.FC<{ value: string }> = ({ value }) => {
       ref={nodeRef}
       initial={{ opacity: 0, y: 10 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      className="font-syncopate text-5xl md:text-6xl lg:text-7xl font-bold text-white block tracking-tighter"
+      className={className || "font-syncopate text-5xl md:text-6xl lg:text-7xl font-bold text-white block tracking-tighter"}
     >
       {isFloat ? displayValue.toFixed(1) : Math.floor(displayValue)}{suffix}
     </motion.span>
@@ -832,6 +902,7 @@ const AboutSnapshot = () => {
           style={{ y: rightY }}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full"
         >
+          {/* Top 4 Boxes */}
           {stats.map((stat, i) => (
             <motion.div
               key={i}
@@ -873,6 +944,60 @@ const AboutSnapshot = () => {
               <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-[#FFC400]/10 group-hover:border-[#FFC400]/30 transition-colors" />
             </motion.div>
           ))}
+
+          {/* Box 5: Merged Stats (Total Staff + Nationalities) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+            whileHover={{ 
+              y: -8, 
+              backgroundColor: 'rgba(10, 26, 49, 0.9)',
+              boxShadow: '0 0 30px rgba(255, 196, 0, 0.15)'
+            }}
+            className="bg-[#0A1A31]/40 border border-slate-800 p-10 group transition-all duration-300 relative overflow-hidden flex flex-col justify-center"
+          >
+            <div className="absolute inset-0 border border-[#FFC400]/0 group-hover:border-[#FFC400]/20 transition-colors pointer-events-none" />
+            
+            <div className="space-y-12">
+              <div>
+                <div className="mb-2">
+                  <AnimatedNumber value="85+" className="font-syncopate text-4xl md:text-5xl lg:text-6xl font-bold text-white block tracking-tighter" />
+                </div>
+                <div className="font-syncopate text-[11px] text-white tracking-[0.3em] uppercase font-black group-hover:text-[#FFC400] transition-colors">
+                  TOTAL STAFF
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-2">
+                  <AnimatedNumber value="18" className="font-syncopate text-4xl md:text-5xl lg:text-6xl font-bold text-white block tracking-tighter" />
+                </div>
+                <div className="font-syncopate text-[11px] text-white tracking-[0.3em] uppercase font-black group-hover:text-[#FFC400] transition-colors">
+                  NATIONALITIES
+                </div>
+              </div>
+            </div>
+
+            {/* Tactical Corner Marker */}
+            <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-[#FFC400]/10 group-hover:border-[#FFC400]/30 transition-colors" />
+          </motion.div>
+
+          {/* Box 6: Empty */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 1.0, duration: 0.6 }}
+            className="bg-[#0A1A31]/20 border border-slate-800/50 p-10 flex items-center justify-center relative overflow-hidden"
+          >
+            <span className="font-syncopate text-[10px] text-white/20 tracking-[0.5em] uppercase font-black">
+              EMPTY
+            </span>
+            {/* Tactical Corner Marker */}
+            <div className="absolute top-0 right-0 w-6 h-6 border-t border-r border-white/5" />
+          </motion.div>
         </motion.div>
 
       </div>

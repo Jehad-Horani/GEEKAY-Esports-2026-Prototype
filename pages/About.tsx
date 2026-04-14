@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Play, ArrowRight, Activity, ChevronRight, ChevronLeft, Zap, Target, Shield, Cpu, X, Mail, Globe, Trophy } from 'lucide-react';
+import { Play, ArrowRight, Activity, ChevronRight, ChevronLeft, Zap, Target, Shield, Cpu, X, Mail, Globe, Trophy, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ArenaButton from '../components/ui/ArenaButton';
 
@@ -126,7 +126,7 @@ const About = () => {
     { 
       name: "AOY", 
       role: "BIZDEV MANAGER", 
-      photo: "/assets/AOY.png", 
+      photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=500&h=600", 
       desc: "Driving strategic partnerships and business growth in the KSA region.",
       linkedin: "#"
     },
@@ -161,10 +161,10 @@ const About = () => {
         {/* Background Grid Overlay */}
         <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center relative z-10">
+        <div className="max-w-7xl mx-auto relative z-10">
           
-          {/* LEFT: EXECUTIVE HEADLINE */}
-          <div className="lg:col-span-7">
+          {/* TOP: EXECUTIVE HEADLINE */}
+          <div className="mb-20 max-w-4xl">
             <motion.div 
               initial={{ opacity: 0, x: -30 }} 
               whileInView={{ opacity: 1, x: 0 }} 
@@ -187,69 +187,14 @@ const About = () => {
             </motion.div>
           </div>
 
-          {/* RIGHT: STATS GRID */}
-          <div className="lg:col-span-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <HUDStatCard label="ACTIVE TEAMS" value="12" index={0} />
-              <HUDStatCard label="GLOBAL REACH" value="24.0M" index={1} />
-              <HUDStatCard label="TOTAL ACCOMPLISHMENTS" value="32" index={2} />
-              <HUDStatCard label="EWC PLACEMENTS" value="TOP 4" index={3} isPriority={true} />
-              
-              {/* Bottom Left: Combined Stats */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 4 * 0.1, duration: 0.6 }}
-                whileHover={{ 
-                  y: -8, 
-                  borderColor: 'rgba(255, 196, 0, 0.4)', 
-                  backgroundColor: 'rgba(10, 37, 77, 0.4)',
-                  boxShadow: '0 20px 40px -10px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,196,0,0.05)'
-                }}
-                className="relative p-8 md:p-10 flex flex-col justify-center min-h-[160px] md:min-h-[200px] group transition-all duration-500 backdrop-blur-xl border border-white/5 overflow-hidden bg-white/[0.02]"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400]/20 to-transparent" />
-                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#FFC400]/30" />
-                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#FFC400]/30" />
-
-                <div className="space-y-6">
-                  <div className="space-y-1">
-                    <div className="font-syncopate text-2xl md:text-3xl font-bold text-[#FFC400] tracking-tighter">
-                      [<Counter value="85+" />]
-                    </div>
-                    <div className="font-syncopate text-[8px] text-slate-500 tracking-[0.3em] uppercase">
-                      TOTAL STAFF
-                    </div>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="font-syncopate text-2xl md:text-3xl font-bold text-[#FFC400] tracking-tighter">
-                      [<Counter value="18" />]
-                    </div>
-                    <div className="font-syncopate text-[8px] text-slate-500 tracking-[0.3em] uppercase">
-                      NATIONALITIES
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Bottom Right: Empty */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 5 * 0.1, duration: 0.6 }}
-                className="relative p-8 md:p-10 flex items-center justify-center min-h-[160px] md:min-h-[200px] backdrop-blur-xl border border-white/5 bg-white/[0.02] overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400]/20 to-transparent" />
-                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#FFC400]/30" />
-                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#FFC400]/30" />
-                
-                <span className="font-syncopate text-[10px] text-white/10 tracking-[0.8em] uppercase font-bold">
-                  EMPTY
-                </span>
-              </motion.div>
-            </div>
+          {/* BOTTOM: STATS GRID (3x2) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <HUDStatCard label="ACTIVE TEAMS" value="12" index={0} />
+            <HUDStatCard label="GLOBAL REACH" value="24M" index={1} />
+            <HUDStatCard label="TOTAL ACCOMPLISHMENTS" value="32" index={2} />
+            <HUDStatCard label="EWC PLACEMENTS" value="TOP 4" index={3} isPriority={true} />
+            <HUDStatCard label="TOTAL STAFF" value="85+" index={4} />
+            <HUDStatCard label="NATIONALITIES" value="18" index={5} />
           </div>
         </div>
       </section>
@@ -267,7 +212,7 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="group relative aspect-[3/4] overflow-hidden border border-slate-800 bg-slate-900/10 cursor-default transition-all duration-500 hover:border-[#FFC400] hover:shadow-[0_0_40px_rgba(255,196,0,0.2)]"
+                className="group relative aspect-[2/3] overflow-hidden border border-slate-800 bg-slate-900/10 cursor-default transition-all duration-500 hover:border-[#FFC400] hover:shadow-[0_0_40px_rgba(255,196,0,0.2)]"
               >
                 <img 
                   src={leader.photo} 
@@ -331,15 +276,13 @@ const About = () => {
                 icon: <Trophy size={32} />
               },
               {
-                title: 'BUSINESS CONTACT',
-                email: 'business@geekay.com',
-                purpose: 'Corporate communication and official business matters.',
-                icon: <Shield size={32} />
+                title: 'OFFICE LOCATIONS',
+                isLocation: true,
+                icon: <MapPin size={32} />
               }
             ].map((channel, i) => (
-              <motion.a
+              <motion.div
                 key={i}
-                href={`mailto:${channel.email}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
@@ -357,26 +300,56 @@ const About = () => {
                   {channel.title}
                 </h3>
                 
-                <p className="text-slate-500 font-inter text-sm mb-8 leading-relaxed">
-                  {channel.purpose}
-                </p>
+                {channel.isLocation ? (
+                  <div className="space-y-6 w-full">
+                    <div className="flex flex-col items-center">
+                      <div className="flex items-center gap-2 mb-2">
+                        <MapPin size={14} className="text-[#FFC400]" />
+                        <span className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase">UAE – Dubai</span>
+                      </div>
+                      <p className="text-slate-400 font-inter text-xs leading-relaxed">
+                        Meydan Grandstand,<br />Nad Al Sheba
+                      </p>
+                    </div>
+                    
+                    <div className="h-[1px] w-12 bg-white/5 mx-auto" />
+                    
+                    <div className="flex flex-col items-center">
+                      <div className="flex items-center gap-2 mb-2">
+                        <MapPin size={14} className="text-[#FFC400]" />
+                        <span className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase">KSA – Riyadh</span>
+                      </div>
+                      <p className="text-slate-400 font-inter text-xs leading-relaxed">
+                        Business District,<br />Riyadh
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-slate-500 font-inter text-sm mb-8 leading-relaxed">
+                      {channel.purpose}
+                    </p>
 
-                <div className="relative">
-                  <span className="text-white font-syncopate text-[10px] font-bold tracking-widest relative">
-                    {channel.email}
-                    <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
-                  </span>
-                </div>
+                    <a href={`mailto:${channel.email}`} className="relative group/mail">
+                      <span className="text-white font-syncopate text-[10px] font-bold tracking-widest relative">
+                        {channel.email}
+                        <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
+                      </span>
+                    </a>
 
-                <div className="mt-12 flex items-center gap-3 text-[#FFC400] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                  <span className="font-syncopate text-[8px] font-black tracking-[0.4em] uppercase">OPEN CHANNEL</span>
-                  <ArrowRight size={14} />
-                </div>
+                    <div className="mt-12 flex items-center gap-3 text-[#FFC400] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                      <span className="font-syncopate text-[8px] font-black tracking-[0.4em] uppercase">OPEN CHANNEL</span>
+                      <ArrowRight size={14} />
+                    </div>
+                  </>
+                )}
 
                 <div className="absolute bottom-4 right-8 opacity-20 group-hover:opacity-100 transition-opacity">
-                   <span className="font-syncopate text-[7px] text-slate-500 font-bold tracking-widest uppercase">Typical response: 24–48h</span>
+                   <span className="font-syncopate text-[7px] text-slate-500 font-bold tracking-widest uppercase">
+                     {channel.isLocation ? 'ESTABLISHED PRESENCE' : 'Typical response: 24–48h'}
+                   </span>
                 </div>
-              </motion.a>
+              </motion.div>
             ))}
           </div>
         </div>
