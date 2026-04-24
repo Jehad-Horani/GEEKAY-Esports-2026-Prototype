@@ -151,7 +151,7 @@ const MobileShopDropdown = () => {
   const [isShopOpen, setIsShopOpen] = useState(false);
 
   return (
-    <div className="flex flex-col z-10">
+    <div className="flex flex-col z-96">
       <button 
         onClick={() => setIsShopOpen(!isShopOpen)}
         className="font-syncopate text-4xl font-bold flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
