@@ -16,8 +16,13 @@ import {
   Target,
   ExternalLink,
   Award,
-  Globe
+  Globe,
+  Facebook,
+  Send,
+  Radio
 } from 'lucide-react';
+
+import SocialFollowerIcon from '../components/SocialFollowerIcon';
 import { MOCK_TEAMS, MOCK_CREATORS } from '../constants';
 import { Player, Team, Trophy, Creator } from '../types';
 import ArenaButton from '../components/ui/ArenaButton';
@@ -113,9 +118,16 @@ const PlayerModal: React.FC<{ player: Player, onClose: () => void }> = ({ player
         {/* Footer: Socials & Action */}
         <div className="mt-auto pt-6 border-t border-slate-800 flex items-center justify-between">
           <div className="flex gap-4">
-            {player.socials.twitter && <a href={player.socials.twitter} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-[#FFC400] transition-all"><Twitter size={20} /></a>}
-            {player.socials.twitch && <a href={player.socials.twitch} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-[#FFC400] transition-all"><Twitch size={20} /></a>}
-            {player.socials.instagram && <a href={player.socials.instagram} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-[#FFC400] transition-all"><Instagram size={20} /></a>}
+            {Object.entries(player.socials).map(([platform, count]) => (
+              count && count !== '#' && (
+                <SocialFollowerIcon 
+                  key={platform}
+                  platform={platform} 
+                  count={count}
+                  className="text-slate-500 hover:text-[#FFC400]"
+                />
+              )
+            ))}
           </div>
           <button className="bg-[#FFC400] text-black px-6 py-2 rounded-full font-syncopate text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all">
             FOLLOW
@@ -141,7 +153,7 @@ const TrophyCard: React.FC<{ trophy: Trophy, index: number }> = ({ trophy, index
        <Award size={48} className="text-[#FFC400] relative z-10" />
     </div>
     <span className="text-slate-500 font-syncopate text-[9px] tracking-[0.4em] mb-2 uppercase">{trophy.year}</span>
-    <h4 className="font-syncopate text-sm font-black text-white mb-4 tracking-tighter uppercase leading-tight h-10 flex items-center">{trophy.title}</h4>
+    <h4 className="font-syncopate text-sm font-black text-white mb-4 tracking-tighter uppercase leading-tight py-1 flex items-center justify-center min-h-[3rem]">{trophy.title}</h4>
     <div className="bg-[#FFC400] text-black px-4 py-1 font-syncopate text-[10px] font-black skew-x-[-15deg]">
        <span className="block skew-x-[15deg]">{trophy.rank}</span>
     </div>
@@ -250,9 +262,16 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void }> = ({ team, onBack
                     )}
 
                     <div className="flex items-center gap-5 pt-6 border-t border-white/10">
-                      {player.socials.twitter && <Twitter size={18} className="text-slate-400 hover:text-[#FFC400] transition-all hover:scale-110" />}
-                      {player.socials.twitch && <Twitch size={18} className="text-slate-400 hover:text-[#FFC400] transition-all hover:scale-110" />}
-                      {player.socials.instagram && <Instagram size={18} className="text-slate-400 hover:text-[#FFC400] transition-all hover:scale-110" />}
+                      {Object.entries(player.socials).map(([platform, count]) => (
+                        count && count !== '#' && (
+                          <SocialFollowerIcon 
+                            key={platform}
+                            platform={platform} 
+                            count={count}
+                            className="text-slate-400"
+                          />
+                        )
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -391,12 +410,12 @@ const CreatorCard: React.FC<{ creator: Creator; index: number }> = ({ creator, i
                 className="text-slate-500 hover:text-[#FFC400] transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
-                {getPlatformIcon(p.type)}
+                <SocialFollowerIcon 
+                  platform={p.type} 
+                  count={p.handle}
+                  className="text-slate-500"
+                />
               </a>
-              {/* Floating Badge */}
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#FFC400] text-black text-[8px] font-black w-8 h-8 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,196,0,0.4)] opacity-0 scale-0 group-hover/icon:opacity-100 group-hover/icon:scale-100 transition-all duration-300 pointer-events-none z-30 border border-black/10">
-                +3K
-              </div>
             </div>
           ))}
         </div>

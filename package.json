@@ -1,5 +1,5 @@
 {
-  "name": "geekay-esports-2026",
+  "name": "geekay-esports",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -15,6 +15,7 @@
     "clsx": "^2.1.1",
     "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
+    "firebase": "^12.12.1",
     "framer-motion": "^10.12.16",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.221.0",
@@ -26,6 +27,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@firebase/eslint-plugin-security-rules": "^0.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/better-sqlite3": "^7.6.13",
     "@types/cookie-parser": "^1.4.10",
@@ -35,8 +37,11 @@
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
+    "eslint": "^10.2.1",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
     "tsx": "^4.21.0",

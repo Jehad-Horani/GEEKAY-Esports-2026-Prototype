@@ -31,6 +31,11 @@ export interface Player {
     twitch?: string;
     instagram?: string;
     youtube?: string;
+    tiktok?: string;
+    facebook?: string;
+    telegram?: string;
+    kick?: string;
+    soop?: string;
   };
 }
 
@@ -69,7 +74,7 @@ export interface Creator {
   nickname: string;
   photo: string;
   platforms: {
-    type: 'youtube' | 'twitch' | 'tiktok' | 'twitter' | 'instagram';
+    type: 'youtube' | 'twitch' | 'tiktok' | 'twitter' | 'instagram' | 'facebook' | 'telegram' | 'kick' | 'soop';
     url: string;
     handle: string;
   }[];

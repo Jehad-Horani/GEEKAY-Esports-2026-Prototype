@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
-import { ChevronRight, ChevronDown, PlayCircle, Search, BarChart3, Globe, Shield, X, Twitter, Twitch, Cpu, Target, Layers, Zap, ArrowDown, ArrowRight, Clock, Calendar, MapPin, Trophy } from 'lucide-react';
+import { ChevronRight, ChevronDown, PlayCircle, Search, BarChart3, Globe, Shield, X, Twitter, Twitch, Cpu, Target, Layers, Zap, ArrowDown, ArrowRight, Clock, Calendar, MapPin, Trophy, Instagram, Youtube } from 'lucide-react';
+import SocialFollowerIcon from '../components/SocialFollowerIcon';
 import ArenaButton from '../components/ui/ArenaButton';
 import { MOCK_EVENTS, MOCK_TEAMS, MOCK_NEWS, MOCK_PRODUCTS } from '../constants';
 import { Link } from 'react-router-dom';
@@ -28,7 +29,7 @@ const ShopDropdown = ({ variant = "primary", className = "" }: { variant?: "prim
     setShowMobileRegions(false);
   };
 
-  const buttonText = selectedRegion ? `SHOP ${selectedRegion}` : 'SHOP';
+  const buttonText = 'SHOP';
 
   return (
     <div className={`relative ${className}`}>
@@ -605,9 +606,18 @@ const PlayerDetailModal: React.FC<{ player: Player; onClose: () => void }> = ({ 
         </div>
 
         <div className="p-8 md:p-16 flex flex-col justify-center">
-          <div className="flex gap-4 mb-10">
-            <Twitter size={20} className="text-slate-400 hover:text-[#FFC400] cursor-pointer" />
-            <Twitch size={20} className="text-slate-400 hover:text-[#FFC400] cursor-pointer" />
+          <div className="flex gap-5 mb-10">
+            {Object.entries(player.socials).map(([platform, count]) => (
+              count && count !== '#' && (
+                <SocialFollowerIcon 
+                  key={platform}
+                  platform={platform} 
+                  count={count}
+                  size={24}
+                  className="text-slate-400 hover:text-[#FFC400]"
+                />
+              )
+            ))}
           </div>
 
           <p className="text-slate-400 text-lg mb-12 leading-relaxed font-light">{player.bio}</p>

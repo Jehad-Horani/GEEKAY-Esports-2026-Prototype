@@ -23,9 +23,14 @@ import AdminJobs from './src/admin/Jobs';
 import AdminLeadership from './src/admin/Leadership';
 import AdminSettings from './src/admin/Settings';
 import AdminUsers from './src/admin/Users';
+import AdminSubscribers from './src/admin/Subscribers';
 import Socials from './pages/Socials';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
+
+import SocialFollowerIcon from './components/SocialFollowerIcon';
+import NewsletterPopup from './components/NewsletterPopup';
+import { GEEKAY_LOGO } from './constants';
 
 // Component to handle scroll reset on navigation
 const ScrollToTop = () => {
@@ -198,6 +203,7 @@ const Navbar = () => {
     { name: 'HOME', path: '/' },
     { name: 'ABOUT', path: '/about' },
     { name: 'TEAMS', path: '/teams' },
+    { name: 'VIEW ALL NEWS', path: '/news' },
     { name: 'SCHEDULE', path: '/schedule' },
     { name: 'MEDIA', path: '/socials' },
     { name: 'CAREERS', path: '/careers' },
@@ -206,8 +212,10 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] px-6 py-4 md:px-12 flex justify-between items-center bg-[#081B3A]/80 backdrop-blur-md border-b border-white/5">
       <Link to="/" className="flex items-center gap-3 group">
-        <div className="w-10 h-10 bg-[#FFC400] rounded-none flex items-center justify-center font-syncopate font-bold text-black group-hover:scale-110 transition-transform skew-x-[-10deg]">GK</div>
-        <span className="font-syncopate font-bold text-xl tracking-tighter hidden sm:block">GEEKAY <span className="text-[#FFC400]">2026</span></span>
+        <div className="w-10 h-10 group-hover:scale-110 transition-transform">
+          <img src={GEEKAY_LOGO} alt="Geekay Esports" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+        </div>
+        <span className="font-syncopate font-bold text-xl tracking-tighter hidden sm:block">GEEKAY <span className="text-[#FFC400]">ESPORTS</span></span>
       </Link>
 
       <div className="hidden lg:flex gap-10 items-center">
@@ -285,6 +293,7 @@ export default function App() {
         <div className="fixed inset-0 bg-scanline pointer-events-none z-10 opacity-30"></div>
         <CustomCursor />
         <Navbar />
+        <NewsletterPopup />
         <main className="flex-grow relative z-20">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -308,6 +317,7 @@ export default function App() {
               <Route path="schedule" element={<AdminSchedule />} />
               <Route path="gallery" element={<AdminGallery />} />
               <Route path="jobs" element={<AdminJobs />} />
+              <Route path="subscribers" element={<AdminSubscribers />} />
               <Route path="settings" element={<AdminSettings />} />
               <Route path="users" element={<AdminUsers />} />
             </Route>
@@ -316,14 +326,35 @@ export default function App() {
         <footer className="bg-[#040E1E] border-t border-slate-800 py-20 px-6 md:px-12 relative z-20">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
             <div className="md:col-span-2">
-              <h2 className="font-syncopate text-2xl font-bold mb-8 uppercase tracking-tighter">GEEKAY <span className="text-[#FFC400]">ESPORTS</span></h2>
+              <div className="flex items-center gap-3 mb-8 group">
+                <div className="w-12 h-12">
+                  <img src={GEEKAY_LOGO} alt="Geekay Esports" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                </div>
+                <h2 className="font-syncopate text-2xl font-bold uppercase tracking-tighter">GEEKAY <span className="text-[#FFC400]">ESPORTS</span></h2>
+              </div>
               <p className="text-slate-500 max-w-sm leading-relaxed text-sm">The dominant force in MENA competitive gaming. Redefining the digital arena through performance and strategy.</p>
               <div className="flex gap-6 mt-10">
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Twitter size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Twitch size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Instagram size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Youtube size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><SnapchatGhost size={20} /></a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="twitter" count="20,011" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="twitch" count="9,900" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="instagram" count="15,878" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="youtube" count="8,180" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="tiktok" count="31,800" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="facebook" count="8,700" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors">
+                  <SnapchatGhost size={20} />
+                </a>
               </div>
             </div>
             <div>
@@ -344,7 +375,7 @@ export default function App() {
             </div>
           </div>
           <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between text-slate-600 text-[10px] font-syncopate tracking-widest uppercase">
-            <p>&copy; 2026 GEEKAY. ALL RIGHTS RESERVED.</p>
+            <p>&copy; 2026 GEEKAY ESPORTS. ALL RIGHTS RESERVED.</p>
             <p>DESIGNED FOR THE ARENA</p>
           </div>
         </footer>

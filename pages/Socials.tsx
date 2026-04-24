@@ -138,7 +138,7 @@ const PlatformCard = ({ platform, icon, followers, engagement, growth }: any) =>
 };
 
 const GALLERY_IMAGES = [
-  { id: 1, category: 'TEAM PHOTOS', title: 'SQUAD_ALPHA_2026', url: 'https://picsum.photos/seed/esports1/1200/800' },
+  { id: 1, category: 'TEAM PHOTOS', title: 'SQUAD_ALPHA', url: 'https://picsum.photos/seed/esports1/1200/800' },
   { id: 2, category: 'BOOTCAMP', title: 'TACTICAL_HUB_DUBAI', url: 'https://picsum.photos/seed/gaming1/1200/800' },
   { id: 3, category: 'LAN EVENTS', title: 'VCT_TOKYO_STAGE', url: 'https://picsum.photos/seed/arena1/1200/800' },
   { id: 4, category: 'TROPHY MOMENTS', title: 'CHAMPIONS_RISE', url: 'https://picsum.photos/seed/trophy1/1200/800' },
@@ -146,11 +146,11 @@ const GALLERY_IMAGES = [
   { id: 6, category: 'BOOTCAMP', title: 'LATE_NIGHT_STRATS', url: 'https://picsum.photos/seed/gaming2/1200/800' },
   { id: 7, category: 'LAN EVENTS', title: 'CROWD_ENERGY', url: 'https://picsum.photos/seed/arena2/1200/800' },
   { id: 8, category: 'TROPHY MOMENTS', title: 'GOLDEN_ERA', url: 'https://picsum.photos/seed/trophy2/1200/800' },
-  { id: 9, category: 'TEAM PHOTOS', title: 'OFFICIAL_JERSEY_2026', url: 'https://picsum.photos/seed/esports3/1200/800' },
+  { id: 9, category: 'TEAM PHOTOS', title: 'OFFICIAL_JERSEY', url: 'https://picsum.photos/seed/esports3/1200/800' },
   { id: 10, category: 'BOOTCAMP', title: 'HARDWARE_SYNC', url: 'https://picsum.photos/seed/gaming3/1200/800' },
   { id: 11, category: 'LAN EVENTS', title: 'MAIN_STAGE_LIGHTS', url: 'https://picsum.photos/seed/arena3/1200/800' },
   { id: 12, category: 'TROPHY MOMENTS', title: 'VICTORY_ROAR', url: 'https://picsum.photos/seed/trophy3/1200/800' },
-  { id: 13, category: 'TEAM PHOTOS', title: 'SQUAD_BETA_2026', url: 'https://picsum.photos/seed/esports4/1200/800' },
+  { id: 13, category: 'TEAM PHOTOS', title: 'SQUAD_BETA', url: 'https://picsum.photos/seed/esports4/1200/800' },
   { id: 14, category: 'BOOTCAMP', title: 'PERFORMANCE_LAB', url: 'https://picsum.photos/seed/gaming4/1200/800' },
   { id: 15, category: 'LAN EVENTS', title: 'ARENA_ENTRANCE', url: 'https://picsum.photos/seed/arena4/1200/800' },
   { id: 16, category: 'TROPHY MOMENTS', title: 'LEGACY_UNLOCKED', url: 'https://picsum.photos/seed/trophy4/1200/800' },
@@ -414,9 +414,9 @@ const Media = () => {
           </div>
 
           <div className="lg:col-span-4 lg:flex flex-col gap-12 pl-0 lg:pl-20 border-l border-white/5 hidden">
-             <AnimatedCounter value={36} label="COMBINED REACH" suffix="M+" />
+             <AnimatedCounter value={2.4} label="COMBINED REACH" suffix="M+" />
              <AnimatedCounter value={1.2} label="MONTHLY GROWTH" suffix="M+" />
-             <AnimatedCounter value={4} label="DOMINATED PLATFORMS" />
+             <AnimatedCounter value={5} label="DOMINATED PLATFORMS" />
           </div>
         </div>
 
@@ -441,9 +441,9 @@ const Media = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <StatCard label="TOTAL REACH" value={6} suffix="M+" />
-            <StatCard label="TOTAL PLATFORMS" value={5} />
-            <StatCard label="COMBINED FOLLOWING" value={5} suffix="M+" />
+            <StatCard label="TOTAL REACH" value={2.4} suffix="M+" />
+            <StatCard label="TOTAL PLATFORMS" value={9} />
+            <StatCard label="COMBINED FOLLOWING" value={2.3} suffix="M+" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -532,7 +532,7 @@ const Media = () => {
               whileHover={{ y: -10 }}
               className="bg-[#040E1E] border border-slate-800 p-12 relative group overflow-hidden"
             >
-              <h3 className="font-syncopate text-[10px] text-slate-500 tracking-[0.5em] uppercase font-bold mb-8">Demographics</h3>
+              <h3 className="font-syncopate text-[10px] text-slate-500 tracking-[0.5em] uppercase font-bold mb-8">Geographics</h3>
               <div className="space-y-4">
                 {['Riyadh (KSA)', 'Malaysia', 'China', 'Europe (France)'].map(region => (
                   <div key={region} className="flex items-center gap-3">
@@ -550,19 +550,18 @@ const Media = () => {
       <section className="py-32 md:py-60 px-6 bg-[#081B3A] relative border-b border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="mb-24">
-            <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-6">PLATFORM BREAKDOWN</h2>
+            <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-6">TOTAL PLATFORM BREAKDOWN</h2>
             <p className="text-slate-400 font-inter text-xl font-light tracking-wide max-w-2xl uppercase">
               Performance metrics by platform.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            <PlatformCard platform="INSTAGRAM" icon={<Instagram size={24} />} followers="620K" engagement="15.1%" growth="+12%" />
-            <PlatformCard platform="X (TWITTER)" icon={<Twitter size={24} />} followers="450K" engagement="8.2%" growth="+24%" />
-            <PlatformCard platform="TIKTOK" icon={<Zap size={24} />} followers="800K" engagement="18.5%" growth="+45%" />
-            <PlatformCard platform="YOUTUBE" icon={<Youtube size={24} />} followers="180K" engagement="10.8%" growth="+30%" />
-            <PlatformCard platform="SNAPCHAT" icon={<SnapchatIcon size={24} />} followers="350K" engagement="12.5%" growth="+15%" />
-            <PlatformCard platform="TWITCH" icon={<Twitch size={24} />} followers="1.2M" engagement="12.4%" growth="+18%" />
+            <PlatformCard platform="INSTAGRAM" icon={<Instagram size={24} />} followers="240K" engagement="15.1%" growth="+12%" />
+            <PlatformCard platform="X (TWITTER)" icon={<Twitter size={24} />} followers="399K" engagement="8.2%" growth="+24%" />
+            <PlatformCard platform="TIKTOK" icon={<Zap size={24} />} followers="481K" engagement="18.5%" growth="+45%" />
+            <PlatformCard platform="YOUTUBE" icon={<Youtube size={24} />} followers="523K" engagement="10.8%" growth="+30%" />
+            <PlatformCard platform="TWITCH" icon={<Twitch size={24} />} followers="645K" engagement="12.4%" growth="+18%" />
           </div>
         </div>
       </section>
