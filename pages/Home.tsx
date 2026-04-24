@@ -567,7 +567,7 @@ const ShopSection = () => {
           ))}
         </div>
 
-        <div className="mt-20 flex justify-center">
+        <div className="mt-20 flex justify-center z-10">
           <ShopDropdown variant="outline" />
         </div>
       </div>
