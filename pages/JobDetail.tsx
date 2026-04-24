@@ -27,8 +27,8 @@ const JobDetail = () => {
     );
   }
 
-  const mailtoSubject = `Application – ${job.title} – Geekay Esports`;
-  const mailtoLink = `mailto:careers@geekay.com?subject=${encodeURIComponent(mailtoSubject)}`;
+  const mailtoSubject = `Application – ${job.title}`;
+  const mailtoLink = `mailto:inquiries@geekay.com?subject=${encodeURIComponent(mailtoSubject)}`;
 
   return (
     <div className="bg-[#081B3A] min-h-screen selection:bg-[#FFC400] selection:text-black pt-32 pb-60">
@@ -58,26 +58,32 @@ const JobDetail = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="flex items-center gap-6 mb-8">
+              <div className="flex flex-wrap items-center gap-6 mb-8">
                 <span className="bg-[#FFC400] text-black px-6 py-2 font-syncopate text-[10px] font-black tracking-[0.3em] uppercase skew-x-[-15deg]">
                   <span className="block skew-x-[15deg]">{job.department}</span>
                 </span>
-                <div className="h-[1px] w-12 bg-slate-800" />
+                <div className="h-[1px] w-12 bg-slate-800 hidden md:block" />
                 <div className="flex gap-8 text-slate-400">
                   <span className="flex items-center gap-3 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase"><MapPin size={14} className="text-[#FFC400]" /> {job.location}</span>
                   <span className="flex items-center gap-3 font-syncopate text-[10px] font-bold tracking-[0.3em] uppercase"><Briefcase size={14} className="text-[#FFC400]" /> {job.type}</span>
                 </div>
               </div>
 
-              <h1 className="font-syncopate text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none mb-12">
+              <h1 className="font-syncopate text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-none mb-12">
                 {job.title}
               </h1>
 
-              <p className="text-slate-400 font-inter text-xl md:text-2xl font-light leading-relaxed mb-20 border-l-2 border-[#FFC400] pl-8">
-                {job.summary}
-              </p>
-
               <div className="space-y-20">
+                {/* OVERVIEW */}
+                <section>
+                  <h2 className="font-syncopate text-xl text-white font-bold tracking-[0.4em] uppercase mb-10 flex items-center gap-4">
+                    OVERVIEW
+                  </h2>
+                  <p className="text-slate-400 font-inter text-xl md:text-2xl font-light leading-relaxed border-l-2 border-[#FFC400] pl-8">
+                    {job.summary}
+                  </p>
+                </section>
+
                 {/* Responsibilities */}
                 <section>
                   <h2 className="font-syncopate text-xl text-white font-bold tracking-[0.4em] uppercase mb-10 flex items-center gap-4">
@@ -128,7 +134,7 @@ const JobDetail = () => {
                 {/* Benefits */}
                 <section>
                   <h2 className="font-syncopate text-xl text-white font-bold tracking-[0.4em] uppercase mb-10 flex items-center gap-4">
-                    WHAT YOU GET
+                    BENEFITS
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {job.benefits.map((item, i) => (
@@ -137,6 +143,14 @@ const JobDetail = () => {
                         <span className="text-slate-300 font-syncopate text-[10px] font-bold tracking-[0.2em] uppercase">{item}</span>
                       </div>
                     ))}
+                    <div className="p-6 bg-[#0A254D]/20 border border-slate-800/50 flex items-center gap-4 group hover:border-[#FFC400]/30 transition-all">
+                      <CheckCircle2 size={20} className="text-[#FFC400] opacity-40 group-hover:opacity-100 transition-opacity" />
+                      <span className="text-slate-300 font-syncopate text-[10px] font-bold tracking-[0.2em] uppercase">Exposure to esports industry</span>
+                    </div>
+                    <div className="p-6 bg-[#0A254D]/20 border border-slate-800/50 flex items-center gap-4 group hover:border-[#FFC400]/30 transition-all">
+                      <CheckCircle2 size={20} className="text-[#FFC400] opacity-40 group-hover:opacity-100 transition-opacity" />
+                      <span className="text-slate-300 font-syncopate text-[10px] font-bold tracking-[0.2em] uppercase">High-performance team culture</span>
+                    </div>
                   </div>
                 </section>
               </div>
@@ -149,7 +163,7 @@ const JobDetail = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="sticky top-32"
+              className="sticky top-32 space-y-8"
             >
               <div className="bg-[#0A254D]/30 border border-slate-800 p-10 md:p-12 relative overflow-hidden group">
                 <div className="absolute top-0 left-0 w-full h-1 bg-[#FFC400]" />
@@ -162,43 +176,46 @@ const JobDetail = () => {
                   Ready to join the elite? Send your CV and portfolio to our recruitment team.
                 </p>
 
-                <div className="space-y-6 mb-12">
-                  <div className="flex flex-col gap-2">
-                    <a 
-                      href={mailtoLink}
-                      className="text-[#FFC400] font-syncopate text-sm font-bold tracking-widest hover:underline underline-offset-8 transition-all"
-                    >
-                      careers@geekay.com
-                    </a>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-white font-inter text-xs opacity-60 italic">
-                      {mailtoSubject}
-                    </span>
-                  </div>
-                </div>
-
-                <a href={mailtoLink} className="block w-full">
+                <a href={mailtoLink} className="block w-full mb-8">
                   <ArenaButton 
                     className="w-full h-20 group relative overflow-hidden"
                     icon={<ArrowRight className="group-hover:translate-x-2 transition-transform" />}
                   >
-                    <span className="relative z-10">SEND APPLICATION</span>
+                    <span className="relative z-10">APPLY NOW</span>
                     {/* Premium Shine Sweep */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
                   </ArenaButton>
                 </a>
 
-                <div className="mt-10 pt-10 border-t border-slate-800/50">
-                  <div className="flex items-center gap-4 text-slate-500 font-syncopate text-[8px] font-bold tracking-[0.3em] uppercase">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                    Typical response: 24–48h
-                  </div>
+                <div className="pt-8 border-t border-slate-800/50">
+                  <p className="text-slate-500 font-syncopate text-[9px] font-bold tracking-widest uppercase mb-4">
+                    For partnerships and business inquiries:
+                  </p>
+                  <a href="mailto:business@geekay.com" className="text-white hover:text-[#FFC400] transition-colors font-bold text-sm tracking-widest">
+                    business@geekay.com
+                  </a>
                 </div>
               </div>
 
-              <div className="mt-8 p-8 border border-slate-800/50 bg-[#040E1E]/50">
-                <p className="text-slate-500 font-inter text-xs leading-relaxed italic">
+              {/* OFFICE CONTEXT */}
+              <div className="bg-[#040E1E]/50 border border-slate-800/50 p-8 space-y-6">
+                <div>
+                  <h4 className="font-syncopate text-[10px] text-yellow-500 font-bold mb-3 tracking-widest">RIYADH (PRIMARY)</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Al Nemer Center, 2nd Tower, 3rd Floor, Office 312<br />
+                    P.O. Box 12214, Riyadh
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-syncopate text-[10px] text-yellow-500 font-bold mb-3 tracking-widest">UAE</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Dubai – Al Aweer, Ras Al Khor
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-8 border border-slate-800/50 bg-[#040E1E]/30">
+                <p className="text-slate-500 font-inter text-[10px] leading-relaxed italic">
                   Geekay Esports is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all operatives.
                 </p>
               </div>
