@@ -9,7 +9,7 @@ export const BRAND_COLORS = {
   surface: '#0A254D',
 };
 
-export const GEEKAY_LOGO = "/assets/Gklogo.png";
+export const GEEKAY_LOGO = "/assets/Gk logo.png";
 
 export const MOCK_TEAMS: Team[] = [
   {
