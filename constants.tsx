@@ -188,7 +188,7 @@ export const MOCK_TEAMS: Team[] = [
         nickname: 'Abdulrahman Al-Tmimi',
         name: 'Abdulrahman Al-Tmimi',
         role: 'Pro Player',
-        photo: '/assets/Abdulrahman Al-Tmimi.png',
+        photo: '/assets/Abdulrahman Al-Tmimi.jpg',
         bio: 'A top-tier competitor in the EA SPORTS FC scene, known for strategic gameplay and consistency.',
         stats: { kd: 0, mvps: 15, tournaments: 35, winRate: '60%' },
         socials: { twitter: '#' }
