@@ -151,10 +151,10 @@ const MobileShopDropdown = () => {
   const [isShopOpen, setIsShopOpen] = useState(false);
 
   return (
-    <div className="flex flex-col z-96">
+    <div className="flex flex-col">
       <button 
         onClick={() => setIsShopOpen(!isShopOpen)}
-        className="font-syncopate text-4xl font-bold flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
+        className="font-syncopate text-4xl font-bold  z-96 flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
       >
         SHOP
         <ChevronDown size={24} className={`transition-transform duration-300 ${isShopOpen ? 'rotate-180 text-[#FFC400]' : ''}`} />
