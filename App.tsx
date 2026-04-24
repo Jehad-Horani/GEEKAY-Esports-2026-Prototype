@@ -94,7 +94,7 @@ const DesktopShopDropdown = () => {
 
   return (
     <div 
-      className="relative"
+      className="relative z-10"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
@@ -151,7 +151,7 @@ const MobileShopDropdown = () => {
   const [isShopOpen, setIsShopOpen] = useState(false);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col z-10">
       <button 
         onClick={() => setIsShopOpen(!isShopOpen)}
         className="font-syncopate text-4xl font-bold flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
