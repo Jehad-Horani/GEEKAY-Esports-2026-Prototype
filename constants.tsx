@@ -12,7 +12,7 @@ export const BRAND_COLORS = {
 export const MOCK_TEAMS: Team[] = [
   {
     id: 'cod-1',
-    name: 'Call of Duty Warzone',
+    name: 'Call1 of Duty Warzone',
     game: 'Call of Duty Warzone',
     region: 'MENA',
     league: 'Call of Duty Warzone CHALLENGERS',
