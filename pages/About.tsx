@@ -189,10 +189,10 @@ const About = () => {
 
           {/* BOTTOM: STATS GRID (3x2) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <HUDStatCard label="ACTIVE TEAMS" value="12" index={0} />
+            <HUDStatCard label="ACTIVE TEAMS" value="10" index={0} />
             <HUDStatCard label="GLOBAL REACH" value="24M" index={1} />
-            <HUDStatCard label="TOTAL ACCOMPLISHMENTS" value="32" index={2} />
-            <HUDStatCard label="EWC PLACEMENTS" value="TOP 4" index={3} isPriority={true} />
+            <HUDStatCard label="TOTAL W’S" value="47+" index={2} />
+            <HUDStatCard label="EWC PLACEMENTS" value="20th Place" index={3} isPriority={true} />
             <HUDStatCard label="TOTAL STAFF" value="85+" index={4} />
             <HUDStatCard label="NATIONALITIES" value="18" index={5} />
           </div>
@@ -265,13 +265,13 @@ const About = () => {
             {[
               {
                 title: 'GENERAL INQUIRIES',
-                email: 'general@geekay.com',
+                email: 'inquiries@geekay.com',
                 purpose: 'Questions, support, and general requests.',
                 icon: <Globe size={32} />
               },
               {
-                title: 'PARTNERSHIPS',
-                email: 'partnerships@geekay.com',
+                title: 'PARTNERSHIPS AND BUSINESS',
+                email: 'business@geekay.com',
                 purpose: 'Sponsorships, collaborations, brand deals.',
                 icon: <Trophy size={32} />
               },
@@ -305,10 +305,13 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin size={14} className="text-[#FFC400]" />
-                        <span className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase">UAE – Dubai</span>
+                        <span className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase">Riyadh (Primary)</span>
                       </div>
                       <p className="text-slate-400 font-inter text-xs leading-relaxed">
-                        Meydan Grandstand,<br />Nad Al Sheba
+                        Al Nemer Center, 2nd Tower, 3rd Floor, Office 312<br />
+                        P.O. Box 12214, Riyadh<br />
+                        +966 54 097 4261<br />
+                        esports@geekaygroupmea.com
                       </p>
                     </div>
                     
@@ -317,10 +320,13 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin size={14} className="text-[#FFC400]" />
-                        <span className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase">KSA – Riyadh</span>
+                        <span className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase">UAE</span>
                       </div>
                       <p className="text-slate-400 font-inter text-xs leading-relaxed">
-                        Business District,<br />Riyadh
+                        1 19D Street, Al Aweer, Industrial Area First, Ras Al Khor<br />
+                        P.O. Box 2589, Dubai<br />
+                        +971 52 505 9709<br />
+                        esports@geekaygroupmea.com
                       </p>
                     </div>
                   </div>

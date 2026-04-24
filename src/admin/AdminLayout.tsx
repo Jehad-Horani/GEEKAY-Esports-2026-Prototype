@@ -14,22 +14,32 @@ import {
   LogOut,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  Mail
 } from 'lucide-react';
 
+import { auth } from '../lib/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+
 const AdminLayout = () => {
-  const [user, setUser] = useState<any>({ username: 'admin', role: 'admin' });
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // Auth disabled as requested
+    // Security removed: Admin panel is now public
+    setUser({
+      username: 'GUEST_ADMIN',
+      email: 'guest@geekay.com',
+      role: 'admin'
+    });
     setLoading(false);
   }, []);
 
   const handleLogout = async () => {
+    await signOut(auth);
     navigate('/admin/login');
   };
 
@@ -47,6 +57,7 @@ const AdminLayout = () => {
     { name: 'Schedule', path: '/admin/schedule', icon: <Calendar size={20} /> },
     { name: 'Gallery', path: '/admin/gallery', icon: <ImageIcon size={20} /> },
     { name: 'Jobs', path: '/admin/jobs', icon: <Briefcase size={20} /> },
+    { name: 'Subscribers', path: '/admin/subscribers', icon: <Mail size={20} /> },
     { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
     { name: 'Users', path: '/admin/users', icon: <Users size={20} />, adminOnly: true },
   ];
@@ -111,13 +122,6 @@ const AdminLayout = () => {
 
       {/* Main Content */}
       <main className="flex-grow flex flex-col min-w-0">
-        <header className="h-20 bg-[#081B3A]/50 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 lg:hidden">
-          <button onClick={() => setIsSidebarOpen(true)} className="text-slate-400 hover:text-white">
-            <Menu size={24} />
-          </button>
-          <div className="w-8 h-8 bg-[#FFC400] flex items-center justify-center font-syncopate font-bold text-black skew-x-[-10deg]">GK</div>
-        </header>
-
         <div className="flex-grow p-8 lg:p-12 overflow-y-auto">
           <Outlet context={{ user }} />
         </div>

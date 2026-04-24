@@ -414,9 +414,9 @@ const Media = () => {
           </div>
 
           <div className="lg:col-span-4 lg:flex flex-col gap-12 pl-0 lg:pl-20 border-l border-white/5 hidden">
-             <AnimatedCounter value={36} label="COMBINED REACH" suffix="M+" />
+             <AnimatedCounter value={2.4} label="COMBINED REACH" suffix="M+" />
              <AnimatedCounter value={1.2} label="MONTHLY GROWTH" suffix="M+" />
-             <AnimatedCounter value={4} label="DOMINATED PLATFORMS" />
+             <AnimatedCounter value={5} label="DOMINATED PLATFORMS" />
           </div>
         </div>
 
@@ -441,9 +441,9 @@ const Media = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <StatCard label="TOTAL REACH" value={6} suffix="M+" />
-            <StatCard label="TOTAL PLATFORMS" value={5} />
-            <StatCard label="COMBINED FOLLOWING" value={5} suffix="M+" />
+            <StatCard label="TOTAL REACH" value={2.4} suffix="M+" />
+            <StatCard label="TOTAL PLATFORMS" value={9} />
+            <StatCard label="COMBINED FOLLOWING" value={2.3} suffix="M+" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -532,7 +532,7 @@ const Media = () => {
               whileHover={{ y: -10 }}
               className="bg-[#040E1E] border border-slate-800 p-12 relative group overflow-hidden"
             >
-              <h3 className="font-syncopate text-[10px] text-slate-500 tracking-[0.5em] uppercase font-bold mb-8">Demographics</h3>
+              <h3 className="font-syncopate text-[10px] text-slate-500 tracking-[0.5em] uppercase font-bold mb-8">Geographics</h3>
               <div className="space-y-4">
                 {['Riyadh (KSA)', 'Malaysia', 'China', 'Europe (France)'].map(region => (
                   <div key={region} className="flex items-center gap-3">
@@ -550,19 +550,18 @@ const Media = () => {
       <section className="py-32 md:py-60 px-6 bg-[#081B3A] relative border-b border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="mb-24">
-            <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-6">PLATFORM BREAKDOWN</h2>
+            <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-6">TOTAL PLATFORM BREAKDOWN</h2>
             <p className="text-slate-400 font-inter text-xl font-light tracking-wide max-w-2xl uppercase">
               Performance metrics by platform.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            <PlatformCard platform="INSTAGRAM" icon={<Instagram size={24} />} followers="620K" engagement="15.1%" growth="+12%" />
-            <PlatformCard platform="X (TWITTER)" icon={<Twitter size={24} />} followers="450K" engagement="8.2%" growth="+24%" />
-            <PlatformCard platform="TIKTOK" icon={<Zap size={24} />} followers="800K" engagement="18.5%" growth="+45%" />
-            <PlatformCard platform="YOUTUBE" icon={<Youtube size={24} />} followers="180K" engagement="10.8%" growth="+30%" />
-            <PlatformCard platform="SNAPCHAT" icon={<SnapchatIcon size={24} />} followers="350K" engagement="12.5%" growth="+15%" />
-            <PlatformCard platform="TWITCH" icon={<Twitch size={24} />} followers="1.2M" engagement="12.4%" growth="+18%" />
+            <PlatformCard platform="INSTAGRAM" icon={<Instagram size={24} />} followers="240K" engagement="15.1%" growth="+12%" />
+            <PlatformCard platform="X (TWITTER)" icon={<Twitter size={24} />} followers="399K" engagement="8.2%" growth="+24%" />
+            <PlatformCard platform="TIKTOK" icon={<Zap size={24} />} followers="481K" engagement="18.5%" growth="+45%" />
+            <PlatformCard platform="YOUTUBE" icon={<Youtube size={24} />} followers="523K" engagement="10.8%" growth="+30%" />
+            <PlatformCard platform="TWITCH" icon={<Twitch size={24} />} followers="645K" engagement="12.4%" growth="+18%" />
           </div>
         </div>
       </section>

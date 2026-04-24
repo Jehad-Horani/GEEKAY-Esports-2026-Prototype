@@ -23,9 +23,13 @@ import AdminJobs from './src/admin/Jobs';
 import AdminLeadership from './src/admin/Leadership';
 import AdminSettings from './src/admin/Settings';
 import AdminUsers from './src/admin/Users';
+import AdminSubscribers from './src/admin/Subscribers';
 import Socials from './pages/Socials';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
+
+import SocialFollowerIcon from './components/SocialFollowerIcon';
+import NewsletterPopup from './components/NewsletterPopup';
 
 // Component to handle scroll reset on navigation
 const ScrollToTop = () => {
@@ -198,6 +202,7 @@ const Navbar = () => {
     { name: 'HOME', path: '/' },
     { name: 'ABOUT', path: '/about' },
     { name: 'TEAMS', path: '/teams' },
+    { name: 'VIEW ALL NEWS', path: '/news' },
     { name: 'SCHEDULE', path: '/schedule' },
     { name: 'MEDIA', path: '/socials' },
     { name: 'CAREERS', path: '/careers' },
@@ -285,6 +290,7 @@ export default function App() {
         <div className="fixed inset-0 bg-scanline pointer-events-none z-10 opacity-30"></div>
         <CustomCursor />
         <Navbar />
+        <NewsletterPopup />
         <main className="flex-grow relative z-20">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -308,6 +314,7 @@ export default function App() {
               <Route path="schedule" element={<AdminSchedule />} />
               <Route path="gallery" element={<AdminGallery />} />
               <Route path="jobs" element={<AdminJobs />} />
+              <Route path="subscribers" element={<AdminSubscribers />} />
               <Route path="settings" element={<AdminSettings />} />
               <Route path="users" element={<AdminUsers />} />
             </Route>
@@ -319,11 +326,27 @@ export default function App() {
               <h2 className="font-syncopate text-2xl font-bold mb-8 uppercase tracking-tighter">GEEKAY <span className="text-[#FFC400]">ESPORTS</span></h2>
               <p className="text-slate-500 max-w-sm leading-relaxed text-sm">The dominant force in MENA competitive gaming. Redefining the digital arena through performance and strategy.</p>
               <div className="flex gap-6 mt-10">
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Twitter size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Twitch size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Instagram size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><Youtube size={20} /></a>
-                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors"><SnapchatGhost size={20} /></a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="twitter" count="20,011" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="twitch" count="9,900" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="instagram" count="15,878" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="youtube" count="8,180" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="tiktok" count="31,800" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch">
+                  <SocialFollowerIcon platform="facebook" count="8,700" size={20} className="text-slate-400" />
+                </a>
+                <a href="#" className="hover-glitch text-slate-400 hover:text-[#FFC400] transition-colors">
+                  <SnapchatGhost size={20} />
+                </a>
               </div>
             </div>
             <div>
