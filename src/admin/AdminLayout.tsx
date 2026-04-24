@@ -20,6 +20,7 @@ import {
 
 import { auth } from '../lib/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { GEEKAY_LOGO } from '../../constants';
 
 const AdminLayout = () => {
   const [user, setUser] = useState<any>(null);
@@ -71,7 +72,7 @@ const AdminLayout = () => {
         <div className="h-full flex flex-col">
           <div className="p-6 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#FFC400] flex items-center justify-center font-syncopate font-bold text-black skew-x-[-10deg]">GK</div>
+              <img src={GEEKAY_LOGO} alt="Geekay Esports" className="h-6 w-auto" />
               {isSidebarOpen && <span className="font-syncopate font-bold text-lg tracking-tighter">ADMIN</span>}
             </Link>
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="lg:hidden text-slate-400 hover:text-white">

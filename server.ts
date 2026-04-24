@@ -40,7 +40,7 @@ try {
   console.error('File system is NOT writable:', err);
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'geekay-secret-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'geekay-esports-secret';
 
 export const app = express();
 

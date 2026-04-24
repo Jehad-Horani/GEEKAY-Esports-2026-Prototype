@@ -138,7 +138,7 @@ const PlatformCard = ({ platform, icon, followers, engagement, growth }: any) =>
 };
 
 const GALLERY_IMAGES = [
-  { id: 1, category: 'TEAM PHOTOS', title: 'SQUAD_ALPHA_2026', url: 'https://picsum.photos/seed/esports1/1200/800' },
+  { id: 1, category: 'TEAM PHOTOS', title: 'SQUAD_ALPHA', url: 'https://picsum.photos/seed/esports1/1200/800' },
   { id: 2, category: 'BOOTCAMP', title: 'TACTICAL_HUB_DUBAI', url: 'https://picsum.photos/seed/gaming1/1200/800' },
   { id: 3, category: 'LAN EVENTS', title: 'VCT_TOKYO_STAGE', url: 'https://picsum.photos/seed/arena1/1200/800' },
   { id: 4, category: 'TROPHY MOMENTS', title: 'CHAMPIONS_RISE', url: 'https://picsum.photos/seed/trophy1/1200/800' },
@@ -146,11 +146,11 @@ const GALLERY_IMAGES = [
   { id: 6, category: 'BOOTCAMP', title: 'LATE_NIGHT_STRATS', url: 'https://picsum.photos/seed/gaming2/1200/800' },
   { id: 7, category: 'LAN EVENTS', title: 'CROWD_ENERGY', url: 'https://picsum.photos/seed/arena2/1200/800' },
   { id: 8, category: 'TROPHY MOMENTS', title: 'GOLDEN_ERA', url: 'https://picsum.photos/seed/trophy2/1200/800' },
-  { id: 9, category: 'TEAM PHOTOS', title: 'OFFICIAL_JERSEY_2026', url: 'https://picsum.photos/seed/esports3/1200/800' },
+  { id: 9, category: 'TEAM PHOTOS', title: 'OFFICIAL_JERSEY', url: 'https://picsum.photos/seed/esports3/1200/800' },
   { id: 10, category: 'BOOTCAMP', title: 'HARDWARE_SYNC', url: 'https://picsum.photos/seed/gaming3/1200/800' },
   { id: 11, category: 'LAN EVENTS', title: 'MAIN_STAGE_LIGHTS', url: 'https://picsum.photos/seed/arena3/1200/800' },
   { id: 12, category: 'TROPHY MOMENTS', title: 'VICTORY_ROAR', url: 'https://picsum.photos/seed/trophy3/1200/800' },
-  { id: 13, category: 'TEAM PHOTOS', title: 'SQUAD_BETA_2026', url: 'https://picsum.photos/seed/esports4/1200/800' },
+  { id: 13, category: 'TEAM PHOTOS', title: 'SQUAD_BETA', url: 'https://picsum.photos/seed/esports4/1200/800' },
   { id: 14, category: 'BOOTCAMP', title: 'PERFORMANCE_LAB', url: 'https://picsum.photos/seed/gaming4/1200/800' },
   { id: 15, category: 'LAN EVENTS', title: 'ARENA_ENTRANCE', url: 'https://picsum.photos/seed/arena4/1200/800' },
   { id: 16, category: 'TROPHY MOMENTS', title: 'LEGACY_UNLOCKED', url: 'https://picsum.photos/seed/trophy4/1200/800' },

@@ -55,8 +55,8 @@ const Information = () => {
                 answer="Absolutely. We seek innovative brands that want to authentically engage with the gaming community. Contact our partnership desk at partnerships@geekay.gg." 
              />
              <FAQItem 
-                question="What is the 2026 Arena Vision?" 
-                answer="The 2026 vision focuses on creating integrated digital-physical fan experiences, utilizing Web3 and VR technology to bring fans closer to the action than ever before." 
+                question="What is the Geekay Esports Vision?" 
+                answer="Our vision focuses on creating integrated digital-physical fan experiences, utilizing cutting-edge technology to bring fans closer to the action than ever before." 
              />
           </div>
 

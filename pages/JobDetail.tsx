@@ -27,7 +27,7 @@ const JobDetail = () => {
     );
   }
 
-  const mailtoSubject = `Application – ${job.title} – Geekay 2026`;
+  const mailtoSubject = `Application – ${job.title} – Geekay Esports`;
   const mailtoLink = `mailto:careers@geekay.com?subject=${encodeURIComponent(mailtoSubject)}`;
 
   return (

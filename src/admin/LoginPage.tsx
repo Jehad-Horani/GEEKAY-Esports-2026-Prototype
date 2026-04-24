@@ -6,6 +6,7 @@ import { Lock, User, ArrowRight, ShieldCheck, Chrome } from 'lucide-react';
 import ArenaButton from '../../components/ui/ArenaButton';
 import { auth } from '../lib/firebase';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { GEEKAY_LOGO } from '../../constants';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -46,8 +47,8 @@ const LoginPage = () => {
         className="w-full max-w-md relative z-10"
       >
         <div className="text-center mb-12">
-          <div className="w-16 h-16 bg-[#FFC400] mx-auto mb-8 flex items-center justify-center font-syncopate font-black text-3xl text-black skew-x-[-10deg] shadow-[0_0_50px_rgba(255,196,0,0.3)]">
-            GK
+          <div className="mb-8 flex items-center justify-center">
+            <img src={GEEKAY_LOGO} alt="Geekay Esports" className="h-16 w-auto" />
           </div>
           <h1 className="font-syncopate text-3xl font-black text-white tracking-tighter uppercase mb-4">
             COMMAND <span className="text-[#FFC400]">CENTER</span>
