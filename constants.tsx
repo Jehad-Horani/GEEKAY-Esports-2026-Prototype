@@ -669,6 +669,53 @@ export const MOCK_TEAMS: Team[] = [
     ]
   },
   {
+    id: 'fortniteEU',
+    name: 'Fortnite EU',
+    game: 'Fortnite',
+    region: 'EU',
+    league: 'FNCS',
+    logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100',
+    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+    achievements: ['FNCS 2024 Major 2 Winners', 'FNCS 2025 Major 1 & 2 Winners'],
+    bio: 'Commanding the Fortnite scene in the MENA region with unparalleled building and combat skills.',
+    stats: { winRate: '75%', rank: '#1 MENA', championships: 5, globalEvents: 10, seasonRecord: '24-2' },
+    players: [
+      {
+        id: 'fn-Japko',
+        nickname: 'Japko',
+        name: 'Abdulaziz "Japko" Algarzae',
+        role: 'Pro Player',
+        photo: '/assets/Japko.png',
+        bio: 'Abdulaziz "Japko" Algarzae is a Saudi Arabian professional Fortnite player. He is one of the most established names in the Saudi and wider MENA Fortnite scene.',
+        stats: { kd: 1.45, mvps: 15, tournaments: 35, winRate: '65%' },
+        achievements: [
+          { year: '2024', title: 'FNCS 2024 - Major 2: ME Grand Finals (1st)' },
+          { year: '2025', title: 'Virtuocity Battleground Qatar (1st)' },
+          { year: '2025', title: 'FNCS 2025 - Major 3: ME Grand Finals (1st)' },
+          { year: '2025', title: 'Games of the Future 2025 (3rd)' }
+        ],
+        socials: { twitter: '#' }
+      },
+      {
+        id: 'fn-panzer',
+        nickname: 'panzer',
+        name: 'Faisal "panzer" Khalid Alsanea',
+        role: 'Pro Player',
+        photo: '/assets/panzer.png',
+        bio: 'Faisal "panzer" Khalid Alsanea is a Saudi Arabian professional Fortnite player. He is regarded as one of the most reliable competitive Fortnite players in the region.',
+        stats: { kd: 1.38, mvps: 8, tournaments: 30, winRate: '68%' },
+        achievements: [
+          { year: '2022', title: 'FNCS: Chapter 3 Season 1 - ME Grand Finals (1st)' },
+          { year: '2024', title: 'FNCS 2024 - Major 2: ME Grand Finals (1st)' },
+          { year: '2025', title: 'FNCS 2025 - Major 1: ME Grand Finals (1st)' },
+          { year: '2025', title: 'FNCS 2025 - Major 2: ME Grand Finals (1st)' }
+        ],
+        socials: { twitch: '#' }
+      },
+   
+    ]
+  },
+  {
     id: 'honor-of-kings',
     name: 'HONOR OF KINGS',
     game: 'HONOR OF KINGS',
