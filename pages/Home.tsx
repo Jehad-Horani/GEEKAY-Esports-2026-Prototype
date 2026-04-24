@@ -32,7 +32,7 @@ const ShopDropdown = ({ variant = "primary", className = "" }: { variant?: "prim
   const buttonText = 'SHOP';
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} z-50`}>
       {/* Desktop Dropdown */}
       <div 
         className="hidden lg:block relative"
