@@ -98,56 +98,56 @@ const About = () => {
     { 
       name: "KISHAN", 
       role: "CEO , FOUNDER", 
-      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/assets/NO PHOTO.png", 
       desc: "Visionary leader driving global expansion and defining the future of MENA esports.",
       linkedin: "#"
     },
     { 
       name: "RAGHEED", 
       role: "HEAD OF ESPORTS", 
-      photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/staff/Ragheed.png", 
       desc: "Architect of competitive dominance, overseeing all team operations and performance.",
       linkedin: "#"
     },
     { 
       name: "IHAB", 
       role: "HEAD OF OPERATIONS", 
-      photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/staff/Ihab.jpg", 
       desc: "Ensuring operational excellence and infrastructure scalability across the organization.",
       linkedin: "#"
     },
     { 
       name: "ALI", 
       role: "HEAD OF CONTENT", 
-      photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/staff/Ali.png", 
       desc: "Leading the narrative and digital presence of Geekay through elite storytelling.",
       linkedin: "#"
     },
     { 
       name: "AOY", 
       role: "BIZDEV MANAGER", 
-      photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/staff/AOY.jpg", 
       desc: "Driving strategic partnerships and business growth in the KSA region.",
       linkedin: "#"
     },
     { 
       name: "NOUR", 
       role: "KSA OPERATIONS", 
-      photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/staff/Nour.png", 
       desc: "Managing on-ground operations and community engagement within Saudi Arabia.",
       linkedin: "#"
     },
     { 
       name: "ARTHUR", 
       role: "HEAD OF SOCIALS", 
-      photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/staff/Arthur.png", 
       desc: "Commanding the social meta and fan interaction across all platforms.",
       linkedin: "#"
     },
     { 
       name: "YAZEED", 
       role: "HEAD OF CREATIVES", 
-      photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=500&h=600", 
+      photo: "/staff/Yazeed.png", 
       desc: "Defining the visual identity and uncompromising aesthetic of the brand.",
       linkedin: "#"
     }
