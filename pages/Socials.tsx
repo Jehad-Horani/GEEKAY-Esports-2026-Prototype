@@ -154,7 +154,6 @@ const GALLERY_IMAGES = [
   { id: 14, category: 'BOOTCAMP', title: 'PERFORMANCE_LAB', url: '/gallery/PH14.jpg' },
   { id: 15, category: 'LAN EVENTS', title: 'ARENA_ENTRANCE', url: '/gallery/PH15.jpg' },
   { id: 16, category: 'TROPHY MOMENTS', title: 'LEGACY_UNLOCKED', url: '/gallery/PH16.jpg' },
-  { id: 17, category: 'TEAM PHOTOS', title: 'COACHING_STAFF', url: '/gallery/PH17.jpg' },
   { id: 18, category: 'BOOTCAMP', title: 'RECOVERY_ZONE', url: '/gallery/PH18.jpg' },
   { id: 19, category: 'LAN EVENTS', title: 'PRESS_CONFERENCE', url: '/gallery/PH19.jpg' },
   { id: 20, category: 'TROPHY MOMENTS', title: 'PODIUM_FINISH', url: '/gallery/PH20.jpg' },
