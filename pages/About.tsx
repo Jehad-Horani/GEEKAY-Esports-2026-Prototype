@@ -10,7 +10,7 @@ const Counter = ({ value, duration = 2 }: { value: string; duration?: number }) 
   const [displayValue, setDisplayValue] = useState(0);
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
-  
+
   const match = value.match(/(\d+)/);
   const numericValue = match ? parseInt(match[0]) : 0;
   const prefix = value.split(/\d+/)[0] || '';
@@ -51,9 +51,9 @@ const HUDStatCard = ({ label, value, index, isPriority = false }: { label: strin
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.1, duration: 0.6 }}
-    whileHover={{ 
-      y: -8, 
-      borderColor: 'rgba(255, 196, 0, 0.4)', 
+    whileHover={{
+      y: -8,
+      borderColor: 'rgba(255, 196, 0, 0.4)',
       backgroundColor: 'rgba(10, 37, 77, 0.4)',
       boxShadow: '0 20px 40px -10px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,196,0,0.05)'
     }}
@@ -65,24 +65,24 @@ const HUDStatCard = ({ label, value, index, isPriority = false }: { label: strin
   >
     {/* Inner Shadow / Glow Effect */}
     <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
-    
+
     {/* Gold Micro Separator */}
     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400]/20 to-transparent" />
-    
+
     {/* Priority Pulse */}
     {isPriority && (
-      <motion.div 
+      <motion.div
         animate={{ opacity: [0.1, 0.3, 0.1] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 bg-[#FFC400]/5 pointer-events-none"
       />
     )}
-    
+
     <div className="font-syncopate text-[10px] text-slate-500 tracking-[0.4em] mb-4 uppercase group-hover:text-[#FFC400] transition-colors flex items-center gap-3">
       <div className={`w-1.5 h-1.5 rounded-full ${isPriority ? 'bg-[#FFC400] animate-pulse' : 'bg-slate-700'}`} />
       {label}
     </div>
-    
+
     <div className={`font-syncopate text-4xl md:text-6xl font-bold tracking-tighter transition-all duration-500 ${isPriority ? 'text-[#FFC400]' : 'text-white'}`}>
       <Counter value={value} />
     </div>
@@ -95,59 +95,59 @@ const HUDStatCard = ({ label, value, index, isPriority = false }: { label: strin
 
 const About = () => {
   const leadershipData = [
-    { 
-      name: "KISHAN", 
-      role: "CEO , FOUNDER", 
-      photo: "/assets/NO PHOTO.png", 
+    {
+      name: "KISHAN",
+      role: "CEO , FOUNDER",
+      photo: "/assets/NO PHOTO.png",
       desc: "Visionary leader driving global expansion and defining the future of MENA esports.",
       linkedin: "#"
     },
-    { 
-      name: "RAGHEED", 
-      role: "HEAD OF ESPORTS", 
-      photo: "/staff/Ragheed.png", 
+    {
+      name: "RAGHEED",
+      role: "HEAD OF ESPORTS",
+      photo: "/staff/Ragheed.png",
       desc: "Architect of competitive dominance, overseeing all team operations and performance.",
       linkedin: "#"
     },
-    { 
-      name: "IHAB", 
-      role: "HEAD OF OPERATIONS", 
-      photo: "/staff/Ihab.jpg", 
+    {
+      name: "IHAB",
+      role: "HEAD OF OPERATIONS",
+      photo: "/staff/Ihab.jpg",
       desc: "Ensuring operational excellence and infrastructure scalability across the organization.",
       linkedin: "#"
     },
-    { 
-      name: "ALI", 
-      role: "HEAD OF CONTENT", 
-      photo: "/staff/Ali.png", 
+    {
+      name: "ALI",
+      role: "HEAD OF CONTENT",
+      photo: "/staff/Ali.png",
       desc: "Leading the narrative and digital presence of Geekay through elite storytelling.",
       linkedin: "#"
     },
-    { 
-      name: "AOY", 
-      role: "BIZDEV MANAGER", 
-      photo: "/staff/AOY.jpg", 
+    {
+      name: "AOY",
+      role: "BIZDEV MANAGER",
+      photo: "/staff/AOY.jpg",
       desc: "Driving strategic partnerships and business growth in the KSA region.",
       linkedin: "#"
     },
-    { 
-      name: "NOUR", 
-      role: "KSA OPERATIONS", 
-      photo: "/staff/Nour.png", 
+    {
+      name: "NOUR",
+      role: "KSA OPERATIONS",
+      photo: "/staff/Nour.png",
       desc: "Managing on-ground operations and community engagement within Saudi Arabia.",
       linkedin: "#"
     },
-    { 
-      name: "ARTHUR", 
-      role: "HEAD OF SOCIALS", 
-      photo: "/staff/Arthur.png", 
+    {
+      name: "ARTHUR",
+      role: "HEAD OF SOCIALS",
+      photo: "/staff/Arthur.png",
       desc: "Commanding the social meta and fan interaction across all platforms.",
       linkedin: "#"
     },
-    { 
-      name: "YAZEED", 
-      role: "HEAD OF CREATIVES", 
-      photo: "/staff/Yazeed.png", 
+    {
+      name: "YAZEED",
+      role: "HEAD OF CREATIVES",
+      photo: "/staff/Yazeed.png",
       desc: "Defining the visual identity and uncompromising aesthetic of the brand.",
       linkedin: "#"
     }
@@ -155,20 +155,20 @@ const About = () => {
 
   return (
     <div className="bg-[#081B3A] overflow-x-hidden selection:bg-[#FFC400] selection:text-black pt-0">
-      
+
       {/* 📊 SECTION — PERFORMANCE SNAPSHOT */}
       <section className="py-32 md:py-48 px-6 md:px-12 bg-[#040E1E] relative border-b border-white/5 overflow-hidden">
         {/* Background Grid Overlay */}
         <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
-          
+
           {/* TOP: EXECUTIVE HEADLINE */}
           <div className="mb-20 max-w-4xl">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }} 
-              whileInView={{ opacity: 1, x: 0 }} 
-              transition={{ duration: 0.8 }} 
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
               <h2 className="font-syncopate text-5xl md:text-7xl font-black leading-[0.9] tracking-tighter uppercase text-white mb-10">
@@ -206,7 +206,7 @@ const About = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
             {leadershipData.map((leader, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -214,31 +214,33 @@ const About = () => {
                 viewport={{ once: true }}
                 className="group relative aspect-[2/3] overflow-hidden border border-slate-800 bg-slate-900/10 cursor-default transition-all duration-500 hover:border-[#FFC400] hover:shadow-[0_0_40px_rgba(255,196,0,0.2)]"
               >
-                <img 
-                  src={leader.photo} 
-                  alt={leader.name} 
-                  className="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0" 
+                <img
+                  src={leader.photo}
+                  alt={leader.name}
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:grayscale"
                 />
-                
+
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-[#040E1E]/0 group-hover:bg-[#040E1E]/90 transition-all duration-500 flex flex-col justify-end p-8">
                   <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
                     <h3 className="font-syncopate text-2xl font-bold text-white mb-1 uppercase tracking-tighter leading-none">{leader.name}</h3>
                     <span className="text-[#FFC400] font-syncopate text-[10px] tracking-[0.2em] font-bold uppercase block mb-4">{leader.role}</span>
-                    
+
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                       <p className="text-slate-300 text-sm font-light leading-relaxed mb-6">
                         {leader.desc}
                       </p>
-                      
+
                       {leader.linkedin && (
-                        <a 
-                          href={leader.linkedin} 
-                          target="_blank" 
+                        <a
+                          href={leader.linkedin}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 text-white hover:text-[#FFC400] transition-colors text-[10px] font-syncopate tracking-widest"
                         >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                          </svg>
                           LINKEDIN
                         </a>
                       )}
@@ -293,13 +295,13 @@ const About = () => {
                 <div className="text-[#FFC400] mb-8 group-hover:scale-110 transition-transform duration-500">
                   {channel.icon}
                 </div>
-                
+
                 <div className="h-[1px] w-12 bg-[#FFC400]/30 mb-8 group-hover:w-24 transition-all duration-500" />
 
                 <h3 className="font-syncopate text-sm font-bold text-white tracking-[0.3em] uppercase mb-4 group-hover:text-[#FFC400] transition-colors">
                   {channel.title}
                 </h3>
-                
+
                 {channel.isLocation ? (
                   <div className="space-y-6 w-full">
                     <div className="flex flex-col items-center">
@@ -314,9 +316,9 @@ const About = () => {
                         esports@geekaygroupmea.com
                       </p>
                     </div>
-                    
+
                     <div className="h-[1px] w-12 bg-white/5 mx-auto" />
-                    
+
                     <div className="flex flex-col items-center">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin size={14} className="text-[#FFC400]" />
@@ -351,9 +353,9 @@ const About = () => {
                 )}
 
                 <div className="absolute bottom-4 right-8 opacity-20 group-hover:opacity-100 transition-opacity">
-                   <span className="font-syncopate text-[7px] text-slate-500 font-bold tracking-widest uppercase">
-                     {channel.isLocation ? 'ESTABLISHED PRESENCE' : 'Typical response: 24–48h'}
-                   </span>
+                  <span className="font-syncopate text-[7px] text-slate-500 font-bold tracking-widest uppercase">
+                    {channel.isLocation ? 'ESTABLISHED PRESENCE' : 'Typical response: 24–48h'}
+                  </span>
                 </div>
               </motion.div>
             ))}
