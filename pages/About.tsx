@@ -98,7 +98,7 @@ const About = () => {
     {
       name: "KISHAN",
       role: "CEO , FOUNDER",
-      photo: "/staff/kishan.jpg",
+      photo: "/staff/kishan.jpeg",
       desc: "Visionary leader driving global expansion and defining the future of MENA esports.",
       linkedin: "#"
     },
