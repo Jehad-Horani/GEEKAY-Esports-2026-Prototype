@@ -27,6 +27,7 @@ import AdminSubscribers from './src/admin/Subscribers';
 import Socials from './pages/Socials';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
+import PlayerProfile from './pages/PlayerProfile';
 
 import SocialFollowerIcon from './components/SocialFollowerIcon';
 import NewsletterPopup from './components/NewsletterPopup';
@@ -301,6 +302,7 @@ export default function App() {
             <Route path="/news/:slug" element={<NewsDetail />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/teams" element={<Teams />} />
+            <Route path="/players/:playerName" element={<PlayerProfile />} />
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/careers/:slug" element={<JobDetail />} />
