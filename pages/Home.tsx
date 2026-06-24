@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import { ChevronRight, ChevronDown, PlayCircle, Search, BarChart3, Globe, Shield, X, Twitter, Twitch, Cpu, Target, Layers, Zap, ArrowDown, ArrowRight, Clock, Calendar, MapPin, Trophy, Instagram, Youtube } from 'lucide-react';
 import SocialFollowerIcon from '../components/SocialFollowerIcon';
@@ -7,6 +7,7 @@ import ArenaButton from '../components/ui/ArenaButton';
 import { MOCK_EVENTS, MOCK_TEAMS, MOCK_NEWS, MOCK_PRODUCTS } from '../constants';
 import { Link } from 'react-router-dom';
 import { Player, NewsItem, Product } from '../types';
+import SEOMeta from '../components/SEOMeta';
 
 // --- Components ---
 
@@ -251,10 +252,12 @@ const Hero = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  <h1 className="font-syncopate text-2xl md:text-3xl lg:text-4xl font-black text-white uppercase tracking-tighter leading-none">
-                    #Geekay<br />
-                    <span className="text-[#FFC400]">WeGame</span>
+                  <h1 className="font-syncopate text-2xl md:text-3xl lg:text-4xl font-black text-white uppercase tracking-tighter leading-none mb-2">
+                    Geekay <span className="text-[#FFC400]">Esports</span>
                   </h1>
+                  <h2 className="font-syncopate text-[10px] md:text-xs font-black text-white/50 tracking-[0.3em] uppercase block">
+                    Professional Esports Organization
+                  </h2>
                 </motion.div>
  
                 {/* EST 2021 */}
@@ -262,11 +265,11 @@ const Hero = () => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.2 }}
-                  className="flex items-center gap-3 mt-2"
+                  className="flex items-center gap-3 mt-4"
                 >
                   <div className="w-6 h-[1px] bg-[#FFC400]/60" />
-                  <span className="font-syncopate text-[10px] md:text-xs font-bold text-white/60 tracking-[0.3em] uppercase">
-                    EST 2021
+                  <span className="font-syncopate text-[9px] font-bold text-[#FFC400] tracking-[0.3em] uppercase">
+                    EST 2021 // #WEGAME
                   </span>
                 </motion.div>
               </div>
@@ -705,7 +708,7 @@ const NewsAnnouncements = () => {
               transition={{ delay: 0.1 }}
               className="font-syncopate text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter relative inline-block"
             >
-              NEWS & <span className="text-[#FFC400]">ANNOUNCEMENTS</span>
+              LATEST <span className="text-[#FFC400]">NEWS</span>
               <motion.div 
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
@@ -1011,7 +1014,7 @@ const LiveOperationsHighlight = () => {
             viewport={{ once: true }}
             className="font-syncopate text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4"
           >
-            SCHEDULE <span className="text-[#FFC400]">HIGHLIGHT</span>
+            UPCOMING <span className="text-[#FFC400]">MATCHES</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -1143,6 +1146,59 @@ const LiveOperationsHighlight = () => {
   );
 };
 
+const ActiveTeamsSection = () => {
+  return (
+    <section className="py-32 px-6 bg-[#030C1A] relative z-10 overflow-hidden border-t border-slate-900">
+      <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-16">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-syncopate text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4"
+          >
+            ACTIVE <span className="text-[#FFC400]">TEAMS</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.6 }}
+            viewport={{ once: true }}
+            className="text-slate-400 font-syncopate text-[10px] tracking-[0.2em] uppercase"
+          >
+            Our elite multi-gaming professional divisions.
+          </motion.p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {MOCK_TEAMS.slice(0, 4).map((team, idx) => (
+            <motion.div
+              key={team.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{ y: -8 }}
+              className="group relative bg-[#0A1A31]/40 border border-slate-800 p-8 hover:border-[#FFC400]/30 transition-all overflow-hidden flex flex-col justify-between min-h-[250px]"
+            >
+              <div className="absolute top-0 right-0 w-16 h-16 bg-[#FFC400]/5 skew-x-[-45deg] translate-x-8 -translate-y-8" />
+              <div>
+                <span className="text-[#FFC400] font-syncopate text-[9px] font-black tracking-widest uppercase mb-2 block">{team.game}</span>
+                <h3 className="font-syncopate text-xl font-black text-white uppercase mb-4 group-hover:text-[#FFC400] transition-colors">{team.name} Roster</h3>
+                <p className="text-slate-500 font-inter text-xs font-light leading-relaxed mb-6">{team.bio || `Our professional ${team.game} squad competing in the highest tiers of regional and global tournaments.`}</p>
+              </div>
+
+              <Link to={`/teams?id=${team.id}`} className="group/btn flex items-center gap-2 font-syncopate text-[9px] font-black text-[#FFC400] tracking-widest uppercase mt-4">
+                VIEW ROSTER <ArrowRight size={14} className="group-hover/btn:translate-x-1.5 transition-transform" />
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
   return (
     <motion.div 
@@ -1151,9 +1207,15 @@ const Home = () => {
       exit={{ opacity: 0 }}
       className="relative"
     >
+      <SEOMeta 
+        title="Geekay Esports - Leading Professional Esports Organization"
+        description="Official portal of Geekay Esports. Dominate the virtual arenas with our elite rosters in Rocket League, PUBG Mobile, Overwatch, Honor of Kings, and Fortnite."
+        ogType="website"
+      />
       <Hero />
       <NewsAnnouncements />
       <AboutSnapshot />
+      <ActiveTeamsSection />
       <LiveOperationsHighlight />
       <ShopSection />
     </motion.div>

@@ -5,6 +5,7 @@ import { MapPin, Briefcase, ChevronRight, Search, Zap, Target, Shield, Globe, Tr
 import { MOCK_JOBS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
 import { Link } from 'react-router-dom';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const BenefitCard = ({ icon, title, index }: { icon: React.ReactNode, title: string, index: number }) => (
   <motion.div
@@ -53,7 +54,8 @@ const Careers = () => {
           <div className="absolute inset-0 bg-grid opacity-10 z-10" />
         </div>
 
-        <div className="container mx-auto px-6 relative z-20 flex flex-col items-center text-center">
+        <div className="container mx-auto px-6 relative z-20 flex flex-col items-center text-center pt-24">
+          <Breadcrumbs />
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

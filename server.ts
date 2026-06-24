@@ -164,6 +164,25 @@ db.exec(`
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES users(id)
   );
+
+  CREATE TABLE IF NOT EXISTS news (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    slug TEXT UNIQUE,
+    category TEXT,
+    excerpt TEXT,
+    image TEXT,
+    content TEXT,
+    author TEXT,
+    date TEXT,
+    tags TEXT, -- JSON array of strings
+    featured INTEGER DEFAULT 0,
+    published INTEGER DEFAULT 1,
+    readTime TEXT,
+    related_team TEXT,
+    related_game TEXT,
+    display_order INTEGER DEFAULT 0
+  );
 `);
 console.log('Database schema initialized successfully');
 
@@ -173,6 +192,230 @@ try {
 } catch (e) {
   console.log('Adding display_order column to events table...');
   db.exec('ALTER TABLE events ADD COLUMN display_order INTEGER DEFAULT 0');
+}
+
+// Additional events table migrations
+const addColumnSafely = (table: string, column: string, type: string) => {
+  try {
+    db.prepare(`SELECT ${column} FROM ${table} LIMIT 1`).get();
+  } catch (e) {
+    console.log(`Adding ${column} column to ${table} table...`);
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+  }
+};
+
+addColumnSafely('events', 'banner', 'TEXT');
+addColumnSafely('events', 'organizer', 'TEXT');
+addColumnSafely('events', 'teams', 'TEXT');
+addColumnSafely('events', 'matches', 'TEXT');
+addColumnSafely('events', 'results', 'TEXT');
+addColumnSafely('events', 'media', 'TEXT');
+addColumnSafely('events', 'social', 'TEXT');
+
+// Seed default events if table is empty
+const eventCount: any = db.prepare('SELECT COUNT(*) as count FROM events').get();
+if (eventCount.count === 0) {
+  console.log('Seeding initial events into database...');
+  const initialEvents = [
+    {
+      title: 'RLCS Major 2026',
+      game: 'RL',
+      type: 'tournament',
+      start_date: '2026-02-10',
+      end_date: '2026-02-15',
+      time: '17:00',
+      region: 'EMEA',
+      status: 'finished',
+      link: 'https://x.com/geekay_esports',
+      featured: 1,
+      description: 'The Rocket League Championship Series Major 1 gathers the best rosters globally to fight for EMEA dominance and international ranking points in London. Geekay Esports has qualified through exceptional regional performance and is set to clash with global giants.',
+      banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+      organizer: 'Psyonix / BLAST',
+      teams: JSON.stringify([
+        { name: "Geekay Esports", logo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100", region: "Saudi Arabia" },
+        { name: "Team Falcons", logo: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=100&h=100", region: "Saudi Arabia" },
+        { name: "Karmine Corp", logo: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=100&h=100", region: "France" },
+        { name: "G2 Esports", logo: "https://images.unsplash.com/photo-1548685913-fe6574abf1a5?auto=format&fit=crop&q=80&w=100&h=100", region: "North America" }
+      ]),
+      matches: JSON.stringify([
+        { date: "2026-02-10", teams: "Geekay vs Karmine Corp", score: "3 - 2", status: "completed" },
+        { date: "2026-02-12", teams: "Geekay vs Team Falcons", score: "1 - 3", status: "completed" },
+        { date: "2026-02-14", teams: "Karmine Corp vs G2 Esports", score: "3 - 1", status: "completed" }
+      ]),
+      results: JSON.stringify({
+        winner: "Team Falcons",
+        runnerUp: "Geekay Esports",
+        mvp: "M7sN"
+      }),
+      media: JSON.stringify([
+        { type: "photo", url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800&h=500" },
+        { type: "photo", url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800&h=500" },
+        { type: "photo", url: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=800&h=500" }
+      ]),
+      social: JSON.stringify([
+        { platform: "twitter", handle: "@Geekay_Esports", text: "THE CHANCE TO MAKE HISTORY. We take on Karmine Corp in the opening round of the RLCS London Major! 🇸🇦 #GKDominance" },
+        { platform: "instagram", handle: "geekay_esports", text: "London, we have arrived. The squad is locked in for the RLCS Major. Drop your support below! 👇 #GeekayArena" }
+      ])
+    },
+    {
+      title: 'PUBG Mobile World Cup',
+      game: 'PUBG',
+      type: 'tournament',
+      start_date: '2026-02-18',
+      end_date: '2026-02-23',
+      time: '13:00',
+      region: 'GLOBAL',
+      status: 'upcoming',
+      link: 'https://x.com/geekay_esports',
+      featured: 1,
+      description: 'The PUBG Mobile World Cup brings together top teams to battle on the grandest stage. With high stakes and mechanical mastery, Geekay Esports strives to make their mark on global PUBG Mobile history.',
+      banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+      organizer: 'Tencent Games / Krafton',
+      teams: JSON.stringify([
+        { name: "Geekay Esports", logo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100", region: "Saudi Arabia" },
+        { name: "Vampire Esports", logo: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=100&h=100", region: "Thailand" },
+        { name: "Nigma Galaxy", logo: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=100&h=100", region: "UAE" }
+      ]),
+      matches: JSON.stringify([
+        { date: "2026-02-18", teams: "Group Stage Day 1", score: "Upcoming", status: "upcoming" },
+        { date: "2026-02-19", teams: "Group Stage Day 2", score: "Upcoming", status: "upcoming" }
+      ]),
+      results: JSON.stringify({}),
+      media: JSON.stringify([]),
+      social: JSON.stringify([])
+    },
+    {
+      title: 'VCT Global Finals 2026',
+      game: 'VALORANT',
+      type: 'tournament',
+      start_date: '2026-10-12',
+      end_date: '2026-10-18',
+      time: '18:00',
+      region: 'GLOBAL',
+      status: 'upcoming',
+      link: 'https://x.com/geekay_esports',
+      featured: 1,
+      description: 'The ultimate showcase of tactical FPS mastery. The VCT Global Finals 2026 in Tokyo will host the elite division of Valorant. Expect unparalleled aim and mind-bending strategy as Geekay takes on the global stage.',
+      banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+      organizer: 'Riot Games',
+      teams: JSON.stringify([
+        { name: "Geekay Esports", logo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100", region: "Saudi Arabia" },
+        { name: "Sentinels", logo: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=100&h=100", region: "North America" },
+        { name: "Fnatic", logo: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=100&h=100", region: "Europe" }
+      ]),
+      matches: JSON.stringify([
+        { date: "2026-10-12", teams: "Geekay vs Sentinels", score: "TBD", status: "upcoming" }
+      ]),
+      results: JSON.stringify({}),
+      media: JSON.stringify([]),
+      social: JSON.stringify([])
+    },
+    {
+      title: 'OWCS EMEA Stage 2',
+      game: 'VALORANT',
+      type: 'tournament',
+      start_date: '2026-06-24',
+      end_date: '2026-06-29',
+      time: '16:00',
+      region: 'EMEA',
+      status: 'live',
+      link: 'https://x.com/geekay_esports',
+      featured: 1,
+      description: 'The Overwatch Champions Series EMEA Stage 2 is currently underway, pitting the sharpest team-fighters in Europe and the Middle East against each other. Action-packed brawls and strategic compositions define this premier series.',
+      banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
+      organizer: 'Blizzard Entertainment / ESL',
+      teams: JSON.stringify([
+        { name: "Geekay Esports", logo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=100&h=100", region: "Saudi Arabia" },
+        { name: "Spacestation Gaming", logo: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=100&h=100", region: "EMEA" },
+        { name: "Twisted Minds", logo: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=100&h=100", region: "Saudi Arabia" }
+      ]),
+      matches: JSON.stringify([
+        { date: "2026-06-24", teams: "Geekay vs SSG", score: "2 - 1", status: "live" },
+        { date: "2026-06-25", teams: "Geekay vs Twisted Minds", score: "Upcoming", status: "upcoming" }
+      ]),
+      results: JSON.stringify({}),
+      media: JSON.stringify([]),
+      social: JSON.stringify([])
+    }
+  ];
+
+  const stmt = db.prepare(`
+    INSERT INTO events (
+      title, game, type, start_date, end_date, time, region, status, link, featured, description, banner, organizer, teams, matches, results, media, social, published
+    ) VALUES (
+      @title, @game, @type, @start_date, @end_date, @time, @region, @status, @link, @featured, @description, @banner, @organizer, @teams, @matches, @results, @media, @social, 1
+    )
+  `);
+
+  initialEvents.forEach(e => stmt.run(e));
+  console.log('Seeded initial events successfully.');
+}
+
+// Seed default news if table is empty
+const newsCount: any = db.prepare('SELECT COUNT(*) as count FROM news').get();
+if (newsCount.count === 0) {
+  console.log('Seeding initial news into database...');
+  const initialNews = [
+    {
+      title: 'GEEKAY SECURES SPOT IN INTERNATIONAL CHAMPIONSHIP QUALIFIERS',
+      slug: 'international-qualifications-2026',
+      category: 'TOURNAMENT',
+      date: 'FEB 26, 2026',
+      readTime: '5 MIN READ',
+      excerpt: 'After a dominant regional run, our elite squads have officially qualified for the global stage in London.',
+      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=800',
+      content: 'The competitive landscape in the MENA region is evolving at an unprecedented pace. As Geekay Esports continues to dominate the regional circuits, our focus remains on operational excellence and the professional development of our operatives. This latest update follows our strategic roadmap for the 2026 season, emphasizing our commitment to the global esports ecosystem.\n\nOur performance analytics team has been working closely with the coaching staff to refine tactics and ensure peak performance across all divisions. We are seeing significant growth in our strategic initiatives, particularly in the integration of youth talent into our championship-winning rosters.\n\nLooking ahead to the upcoming international qualifiers, we have implemented a rigorous training regimen designed to address high-pressure scenarios and diverse meta-shifts. Our operatives consistently demonstrate the resilience and technical proficiency required to compete at the highest levels of global competition.\n\nGeekay Esports values the overwhelming support from our community. Every victory is shared with our fans, and we are dedicated to delivering world-class entertainment and competitive success. Stay tuned for more operational briefings as we progress through the competitive calendar.',
+      author: 'GEEKAY HQ',
+      tags: JSON.stringify(['QUALIFIERS', 'CHAMPIONSHIP', 'LONDON', 'MENA']),
+      featured: 1,
+      published: 1,
+      related_team: 'Rocket League Squad',
+      related_game: 'RL'
+    },
+    {
+      title: 'OFFICIAL GEEKAY ROCKET LEAGUE DECALS NOW AVAILABLE IN-GAME',
+      slug: 'rl-decals-launch-2026',
+      category: 'ANNOUNCEMENT',
+      date: 'FEB 24, 2026',
+      readTime: '3 MIN READ',
+      excerpt: 'Represent the pride of MENA on the pitch. The 2026 GEEKAY decal collection is now live in the Rocket League item shop.',
+      image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200&h=800',
+      content: 'We are thrilled to announce that the official Geekay Esports in-game decals are now officially live in the Rocket League Esports Shop! This marks a historic milestone for our organization and the entire Middle East and North Africa competitive gaming scene.\n\nDesigned with our signature premium dark navy and gold aesthetics, the 2026 decal allows fans and players alike to represent GEEKAY on the pitch. The bundle features both Home and Away decal variants, along with dynamic wheels and customized banners to deck out your battle-car in style.\n\nEvery purchase directly supports our Rocket League roster and competitive operations as we strive for global glory. Head over to the Rocket League Esports Shop today, grab your gear, and show the world the power of GEEKAY!',
+      author: 'MARKETING TEAM',
+      tags: JSON.stringify(['DECALS', 'ROCKET LEAGUE', 'SHOP', 'CUSTOMIZATION']),
+      featured: 0,
+      published: 1,
+      related_team: 'Rocket League Squad',
+      related_game: 'RL'
+    },
+    {
+      title: 'MAJOR ROSTER UPDATE: GEEKAY REVEALS NEW TALENT FOR 2026 SEASON',
+      slug: 'major-roster-announcement-2026',
+      category: 'ROSTER',
+      date: 'FEB 22, 2026',
+      readTime: '4 MIN READ',
+      excerpt: 'Strategic reinforcements have arrived. Meet the new operatives joining our championship-winning divisions.',
+      image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=1200&h=800',
+      content: 'As we prepare to face the world on international stages, the GEEKAY command center is proud to announce strategic roster updates for our elite divisions. These roster acquisitions align perfectly with our goal of maintaining absolute regional dominance and breaking into the top tiers of international play.\n\nWe have secured some of the most mechanically gifted and tactically sound players in the EMEA region. These elite operatives have already begun training with our existing core and coaching staff, displaying incredible synergy and operational alignment.\n\n"We are building more than just a winning team; we are building a legacy," said our Competitive Director. "These new players bring a wealth of experience, hunger, and technical mastery that will elevate GEEKAY to new heights."\n\nMake sure to follow our socials to see the official player cards and upcoming roster deep-dive videos!',
+      author: 'COMPETITIVE OPERATIONS',
+      tags: JSON.stringify(['ROSTER', 'REINFORCEMENTS', 'SEASON 2026', 'NEW TALENT']),
+      featured: 0,
+      published: 1,
+      related_team: 'Valorant Squad',
+      related_game: 'VALORANT'
+    }
+  ];
+
+  const newsStmt = db.prepare(`
+    INSERT INTO news (
+      title, slug, category, date, readTime, excerpt, image, content, author, tags, featured, published, related_team, related_game
+    ) VALUES (
+      @title, @slug, @category, @date, @readTime, @excerpt, @image, @content, @author, @tags, @featured, @published, @related_team, @related_game
+    )
+  `);
+
+  initialNews.forEach(n => newsStmt.run(n));
+  console.log('Seeded initial news successfully.');
 }
 
 // Seed default admin if not exists
@@ -393,6 +636,7 @@ const authenticate = (req: any, res: any, next: any) => {
   createCrudRoutes('events', 'Event');
   createCrudRoutes('gallery', 'Gallery Item');
   createCrudRoutes('jobs', 'Job Opening');
+  createCrudRoutes('news', 'News Article');
 
   // --- Specialized Routes ---
   app.get(['/api/teams/:id/players', '/api/teams/:id/players/'], (req, res) => {
@@ -428,6 +672,7 @@ const authenticate = (req: any, res: any, next: any) => {
       events: db.prepare('SELECT COUNT(*) as count FROM events').get().count,
       gallery: db.prepare('SELECT COUNT(*) as count FROM gallery').get().count,
       jobs: db.prepare('SELECT COUNT(*) as count FROM jobs').get().count,
+      news: db.prepare('SELECT COUNT(*) as count FROM news').get().count,
     };
     res.json(stats);
   });

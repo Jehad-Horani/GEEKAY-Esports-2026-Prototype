@@ -1,10 +1,22 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, MapPin, Trophy, ChevronRight, ChevronLeft, Search, PlayCircle, Info, History, Activity, Target, Calendar, Radio, Crosshair, Clock, Globe, Shield } from 'lucide-react';
 import { MOCK_EVENTS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
 import { Event } from '../types';
+import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta, { generateEventSchema } from '../components/SEOMeta';
+
+export const getEventSlug = (title: string) => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+};
 
 // --- Sub-components ---
 
@@ -70,8 +82,10 @@ const CalendarInterface = () => {
            today.getFullYear() === currentDate.getFullYear();
   };
 
-  const handleEventClick = () => {
-    window.open('https://x.com/geekay_esports?lang=en', '_blank');
+  const navigate = useNavigate();
+
+  const handleEventClick = (title: string) => {
+    navigate(`/events/${getEventSlug(title)}`);
   };
 
   return (
@@ -133,14 +147,18 @@ const CalendarInterface = () => {
       </div>
 
       {/* 📅 CALENDAR HEADER */}
-      <div className="flex items-center justify-between mb-12 bg-[#081B3A] border border-slate-800 p-8">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 bg-[#081B3A] border border-slate-800 p-8">
+        <div>
+          <h2 className="font-syncopate text-lg md:text-xl font-black text-white uppercase tracking-widest mb-1">UPCOMING MATCHES</h2>
+          <span className="text-slate-500 font-inter text-xs uppercase">Live Operations Feed</span>
+        </div>
         <div className="flex items-center gap-6">
           <button onClick={prevMonth} className="p-2 hover:text-[#FFC400] transition-colors text-slate-500">
             <ChevronLeft size={24} />
           </button>
-          <h2 className="font-syncopate text-2xl md:text-4xl font-black text-white tracking-tighter">
-            {monthName} <span className="text-[#FFC400]">{year}</span>
-          </h2>
+          <span className="font-syncopate text-xl md:text-2xl font-black text-[#FFC400] tracking-tighter">
+            {monthName} <span className="text-white">{year}</span>
+          </span>
           <button onClick={nextMonth} className="p-2 hover:text-[#FFC400] transition-colors text-slate-500">
             <ChevronRight size={24} />
           </button>
@@ -194,7 +212,7 @@ const CalendarInterface = () => {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      onClick={handleEventClick}
+                      onClick={() => handleEventClick(event.title)}
                       className="bg-[#081B3A] border border-slate-800 p-2 rounded-sm cursor-pointer hover:border-[#FFC400] transition-all group/chip relative overflow-hidden"
                     >
                       <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#FFC400]" />
@@ -245,20 +263,52 @@ const CalendarInterface = () => {
 const Schedule = () => {
   const containerRef = useRef(null);
 
+  const scheduleSchemas = useMemo(() => {
+    return MOCK_EVENTS.map(ev => 
+      generateEventSchema(
+        ev.title,
+        ev.date,
+        ev.location || 'Online Arena',
+        'UPCOMING',
+        'TBD'
+      )
+    );
+  }, []);
+
   return (
     <div className="bg-[#0B1C2D] min-h-screen selection:bg-[#FFC400] selection:text-black pt-32 overflow-x-hidden" ref={containerRef}>
       <BlueprintBackground />
+      <SEOMeta 
+        title="Geekay Esports Schedule - Match Calendar & Events"
+        description="Official match calendar and schedule for Geekay Esports. Track tournament brackets, upcoming events, and professional rosters in real-time."
+        ogType="website"
+        schemas={scheduleSchemas}
+      />
       
       {/* 🧩 MAIN OPERATIONS LAYOUT — CALENDAR INTERFACE */}
       <section className="py-24 px-6 bg-[#0B1C2D] relative">
         <div className="max-w-screen-2xl mx-auto">
-          <div className="mb-24">
-            <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white leading-[0.85] mb-6">
-              EVENT <br /> <span className="text-[#FFC400]">SCHEDULE</span>
-            </h2>
-            <p className="text-slate-400 font-inter text-xl font-light tracking-wide max-w-2xl uppercase">
-              Track our global operations and upcoming tournament appearances.
-            </p>
+          <Breadcrumbs />
+          <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <h1 className="font-syncopate text-4xl md:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85] mb-6">
+                GEEKAY ESPORTS <br /> <span className="text-[#FFC400]">SCHEDULE</span>
+              </h1>
+              <p className="text-slate-400 font-inter text-base font-light tracking-wide max-w-2xl uppercase">
+                Track our global operations and upcoming tournament appearances.
+              </p>
+            </div>
+            
+            <div className="flex gap-4">
+              <div className="border border-slate-800 p-4 bg-[#081B3A]/40">
+                <h2 className="font-syncopate text-xs font-black text-[#FFC400] tracking-wider uppercase mb-1">2026 SCHEDULE</h2>
+                <span className="text-slate-500 font-inter text-[10px] uppercase">Active Season</span>
+              </div>
+              <div className="border border-slate-900 p-4 bg-[#081B3A]/20 opacity-60">
+                <h2 className="font-syncopate text-xs font-black text-slate-400 tracking-wider uppercase mb-1">2025 SCHEDULE</h2>
+                <span className="text-slate-500 font-inter text-[10px] uppercase">Archived</span>
+              </div>
+            </div>
           </div>
           
           <CalendarInterface />

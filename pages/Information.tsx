@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Mail, Phone, MapPin } from 'lucide-react';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,7 @@ const Information = () => {
   return (
     <div className="min-h-screen pt-32 pb-24">
       <div className="max-w-7xl mx-auto px-6">
+        <Breadcrumbs />
         <header className="mb-24">
            <span className="font-syncopate text-yellow-500 text-[10px] tracking-widest font-bold mb-4 block uppercase">INTEL</span>
            <h1 className="font-syncopate text-5xl md:text-7xl font-bold uppercase">Resources & FAQ</h1>

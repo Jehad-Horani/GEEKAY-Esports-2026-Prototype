@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { 
   ChevronRight, 
   ChevronLeft,
@@ -24,13 +24,16 @@ import {
   Flame,
   Zap,
   User,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Users as UsersIcon
 } from 'lucide-react';
 
 import SocialFollowerIcon from '../components/SocialFollowerIcon';
 import { MOCK_TEAMS, MOCK_CREATORS } from '../constants';
 import { Player, Team, Trophy, Creator } from '../types';
 import ArenaButton from '../components/ui/ArenaButton';
+import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta, { generateSportsTeamSchema } from '../components/SEOMeta';
 
 // Flag mapping helper
 const getFlagEmoji = (nationality?: string) => {
@@ -88,6 +91,15 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void, onSwitchTeam: (id: 
     return MOCK_TEAMS.filter(t => t.id !== team.id);
   }, [team.id]);
 
+  const teamSchema = useMemo(() => {
+    const teamPlayers = team.players.map(p => ({
+      nickname: p.nickname,
+      role: p.role,
+      url: `https://geekayesports.com/players/${p.nickname.toLowerCase()}`
+    }));
+    return [generateSportsTeamSchema(team.name, teamPlayers, team.region, team.logo, team.achievements)];
+  }, [team]);
+
   return (
     <motion.div 
       initial={{ opacity: 0 }} 
@@ -95,6 +107,12 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void, onSwitchTeam: (id: 
       exit={{ opacity: 0 }} 
       className="bg-[#081B3A] pb-32 relative"
     >
+      <SEOMeta 
+        title={`${team.name} - Geekay Esports Professional ${team.game} Roster`}
+        description={`Official competitive roster details for the Geekay Esports ${team.name} squad. Check active players, team records, recent achievements, and championship details.`}
+        ogType="website"
+        schemas={teamSchema}
+      />
       {/* ====================================================
           TEAM HERO SECTION
           ==================================================== */}
@@ -146,9 +164,9 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void, onSwitchTeam: (id: 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="font-syncopate text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none"
+            className="font-syncopate text-3xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none"
           >
-            GEEKAY <span className="text-[#FFC400]">{team.name}</span>
+            {team.name} <span className="text-[#FFC400]">- GEEKAY ESPORTS ROSTER</span>
           </motion.h1>
         </div>
       </div>
@@ -208,7 +226,7 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void, onSwitchTeam: (id: 
           <div className="flex items-end justify-between mb-12">
             <div>
               <span className="font-syncopate text-[#FFC400] text-[10px] tracking-[0.5em] font-black mb-2 block uppercase">TACTICAL PERSONNEL</span>
-              <h2 className="font-syncopate text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">ACTIVE ROSTER</h2>
+              <h2 className="font-syncopate text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">ACTIVE PLAYERS</h2>
             </div>
             <div className="hidden md:block h-[1px] flex-grow mx-12 bg-slate-800/80" />
             <span className="font-syncopate text-slate-500 text-xs tracking-widest uppercase">{team.players.length} OPERATIVES</span>
@@ -316,7 +334,7 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void, onSwitchTeam: (id: 
           <div className="flex items-end justify-between mb-12">
             <div>
               <span className="font-syncopate text-[#FFC400] text-[10px] tracking-[0.5em] font-black mb-2 block uppercase">VISUAL ARCHIVES</span>
-              <h2 className="font-syncopate text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">TEAM MEDIA</h2>
+              <h2 className="font-syncopate text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">RECENT MEDIA</h2>
             </div>
             <div className="hidden md:block h-[1px] flex-grow mx-12 bg-slate-800/80" />
             <ImageIcon size={32} className="text-slate-700" />
@@ -390,6 +408,9 @@ const TeamDetail: React.FC<{ team: Team, onBack: () => void, onSwitchTeam: (id: 
 
 // --- Main Teams Listing Component ---
 const DivisionCard: React.FC<{ team: Team; onClick: () => void; index: number }> = ({ team, onClick, index }) => {
+  const topAchievement = team.trophies?.[0]?.title || 'PRO CHAMPIONSHIP SERIES';
+  const rosterCount = team.players?.length || 0;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -422,6 +443,17 @@ const DivisionCard: React.FC<{ team: Team; onClick: () => void; index: number }>
         <h3 className="font-syncopate text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-none mb-4">
           {team.name}
         </h3>
+        
+        <div className="flex flex-col gap-2 mb-4">
+          <div className="flex items-center gap-1.5 text-[#FFC400]">
+            <TrophyIcon size={12} className="shrink-0" />
+            <span className="font-syncopate text-[8px] tracking-wider uppercase line-clamp-1">{topAchievement}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <UsersIcon size={12} className="shrink-0" />
+            <span className="font-syncopate text-[8px] tracking-wider uppercase">{rosterCount} ACTIVE OPERATIVES</span>
+          </div>
+        </div>
         
         <div className="flex items-center justify-between pt-4 border-t border-white/10">
           <div className="flex flex-col">
@@ -493,19 +525,35 @@ const CreatorCard: React.FC<{ creator: Creator; index: number }> = ({ creator, i
 };
 
 const Teams = () => {
+  const { teamId } = useParams<{ teamId?: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedTeamId = searchParams.get('id') || null;
+  const navigate = useNavigate();
+
+  const selectedTeamId = useMemo(() => {
+    return teamId || searchParams.get('id') || null;
+  }, [teamId, searchParams]);
 
   const selectedTeam = useMemo(() => 
     MOCK_TEAMS.find(t => t.id === selectedTeamId) || null,
     [selectedTeamId]
   );
 
+  const directorySchema = useMemo(() => {
+    return MOCK_TEAMS.map(t => {
+      const teamPlayers = t.players.map(p => ({
+        nickname: p.nickname,
+        role: p.role,
+        url: `https://geekayesports.com/players/${p.nickname.toLowerCase()}`
+      }));
+      return generateSportsTeamSchema(t.name, teamPlayers, t.region, t.logo, t.achievements);
+    });
+  }, []);
+
   const handleSelectTeam = (id: string | null) => {
     if (id) {
-      setSearchParams({ id });
+      navigate(`/teams/${id}`);
     } else {
-      setSearchParams({});
+      navigate('/teams');
     }
   };
 
@@ -519,17 +567,28 @@ const Teams = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
+            <SEOMeta 
+              title="Geekay Esports Rosters - Professional Gaming Divisions"
+              description="Explore the official professional rosters of Geekay Esports. Elite multi-division teams competing in Rocket League, PUBG Mobile, Overwatch, Honor of Kings, and Fortnite."
+              ogType="website"
+              schemas={directorySchema}
+            />
             {/* ⚔ DIVISION GRID — “ACTIVE TEAMS” */}
             <section className="py-24 md:py-32 px-6 bg-[#081B3A] relative border-b border-white/5 pt-36">
               <div className="max-w-7xl mx-auto">
+                <Breadcrumbs />
                 <div className="mb-16 flex items-end justify-between">
                   <div className="max-w-2xl">
-                    <span className="font-syncopate text-[#FFC400] text-[10px] tracking-[0.5em] font-black mb-2 block uppercase">PRO DIVISIONS</span>
-                    <h2 className="font-syncopate text-4xl md:text-7xl font-bold uppercase tracking-tighter text-white leading-[0.85]">
-                      ACTIVE <br /> <span className="text-[#FFC400]">TEAMS</span>
-                    </h2>
+                    <h2 className="font-syncopate text-[#FFC400] text-[10px] tracking-[0.5em] font-black mb-2 block uppercase">ELITE DIVISIONS</h2>
+                    <h1 className="font-syncopate text-4xl md:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85]">
+                      GEEKAY ESPORTS <br /> <span className="text-[#FFC400]">ROSTERS</span>
+                    </h1>
                   </div>
                   <div className="hidden md:block h-[1px] flex-grow mx-20 bg-slate-800" />
+                </div>
+
+                <div className="mb-8">
+                  <h2 className="font-syncopate text-lg font-black text-slate-400 uppercase tracking-widest">ACTIVE ROSTERS</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -567,18 +626,23 @@ const Teams = () => {
             </section>
           </motion.div>
         ) : (
-          <TeamDetail 
-            key="team-detail-view"
-            team={selectedTeam} 
-            onBack={() => {
-              handleSelectTeam(null);
-              window.scrollTo(0, 0);
-            }} 
-            onSwitchTeam={(id) => {
-              handleSelectTeam(id);
-              window.scrollTo(0, 0);
-            }}
-          />
+          <div className="relative">
+            <div className="absolute top-32 left-0 right-0 z-50">
+              <Breadcrumbs />
+            </div>
+            <TeamDetail 
+              key="team-detail-view"
+              team={selectedTeam} 
+              onBack={() => {
+                handleSelectTeam(null);
+                window.scrollTo(0, 0);
+              }} 
+              onSwitchTeam={(id) => {
+                handleSelectTeam(id);
+                window.scrollTo(0, 0);
+              }}
+            />
+          </div>
         )}
       </AnimatePresence>
     </div>

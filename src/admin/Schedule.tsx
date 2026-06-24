@@ -207,7 +207,7 @@ const AdminSchedule = () => {
               {uploading ? 'UPLOADING...' : 'UPLOAD_EXCEL'}
             </ArenaButton>
           </div>
-          <ArenaButton onClick={() => setEditingItem({ title: '', game: 'RL', type: 'match', start_date: '', end_date: '', time: '', region: '', status: 'upcoming', link: '', featured: 0, description: '', published: 0 })}>
+          <ArenaButton onClick={() => setEditingItem({ title: '', game: 'RL', type: 'match', start_date: '', end_date: '', time: '', region: 'GLOBAL', status: 'upcoming', link: '', featured: 0, description: '', banner: '', organizer: '', teams: '[]', matches: '[]', results: '{}', media: '[]', social: '[]', published: 0 })}>
             <Plus size={18} className="mr-2" /> ADD_EVENT
           </ArenaButton>
         </div>
@@ -299,7 +299,7 @@ const AdminSchedule = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#081B3A] border border-white/10 w-full max-w-2xl relative z-10 overflow-hidden"
+            className="bg-[#081B3A] border border-white/10 w-full max-w-2xl relative z-10 overflow-hidden max-h-[90vh] flex flex-col"
           >
             <div className="absolute top-0 left-0 w-full h-1 bg-[#FFC400]" />
             <div className="p-8 border-b border-white/5 flex items-center justify-between">
@@ -309,7 +309,7 @@ const AdminSchedule = () => {
               <button onClick={() => setEditingItem(null)} className="text-slate-500 hover:text-white"><X size={24} /></button>
             </div>
             
-            <form onSubmit={handleSave} className="p-8 space-y-6">
+            <form onSubmit={handleSave} className="p-8 space-y-6 overflow-y-auto flex-grow">
               <div className="space-y-2">
                 <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Event Title</label>
                 <input 
@@ -387,6 +387,112 @@ const AdminSchedule = () => {
                     value={editingItem.link}
                     onChange={e => setEditingItem({...editingItem, link: e.target.value})}
                     className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-syncopate text-xs focus:outline-none focus:border-[#FFC400]"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Event Description</label>
+                <textarea 
+                  value={editingItem.description || ''}
+                  onChange={e => setEditingItem({...editingItem, description: e.target.value})}
+                  className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-syncopate text-xs focus:outline-none focus:border-[#FFC400] min-h-[100px]"
+                  placeholder="Enter detailed description..."
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">End Date</label>
+                  <input 
+                    type="date" 
+                    value={editingItem.end_date || ''}
+                    onChange={e => setEditingItem({...editingItem, end_date: e.target.value})}
+                    className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-syncopate text-xs focus:outline-none focus:border-[#FFC400]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Organizer</label>
+                  <input 
+                    type="text" 
+                    value={editingItem.organizer || ''}
+                    onChange={e => setEditingItem({...editingItem, organizer: e.target.value})}
+                    className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-syncopate text-xs focus:outline-none focus:border-[#FFC400]"
+                    placeholder="e.g. Psyonix / BLAST"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Region / Location</label>
+                  <input 
+                    type="text" 
+                    value={editingItem.region || ''}
+                    onChange={e => setEditingItem({...editingItem, region: e.target.value})}
+                    className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-syncopate text-xs focus:outline-none focus:border-[#FFC400]"
+                    placeholder="e.g. EMEA / London"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Banner Image URL</label>
+                  <input 
+                    type="text" 
+                    value={editingItem.banner || ''}
+                    onChange={e => setEditingItem({...editingItem, banner: e.target.value})}
+                    className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-syncopate text-xs focus:outline-none focus:border-[#FFC400]"
+                    placeholder="https://..."
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Participating Teams (JSON)</label>
+                <textarea 
+                  value={editingItem.teams || ''}
+                  onChange={e => setEditingItem({...editingItem, teams: e.target.value})}
+                  className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-mono text-xs focus:outline-none focus:border-[#FFC400] min-h-[100px]"
+                  placeholder='[{"name": "Team Name", "logo": "url", "region": "Saudi Arabia"}]'
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Matches & Schedules (JSON)</label>
+                <textarea 
+                  value={editingItem.matches || ''}
+                  onChange={e => setEditingItem({...editingItem, matches: e.target.value})}
+                  className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-mono text-xs focus:outline-none focus:border-[#FFC400] min-h-[100px]"
+                  placeholder='[{"date": "2026-02-10", "teams": "Team A vs Team B", "score": "3 - 2", "status": "completed"}]'
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Podium Results (JSON)</label>
+                <textarea 
+                  value={editingItem.results || ''}
+                  onChange={e => setEditingItem({...editingItem, results: e.target.value})}
+                  className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-mono text-xs focus:outline-none focus:border-[#FFC400] min-h-[60px]"
+                  placeholder='{"winner": "Team A", "runnerUp": "Team B", "mvp": "Player"}'
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Media Files JSON</label>
+                  <textarea 
+                    value={editingItem.media || ''}
+                    onChange={e => setEditingItem({...editingItem, media: e.target.value})}
+                    className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-mono text-xs focus:outline-none focus:border-[#FFC400] min-h-[80px]"
+                    placeholder='[{"type": "photo", "url": "https://..."}]'
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="font-syncopate text-[8px] text-slate-500 font-bold uppercase tracking-widest">Social Posts JSON</label>
+                  <textarea 
+                    value={editingItem.social || ''}
+                    onChange={e => setEditingItem({...editingItem, social: e.target.value})}
+                    className="w-full bg-[#040E1E] border border-slate-800 p-4 text-white font-mono text-xs focus:outline-none focus:border-[#FFC400] min-h-[80px]"
+                    placeholder='[{"platform": "twitter", "handle": "@...", "text": "..."}]'
                   />
                 </div>
               </div>

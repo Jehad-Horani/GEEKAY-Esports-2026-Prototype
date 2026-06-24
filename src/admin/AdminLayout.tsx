@@ -15,7 +15,8 @@ import {
   Menu,
   X,
   ChevronRight,
-  Mail
+  Mail,
+  Newspaper
 } from 'lucide-react';
 
 import { auth } from '../lib/firebase';
@@ -58,6 +59,7 @@ const AdminLayout = () => {
     { name: 'Schedule', path: '/admin/schedule', icon: <Calendar size={20} /> },
     { name: 'Gallery', path: '/admin/gallery', icon: <ImageIcon size={20} /> },
     { name: 'Jobs', path: '/admin/jobs', icon: <Briefcase size={20} /> },
+    { name: 'News', path: '/admin/news', icon: <Newspaper size={20} /> },
     { name: 'Subscribers', path: '/admin/subscribers', icon: <Mail size={20} /> },
     { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
     { name: 'Users', path: '/admin/users', icon: <Users size={20} />, adminOnly: true },

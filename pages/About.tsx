@@ -1,9 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Play, ArrowRight, Activity, ChevronRight, ChevronLeft, Zap, Target, Shield, Cpu, X, Mail, Globe, Trophy, MapPin } from 'lucide-react';
+import { Play, ArrowRight, Activity, ChevronRight, ChevronLeft, Zap, Target, Shield, Cpu, X, Mail, Globe, Trophy, MapPin, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ArenaButton from '../components/ui/ArenaButton';
+import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta from '../components/SEOMeta';
 
 // --- Utility: Animated Counter ---
 const Counter = ({ value, duration = 2 }: { value: string; duration?: number }) => {
@@ -154,14 +156,20 @@ const About = () => {
   ];
 
   return (
-    <div className="bg-[#081B3A] overflow-x-hidden selection:bg-[#FFC400] selection:text-black pt-0">
+    <div className="bg-[#081B3A] overflow-x-hidden selection:bg-[#FFC400] selection:text-black pt-32">
+      <SEOMeta 
+        title="About Geekay Esports - Organization, Vision, Leadership"
+        description="Learn about Geekay Esports. Founded in 2021, we are a professional Middle Eastern esports organization representing elite rosters globally."
+        ogType="website"
+      />
       
       {/* 📊 SECTION — PERFORMANCE SNAPSHOT */}
-      <section className="py-32 md:py-48 px-6 md:px-12 bg-[#040E1E] relative border-b border-white/5 overflow-hidden">
+      <section className="py-24 px-6 md:px-12 bg-[#040E1E] relative border-b border-white/5 overflow-hidden">
         {/* Background Grid Overlay */}
         <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto relative z-10">
+          <Breadcrumbs />
           
           {/* TOP: EXECUTIVE HEADLINE */}
           <div className="mb-20 max-w-4xl">
@@ -171,10 +179,10 @@ const About = () => {
               transition={{ duration: 0.8 }} 
               viewport={{ once: true }}
             >
-              <h2 className="font-syncopate text-5xl md:text-7xl font-black leading-[0.9] tracking-tighter uppercase text-white mb-10">
-                WHO IS<br />
-                <span className="text-[#FFC400]">GEEKAY ESPORTS?</span>
-              </h2>
+              <h1 className="font-syncopate text-5xl md:text-7xl font-black leading-[0.9] tracking-tighter uppercase text-white mb-10">
+                GEEKAY ESPORTS<br />
+                <span className="text-[#FFC400]">ORGANIZATION</span>
+              </h1>
 
               <div className="space-y-8 border-l border-white/10 pl-10 py-2">
                 <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed font-syncopate tracking-tight uppercase">
@@ -199,10 +207,64 @@ const About = () => {
         </div>
       </section>
 
+      {/* 🔮 SECTION — VISION AND MISSION */}
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-[#081B3A] border-b border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-[0.02] pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <SectionTitle title="VISION AND" titleAccent="MISSION" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="border border-slate-800 p-10 bg-[#040E1E]/40 relative overflow-hidden flex flex-col justify-between"
+            >
+              <div className="absolute top-0 left-0 w-2 h-2 bg-[#FFC400]" />
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 text-[#FFC400]">
+                  <Target size={28} />
+                  <span className="font-syncopate text-xs tracking-widest font-black uppercase">OUR STRATEGIC VISION</span>
+                </div>
+                <p className="text-slate-300 font-inter text-base font-light leading-relaxed">
+                  To establish Geekay Esports as the definitive benchmark for competitive gaming in the Middle East and North Africa. We aim to export regional athletic excellence onto the global stage, proving that champions forged in MENA belong under international lights.
+                </p>
+              </div>
+              <div className="mt-8 pt-6 border-t border-slate-900 text-slate-500 font-mono text-[9px] tracking-wider uppercase">
+                TARGETS: INT_PRESTIGE // GLOBAL_STANDARDS
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="border border-slate-800 p-10 bg-[#040E1E]/40 relative overflow-hidden flex flex-col justify-between"
+            >
+              <div className="absolute top-0 right-0 w-2 h-2 bg-white" />
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 text-white">
+                  <Award size={28} className="text-[#FFC400]" />
+                  <span className="font-syncopate text-xs tracking-widest font-black uppercase">OUR CORE MISSION</span>
+                </div>
+                <p className="text-slate-300 font-inter text-base font-light leading-relaxed">
+                  To recruit, nurture, and optimize elite athletic talent through dedicated, data-backed operational coaching. We construct high-performance environments and establish regional infrastructure that enables our teams to consistently secure tournament victories.
+                </p>
+              </div>
+              <div className="mt-8 pt-6 border-t border-slate-900 text-slate-500 font-mono text-[9px] tracking-wider uppercase">
+                OPERATIONS: TALENT_ENGINES // ATHLETE_HYPERDRIVE
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* 👥 SECTION — COMMAND STRUCTURE (Leadership) */}
       <section className="py-24 md:py-48 px-6 md:px-12 bg-[#040E1E] border-b border-white/5">
         <div className="max-w-7xl mx-auto">
-          <SectionTitle title="LEADERSHIP" />
+          <SectionTitle title="LEADERSHIP" titleAccent="TEAM" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
             {leadershipData.map((leader, i) => (
@@ -245,6 +307,44 @@ const About = () => {
                     </div>
                   </div>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 🤝 SECTION — CORPORATE PARTNERS */}
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-[#040E1E] border-b border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-[0.02] pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <SectionTitle title="CORPORATE" titleAccent="PARTNERS" />
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+            {[
+              { name: "GEEKAY RETAIL", desc: "Leading MENA Gaming Distributor", category: "PARENT COMPANY" },
+              { name: "PREDATOR GAMING", desc: "Official High-Performance PC Partner", category: "ENDEMIC SPONSOR" },
+              { name: "INTEL CORE", desc: "Elite Hardware & Processor Supplier", category: "TECHNICAL SPONSOR" },
+              { name: "RAZER GEAR", desc: "Professional Grade Peripherals", category: "PERIPHERAL SPONSOR" }
+            ].map((partner, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="group p-8 bg-[#081B3A]/40 border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-300 relative overflow-hidden flex flex-col justify-between h-[180px]"
+              >
+                <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-[#FFC400]/5 to-transparent rounded-bl-sm" />
+                <div>
+                  <span className="text-slate-500 font-syncopate text-[8px] tracking-[0.3em] uppercase block mb-2">{partner.category}</span>
+                  <h3 className="text-white font-syncopate text-base font-black tracking-wider uppercase group-hover:text-[#FFC400] transition-colors">{partner.name}</h3>
+                </div>
+                <p className="text-slate-400 font-inter text-xs font-light leading-relaxed mt-4">
+                  {partner.desc}
+                </p>
+                
+                {/* Subtle visual accent */}
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-slate-800 group-hover:bg-[#FFC400]/30 transition-colors" />
               </motion.div>
             ))}
           </div>

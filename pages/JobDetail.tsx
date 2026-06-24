@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Briefcase, ChevronLeft, Mail, CheckCircle2, ArrowRight } from 'lucide-react';
 import { MOCK_JOBS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const JobDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -35,6 +36,7 @@ const JobDetail = () => {
       <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
       
       <div className="container mx-auto px-6 relative z-10">
+        <Breadcrumbs />
         {/* Navigation */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}

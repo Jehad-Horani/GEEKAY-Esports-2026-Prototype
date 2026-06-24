@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Twitter, Twitch, Instagram, Youtube, Facebook, Heart, MessageCircle, Share2, Users, Zap, TrendingUp, BarChart3, Globe, Play, ArrowRight, Activity, Share, Target, Cpu, RefreshCw, Shield, Maximize2, X as CloseIcon, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import ArenaButton from '../components/ui/ArenaButton';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 // --- Components ---
 
@@ -366,8 +367,9 @@ const Media = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-6 relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="container mx-auto px-6 relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-24">
           <div className="lg:col-span-8">
+            <Breadcrumbs />
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
               <motion.div 
                 initial={{ width: 0 }}
