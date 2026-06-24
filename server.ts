@@ -186,23 +186,29 @@ db.exec(`
 `);
 console.log('Database schema initialized successfully');
 
-// Migration: Add display_order to events if missing
-try {
-  db.prepare('SELECT display_order FROM events LIMIT 1').get();
-} catch (e) {
-  console.log('Adding display_order column to events table...');
-  db.exec('ALTER TABLE events ADD COLUMN display_order INTEGER DEFAULT 0');
-}
-
-// Additional events table migrations
+// Additional migrations helper
 const addColumnSafely = (table: string, column: string, type: string) => {
   try {
     db.prepare(`SELECT ${column} FROM ${table} LIMIT 1`).get();
   } catch (e) {
     console.log(`Adding ${column} column to ${table} table...`);
-    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+    try {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+    } catch (alterErr) {
+      console.error(`Failed to alter table ${table} column ${column}:`, alterErr);
+    }
   }
 };
+
+// Migrate all tables to have display_order
+addColumnSafely('leadership', 'display_order', 'INTEGER DEFAULT 0');
+addColumnSafely('teams', 'display_order', 'INTEGER DEFAULT 0');
+addColumnSafely('creators', 'display_order', 'INTEGER DEFAULT 0');
+addColumnSafely('events', 'display_order', 'INTEGER DEFAULT 0');
+addColumnSafely('gallery', 'display_order', 'INTEGER DEFAULT 0');
+addColumnSafely('jobs', 'display_order', 'INTEGER DEFAULT 0');
+addColumnSafely('players', 'display_order', 'INTEGER DEFAULT 0');
+addColumnSafely('news', 'display_order', 'INTEGER DEFAULT 0');
 
 addColumnSafely('events', 'banner', 'TEXT');
 addColumnSafely('events', 'organizer', 'TEXT');

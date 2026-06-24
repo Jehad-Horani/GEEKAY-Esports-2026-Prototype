@@ -78,9 +78,13 @@ const EventDetail = () => {
     const fetchEvents = async () => {
       try {
         const res = await fetch('/api/events');
-        if (res.ok) {
+        if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
           const data = await res.json();
-          setDbEvents(data);
+          if (Array.isArray(data)) {
+            setDbEvents(data);
+          } else {
+            console.warn('API returned non-array data for events:', data);
+          }
         }
       } catch (err) {
         console.error('Failed to fetch events:', err);
@@ -93,7 +97,7 @@ const EventDetail = () => {
 
   // Normalization logic to merge database and mock events and select the matched one
   const matchedEvent = useMemo(() => {
-    const normalized = (dbEvents || []).map(e => ({
+    const normalized = (Array.isArray(dbEvents) ? dbEvents : []).map(e => ({
       ...e,
       title: e.title || '',
       status: e.status ? e.status.toLowerCase() : 'upcoming',
@@ -196,7 +200,7 @@ const EventDetail = () => {
   const relatedEvents = useMemo(() => {
     if (!matchedEvent) return [];
     
-    const all = (dbEvents || []).filter(e => e.title && getEventSlug(e.title) !== eventName).map(e => ({
+    const all = (Array.isArray(dbEvents) ? dbEvents : []).filter(e => e.title && getEventSlug(e.title) !== eventName).map(e => ({
       ...e,
       title: e.title || '',
       status: e.status ? e.status.toLowerCase() : 'upcoming',

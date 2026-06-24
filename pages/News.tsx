@@ -29,9 +29,13 @@ const News = () => {
     const fetchNews = async () => {
       try {
         const res = await fetch('/api/news');
-        if (res.ok) {
+        if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
           const data = await res.json();
-          setDbNews(data);
+          if (Array.isArray(data)) {
+            setDbNews(data);
+          } else {
+            console.warn('API returned non-array data for news:', data);
+          }
         }
       } catch (err) {
         console.error('Failed to fetch news from API:', err);
@@ -44,7 +48,7 @@ const News = () => {
 
   // Merge & normalize database articles and fallback mock articles
   const allArticles = useMemo(() => {
-    const normalized: any[] = dbNews.map(item => ({
+    const normalized: any[] = (Array.isArray(dbNews) ? dbNews : []).map(item => ({
       ...item,
       id: String(item.id),
       featured: item.featured === 1 || item.featured === true,
@@ -54,7 +58,7 @@ const News = () => {
     // Append MOCK_NEWS items if they don't already exist by slug
     MOCK_NEWS.forEach(mock => {
       const exists = normalized.some(
-        item => item.slug.toLowerCase().trim() === mock.slug.toLowerCase().trim()
+        item => (item.slug || '').toLowerCase().trim() === (mock.slug || '').toLowerCase().trim()
       );
       if (!exists) {
         normalized.push({

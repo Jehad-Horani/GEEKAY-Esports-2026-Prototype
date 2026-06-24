@@ -17,9 +17,13 @@ const NewsDetail = () => {
     const fetchNews = async () => {
       try {
         const res = await fetch('/api/news');
-        if (res.ok) {
+        if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
           const data = await res.json();
-          setDbNews(data);
+          if (Array.isArray(data)) {
+            setDbNews(data);
+          } else {
+            console.warn('API returned non-array data for news:', data);
+          }
         }
       } catch (err) {
         console.error('Failed to fetch news from API:', err);
@@ -32,7 +36,7 @@ const NewsDetail = () => {
   }, [slug]);
 
   const article = useMemo(() => {
-    let found = dbNews.find(n => n.slug === slug);
+    let found = (Array.isArray(dbNews) ? dbNews : []).find(n => n.slug === slug);
     if (!found) {
       found = MOCK_NEWS.find(n => n.slug === slug);
     }
@@ -55,7 +59,7 @@ const NewsDetail = () => {
 
   const nextBriefings = useMemo(() => {
     if (!article) return [];
-    const filtered = dbNews.filter(n => n.slug !== article.slug && (n.published === 1 || n.published === true || n.published === undefined));
+    const filtered = (Array.isArray(dbNews) ? dbNews : []).filter(n => n.slug !== article.slug && (n.published === 1 || n.published === true || n.published === undefined));
     MOCK_NEWS.forEach(mock => {
       if (filtered.length < 2 && mock.slug !== article.slug && !filtered.some(n => n.slug === mock.slug)) {
         filtered.push(mock);
