@@ -6,6 +6,7 @@ import { MOCK_JOBS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
 import { Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta from '../components/SEOMeta';
 
 const BenefitCard = ({ icon, title, index }: { icon: React.ReactNode, title: string, index: number }) => (
   <motion.div
@@ -36,6 +37,11 @@ const Careers = () => {
 
   return (
     <div className="bg-[#081B3A] min-h-screen overflow-x-hidden selection:bg-[#FFC400] selection:text-black">
+      <SEOMeta 
+        title="Careers - Join Geekay Esports"
+        description="Build the future of esports in the Middle East. Join Geekay Esports and work with elite rosters, coaching staff, and management."
+        ogType="website"
+      />
       
       {/* 🎬 SECTION 1: HERO */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">

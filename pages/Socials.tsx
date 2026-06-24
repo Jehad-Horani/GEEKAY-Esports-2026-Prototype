@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'fra
 import { Twitter, Twitch, Instagram, Youtube, Facebook, Heart, MessageCircle, Share2, Users, Zap, TrendingUp, BarChart3, Globe, Play, ArrowRight, Activity, Share, Target, Cpu, RefreshCw, Shield, Maximize2, X as CloseIcon, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import ArenaButton from '../components/ui/ArenaButton';
 import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta from '../components/SEOMeta';
 
 // --- Components ---
 

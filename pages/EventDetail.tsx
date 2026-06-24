@@ -9,6 +9,7 @@ import {
 import { MOCK_EVENTS } from '../constants';
 import { getEventSlug } from './Schedule';
 import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta from '../components/SEOMeta';
 
 const CountdownTimer: React.FC<{ targetDate: string }> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -241,8 +242,8 @@ const EventDetail = () => {
         <p className="text-slate-400 font-inter text-sm max-w-md uppercase mb-8">
           The operation you are attempting to locate is outside current clearance parameters or has been archived.
         </p>
-        <Link to="/schedule" className="bg-[#FFC400] text-black px-8 py-4 font-syncopate text-xs font-black tracking-widest uppercase hover:bg-white transition-colors">
-          RETURN TO SCHEDULE
+        <Link to="/events" className="bg-[#FFC400] text-black px-8 py-4 font-syncopate text-xs font-black tracking-widest uppercase hover:bg-white transition-colors">
+          RETURN TO EVENTS
         </Link>
       </div>
     );
@@ -255,6 +256,12 @@ const EventDetail = () => {
 
   return (
     <div className="bg-[#0B1C2D] min-h-screen selection:bg-[#FFC400] selection:text-black">
+      <SEOMeta 
+        title={`${matchedEvent.title} - Match & Tournament Details`}
+        description={matchedEvent.description || `Live professional esports match details featuring Geekay Esports in the ${matchedEvent.game} division.`}
+        ogImage={matchedEvent.banner}
+        ogType="article"
+      />
       
       {/* ====================================================
           1) EVENT HERO SECTION
@@ -277,11 +284,11 @@ const EventDetail = () => {
         <div className="absolute top-28 left-8 md:left-12 z-50 flex flex-col gap-4">
           <Breadcrumbs />
           <Link 
-            to="/schedule" 
+            to="/events" 
             className="flex items-center gap-3 text-slate-400 hover:text-[#FFC400] transition-all font-syncopate text-[10px] font-black uppercase tracking-[0.4em] group"
           >
             <ChevronLeft size={16} className="group-hover:-translate-x-2 transition-transform" />
-            <span>← BACK TO SCHEDULE</span>
+            <span>← BACK TO EVENTS</span>
           </Link>
         </div>
 
@@ -651,8 +658,8 @@ const EventDetail = () => {
           <section className="py-12 border-t border-slate-800">
             <div className="flex items-center justify-between mb-8">
               <h2 className="font-syncopate text-lg font-black text-white tracking-widest uppercase">RELATED OPERATIONS</h2>
-              <Link to="/schedule" className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase flex items-center gap-1">
-                <span>VIEW FULL SCHEDULE</span>
+              <Link to="/events" className="text-[#FFC400] font-syncopate text-[10px] font-black tracking-widest uppercase flex items-center gap-1">
+                <span>VIEW FULL HUB</span>
                 <ArrowRight size={12} />
               </Link>
             </div>

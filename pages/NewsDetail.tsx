@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, Clock, Share2, Twitter, Facebook, Link as LinkIcon
 import { MOCK_NEWS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
 import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta from '../components/SEOMeta';
 
 const NewsDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -106,6 +107,12 @@ const NewsDetail = () => {
 
   return (
     <div className="min-h-screen bg-[#081B3A] pt-32 pb-20 relative overflow-hidden">
+      <SEOMeta 
+        title={`${article.title} - Geekay Esports News`}
+        description={article.excerpt || article.content?.slice(0, 150) || `Latest news and updates regarding ${article.title} at Geekay Esports.`}
+        ogImage={article.image}
+        ogType="article"
+      />
       <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#FFC400]/5 to-transparent pointer-events-none" />
       

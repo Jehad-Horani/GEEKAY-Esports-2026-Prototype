@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Mail, Phone, MapPin } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta from '../components/SEOMeta';
 
 const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,11 @@ const FAQItem = ({ question, answer }: { question: string, answer: string }) => 
 const Information = () => {
   return (
     <div className="min-h-screen pt-32 pb-24">
+      <SEOMeta 
+        title="Resources & FAQ - Geekay Esports"
+        description="Access official Geekay Esports resources, contact information, frequently asked questions, and office locations in Riyadh."
+        ogType="website"
+      />
       <div className="max-w-7xl mx-auto px-6">
         <Breadcrumbs />
         <header className="mb-24">

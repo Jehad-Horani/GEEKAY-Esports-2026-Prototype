@@ -283,9 +283,9 @@ const Hero = () => {
             >
               <ShopDropdown />
  
-              <Link to="/schedule">
+              <Link to="/events">
                 <ArenaButton variant="outline" className="h-10 md:h-12 min-w-[150px] md:min-w-[180px] text-[10px] md:text-xs px-4" icon={<Calendar size={14} />}>
-                  SCHEDULE
+                  EVENTS
                 </ArenaButton>
               </Link>
             </motion.div>
@@ -1067,7 +1067,7 @@ const LiveOperationsHighlight = () => {
                       STARTS IN: {match.countdown}
                     </div>
                   </div>
-                  <Link to="/schedule" className="group/link flex items-center gap-2 font-syncopate text-[9px] font-black text-[#FFC400] tracking-[0.2em] uppercase relative">
+                  <Link to="/events" className="group/link flex items-center gap-2 font-syncopate text-[9px] font-black text-[#FFC400] tracking-[0.2em] uppercase relative">
                     VIEW MATCH 
                     <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                     <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#FFC400] group-hover/link:w-full transition-all duration-300" />
@@ -1127,7 +1127,7 @@ const LiveOperationsHighlight = () => {
                 </div>
 
                 <div className="mt-auto">
-                  <Link to="/schedule">
+                  <Link to="/events">
                     <ArenaButton className="w-full" icon={<ArrowRight size={18} />}>
                       VIEW TOURNAMENT
                     </ArenaButton>

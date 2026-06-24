@@ -311,7 +311,7 @@ const Navbar = ({ onSearchOpen }: { onSearchOpen: () => void }) => {
     { name: 'HOME', path: '/' },
     { name: 'ABOUT', path: '/about' },
     { name: 'TEAMS', path: '/teams' },
-    { name: 'SCHEDULE', path: '/schedule' },
+    { name: 'EVENTS', path: '/events' },
     { name: 'NEWS', path: '/news' },
     { name: 'MEDIA', path: '/socials' },
     { name: 'CAREERS', path: '/careers' },
@@ -452,6 +452,7 @@ export default function App() {
             <Route path="/news" element={<News />} />
             <Route path="/news/:slug" element={<NewsDetail />} />
             <Route path="/schedule" element={<Schedule />} />
+            <Route path="/events" element={<Schedule />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/teams/:teamId" element={<Teams />} />
             <Route path="/players/:playerName" element={<PlayerProfile />} />
@@ -517,7 +518,7 @@ export default function App() {
               <h3 className="font-syncopate text-[10px] font-bold text-[#FFC400] mb-8 tracking-[0.3em] uppercase">Roster</h3>
               <ul className="space-y-4 text-slate-400 text-sm font-medium">
                 <li><Link to="/teams" className="hover:text-white transition-colors">Pro Teams</Link></li>
-                <li><Link to="/schedule" className="hover:text-white transition-colors">Tournaments</Link></li>
+                <li><Link to="/events" className="hover:text-white transition-colors">Tournaments</Link></li>
                 <li><Link to="/careers" className="hover:text-white transition-colors">Join Us</Link></li>
               </ul>
             </div>
