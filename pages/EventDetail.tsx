@@ -76,8 +76,11 @@ const EventDetail = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
       try {
-        const res = await fetch('/api/events');
+        const res = await fetch('/api/events', { signal: controller.signal });
+        clearTimeout(timeoutId);
         if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
           const data = await res.json();
           if (Array.isArray(data)) {
@@ -87,8 +90,9 @@ const EventDetail = () => {
           }
         }
       } catch (err) {
-        console.error('Failed to fetch events:', err);
+        console.error('Failed to fetch events (or timed out):', err);
       } finally {
+        clearTimeout(timeoutId);
         setLoading(false);
       }
     };
