@@ -11,12 +11,13 @@ import {
   Clock,
   User as UserIcon,
   ArrowUpRight,
-  Settings
+  Settings,
+  Newspaper
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [stats, setStats] = useState<any>({ teams: 0, players: 0, events: 0, gallery: 0, jobs: 0 });
+  const [stats, setStats] = useState<any>({ teams: 0, players: 0, events: 0, gallery: 0, jobs: 0, news: 0 });
   const [activity, setActivity] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [dbStatus, setDbStatus] = useState<any>(null);
@@ -75,6 +76,7 @@ const Dashboard = () => {
     { label: 'Total Events', value: stats.events, icon: <Calendar size={24} />, color: 'text-purple-500', path: '/admin/schedule' },
     { label: 'Gallery Items', value: stats.gallery, icon: <ImageIcon size={24} />, color: 'text-amber-500', path: '/admin/gallery' },
     { label: 'Job Openings', value: stats.jobs, icon: <Briefcase size={24} />, color: 'text-rose-500', path: '/admin/jobs' },
+    { label: 'News Articles', value: stats.news, icon: <Newspaper size={24} />, color: 'text-orange-500', path: '/admin/news' },
   ];
 
   return (
@@ -85,7 +87,7 @@ const Dashboard = () => {
       </header>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         {statCards.map((stat, i) => (
           <motion.div
             key={stat.label}

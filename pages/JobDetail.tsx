@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { MapPin, Briefcase, ChevronLeft, Mail, CheckCircle2, ArrowRight } from 'lucide-react';
 import { MOCK_JOBS } from '../constants';
 import ArenaButton from '../components/ui/ArenaButton';
+import Breadcrumbs from '../components/Breadcrumbs';
+import SEOMeta from '../components/SEOMeta';
 
 const JobDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -32,9 +34,15 @@ const JobDetail = () => {
 
   return (
     <div className="bg-[#081B3A] min-h-screen selection:bg-[#FFC400] selection:text-black pt-32 pb-60">
+      <SEOMeta 
+        title={`${job.title} - Careers at Geekay Esports`}
+        description={job.summary || `Apply for the ${job.title} position in the ${job.department} department at Geekay Esports.`}
+        ogType="article"
+      />
       <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
       
       <div className="container mx-auto px-6 relative z-10">
+        <Breadcrumbs />
         {/* Navigation */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}

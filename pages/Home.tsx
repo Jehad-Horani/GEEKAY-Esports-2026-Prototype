@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import { ChevronRight, ChevronDown, PlayCircle, Search, BarChart3, Globe, Shield, X, Twitter, Twitch, Cpu, Target, Layers, Zap, ArrowDown, ArrowRight, Clock, Calendar, MapPin, Trophy, Instagram, Youtube } from 'lucide-react';
 import SocialFollowerIcon from '../components/SocialFollowerIcon';
@@ -7,10 +7,11 @@ import ArenaButton from '../components/ui/ArenaButton';
 import { MOCK_EVENTS, MOCK_TEAMS, MOCK_NEWS, MOCK_PRODUCTS } from '../constants';
 import { Link } from 'react-router-dom';
 import { Player, NewsItem, Product } from '../types';
+import SEOMeta from '../components/SEOMeta';
 
 // --- Components ---
 
-const ShopDropdown = ({ variant = "primary", className = "", direction = "down" }: { variant?: "primary" | "outline", className?: string, direction?: "up" | "down" }) => {
+const ShopDropdown = ({ variant = "primary", className = "" }: { variant?: "primary" | "outline", className?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showMobileRegions, setShowMobileRegions] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(localStorage.getItem('geekay_region'));
@@ -32,22 +33,22 @@ const ShopDropdown = ({ variant = "primary", className = "", direction = "down" 
   const buttonText = 'SHOP';
 
   return (
-    <div className={`relative ${className} z-50`}>
+    <div className={`relative ${className}`}>
       {/* Desktop Dropdown */}
-      <div
-        className="hidden lg:block relative"
+      <div 
+        className="hidden lg:block relative z-[50]"
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
-        <ArenaButton
+        <ArenaButton 
           variant={variant}
-          className="h-12 md:h-14 min-w-[180px] md:min-w-[220px] text-xs md:text-sm px-6 z-[999]"
+          className="h-12 md:h-14 min-w-[180px] md:min-w-[220px] text-xs md:text-sm px-6"
           onClick={() => setIsOpen(!isOpen)}
-          icon={<ChevronDown size={16} className={`transition-transform duration-300  ${isOpen ? 'rotate-180' : ''}`} />}
+          icon={<ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />}
         >
           {buttonText}
         </ArenaButton>
-
+        
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -55,12 +56,11 @@ const ShopDropdown = ({ variant = "primary", className = "", direction = "down" 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2 }}
-              className={`absolute left-0 w-full bg-[#0A1A31]/95 backdrop-blur-xl border border-[#FFC400]/30 z-[999] shadow-2xl rounded-sm overflow-hidden ${direction === "up" ? "bottom-full mb-2" : "top-full mt-2"
-                }`}
+              className="absolute top-full left-0 mt-2 w-full bg-[#0A1A31]/95 backdrop-blur-xl border border-[#FFC400]/30 z-[1000] shadow-2xl rounded-sm overflow-hidden"
             >
               <div className="p-1">
                 {regions.map((region) => (
-                  <button
+                  <button 
                     key={region.name}
                     onClick={() => handleRegionSelect(region.name, region.link)}
                     className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#FFC400]/10 text-white font-syncopate text-[10px] tracking-widest transition-all group/item border-b border-white/5 last:border-0"
@@ -80,7 +80,7 @@ const ShopDropdown = ({ variant = "primary", className = "", direction = "down" 
 
       {/* Mobile Button */}
       <div className="lg:hidden">
-        <ArenaButton
+        <ArenaButton 
           variant={variant}
           className="h-12 md:h-14 w-full min-w-[180px] text-xs md:text-sm px-6"
           onClick={() => setShowMobileRegions(true)}
@@ -111,7 +111,7 @@ const ShopDropdown = ({ variant = "primary", className = "", direction = "down" 
               <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8" />
               <h3 className="font-syncopate text-lg font-black text-white uppercase mb-2">SELECT REGION</h3>
               <p className="text-white/40 font-syncopate text-[10px] tracking-widest uppercase mb-8">Choose your official Geekay store</p>
-
+              
               <div className="space-y-3">
                 {regions.map((r) => (
                   <button
@@ -127,7 +127,7 @@ const ShopDropdown = ({ variant = "primary", className = "", direction = "down" 
                   </button>
                 ))}
               </div>
-
+              
               <button
                 onClick={() => setShowMobileRegions(false)}
                 className="w-full mt-6 py-4 text-white/40 font-syncopate text-[10px] tracking-widest uppercase"
@@ -149,14 +149,14 @@ const RadarDots = () => {
         <motion.div
           key={i}
           initial={{ opacity: 0, x: Math.random() * 100 + "%", y: Math.random() * 100 + "%" }}
-          animate={{
+          animate={{ 
             opacity: [0, 0.5, 0],
             scale: [0.5, 1.2, 0.8],
           }}
-          transition={{
-            duration: 3 + Math.random() * 5,
-            repeat: Infinity,
-            delay: Math.random() * 5
+          transition={{ 
+            duration: 3 + Math.random() * 5, 
+            repeat: Infinity, 
+            delay: Math.random() * 5 
           }}
           className="absolute w-1 h-1 bg-[#FFC400] rounded-full"
         />
@@ -176,15 +176,15 @@ const ScanLine = () => (
 
 const TacticalLines = () => (
   <div className="absolute inset-0 z-0 pointer-events-none opacity-10">
-    <motion.div
+    <motion.div 
       animate={{ x: [-20, 20, -20] }}
       transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute top-[20%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400] to-transparent"
+      className="absolute top-[20%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400] to-transparent" 
     />
-    <motion.div
+    <motion.div 
       animate={{ x: [20, -20, 20] }}
       transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute bottom-[30%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400] to-transparent"
+      className="absolute bottom-[30%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFC400] to-transparent" 
     />
   </div>
 );
@@ -205,7 +205,7 @@ const Shockwave = ({ trigger }: { trigger: boolean }) => (
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-
+  
   // Mouse parallax movement
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -217,31 +217,31 @@ const Hero = () => {
   };
 
   return (
-    <section
+    <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
       className="relative min-h-[280px] md:min-h-[320px] flex items-center justify-center bg-[#0B1C2D] z-40 pt-[100px] pb-[40px] md:pt-[120px] md:pb-[60px] border-t border-white/5 border-b-2 border-[#FFC400]/10 overflow-visible"
     >
       <RadarDots />
-
+      
       {/* Background Grid */}
       <div className="absolute inset-0 bg-grid opacity-[0.05] z-0 pointer-events-none" />
-
+      
       {/* Ambient Gradient Glow */}
-      <motion.div
-        animate={{
+      <motion.div 
+        animate={{ 
           opacity: [0.2, 0.3, 0.2],
-          scale: [1, 1.05, 1]
+          scale: [1, 1.05, 1] 
         }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#FFC400]/5 rounded-full blur-[120px] z-0"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#FFC400]/5 rounded-full blur-[120px] z-0" 
       />
 
-      <motion.div
+      <motion.div 
         className="container mx-auto px-[20px] md:px-[60px] lg:px-[100px] relative z-[60]"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-24">
-
+          
           {/* LEFT: COMPACT HEADLINE */}
           <div className="flex flex-col items-start text-left">
             <div className="relative mb-4 lg:mb-6">
@@ -252,38 +252,40 @@ const Hero = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  <h1 className="font-syncopate text-2xl md:text-3xl lg:text-4xl font-black text-white uppercase tracking-tighter leading-none">
-                    #Geekay<br />
-                    <span className="text-[#FFC400]">WeGame</span>
+                  <h1 className="font-syncopate text-2xl md:text-3xl lg:text-4xl font-black text-white uppercase tracking-tighter leading-none mb-2">
+                    Geekay <span className="text-[#FFC400]">Esports</span>
                   </h1>
+                  <h2 className="font-syncopate text-[10px] md:text-xs font-black text-white/50 tracking-[0.3em] uppercase block">
+                    Professional Esports Organization
+                  </h2>
                 </motion.div>
-
+ 
                 {/* EST 2021 */}
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.2 }}
-                  className="flex items-center gap-3 mt-2"
+                  className="flex items-center gap-3 mt-4"
                 >
                   <div className="w-6 h-[1px] bg-[#FFC400]/60" />
-                  <span className="font-syncopate text-[10px] md:text-xs font-bold text-white/60 tracking-[0.3em] uppercase">
-                    EST 2021
+                  <span className="font-syncopate text-[9px] font-bold text-[#FFC400] tracking-[0.3em] uppercase">
+                    EST 2021 // #WEGAME
                   </span>
                 </motion.div>
               </div>
             </div>
-
-            <motion.div
+ 
+            <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
               className="flex flex-col sm:flex-row gap-3"
             >
               <ShopDropdown />
-
-              <Link to="/schedule">
+ 
+              <Link to="/events">
                 <ArenaButton variant="outline" className="h-10 md:h-12 min-w-[150px] md:min-w-[180px] text-[10px] md:text-xs px-4" icon={<Calendar size={14} />}>
-                  SCHEDULE
+                  EVENTS
                 </ArenaButton>
               </Link>
             </motion.div>
@@ -304,7 +306,7 @@ const Hero = () => {
                   <div className="w-1.5 h-1.5 rounded-full bg-[#FFC400] animate-pulse" />
                   UPCOMING MATCHES
                 </h3>
-
+                
                 <div className="space-y-2">
                   {[
                     { game: 'VALORANT', opp: 'TEAM FALCONS', date: 'FEB 28', time: '18:00' },
@@ -329,7 +331,7 @@ const Hero = () => {
                 <h3 className="font-syncopate text-[8px] font-black text-white/40 tracking-[0.4em] uppercase mb-3">
                   PAST RESULTS
                 </h3>
-
+                
                 <div className="space-y-2">
                   {[
                     { game: 'VALORANT', opp: 'TEAM SECRET', res: 'WIN', score: '2-1' },
@@ -359,9 +361,9 @@ const Hero = () => {
 
         </div>
       </motion.div>
-
+      
       {/* Scroll Indicator */}
-      <motion.div
+      <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 1, repeat: Infinity, repeatType: "reverse" }}
@@ -418,7 +420,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-transparent to-transparent opacity-60" />
-
+          
           {/* Region Selector Overlay (Desktop) */}
           <AnimatePresence>
             {isHovered && window.innerWidth >= 1024 && (
@@ -495,7 +497,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8" />
               <h3 className="font-syncopate text-lg font-black text-white uppercase mb-2">SELECT REGION</h3>
               <p className="text-white/40 font-syncopate text-[10px] tracking-widest uppercase mb-8">Choose your store for {product.name}</p>
-
+              
               <div className="space-y-3">
                 {regions.map((r) => (
                   <button
@@ -508,7 +510,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                   </button>
                 ))}
               </div>
-
+              
               <button
                 onClick={() => setShowMobileRegions(false)}
                 className="w-full mt-6 py-4 text-white/40 font-syncopate text-[10px] tracking-widest uppercase"
@@ -525,9 +527,9 @@ const ProductCard = ({ product }: { product: Product }) => {
 
 const ShopSection = () => {
   return (
-    <section className="py-32 px-6 bg-[#030C1A] border-b border-slate-900 relative z-10 overflow-hidden">
+    <section className="py-32 px-6 bg-[#030C1A] border-b border-slate-900 relative z-50 overflow-visible">
       <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto overflow-visible relative">
         <div className="mb-20 flex flex-col items-center text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -545,7 +547,7 @@ const ShopSection = () => {
           >
             Official Gear. Built for Performance.
           </motion.p>
-          <motion.div
+          <motion.div 
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
@@ -568,8 +570,8 @@ const ShopSection = () => {
           ))}
         </div>
 
-        <div className="mt-20 flex justify-center z-[999]">
-          <ShopDropdown variant="outline" direction="up" />
+        <div className="mt-20 flex justify-center">
+          <ShopDropdown variant="outline" />
         </div>
       </div>
     </section>
@@ -578,14 +580,14 @@ const ShopSection = () => {
 
 // --- PlayerDetailModal ---
 const PlayerDetailModal: React.FC<{ player: Player; onClose: () => void }> = ({ player, onClose }) => (
-  <motion.div
+  <motion.div 
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 bg-[#081B3A]/95 backdrop-blur-xl"
     onClick={onClose}
   >
-    <motion.div
+    <motion.div 
       initial={{ scale: 0.9, y: 30 }}
       animate={{ scale: 1, y: 0 }}
       exit={{ scale: 0.9, y: 30 }}
@@ -595,7 +597,7 @@ const PlayerDetailModal: React.FC<{ player: Player; onClose: () => void }> = ({ 
       <button onClick={onClose} className="absolute top-6 right-6 z-20 text-white hover:text-[#FFC400] transition-colors">
         <X size={32} />
       </button>
-
+      
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="h-[300px] lg:h-[600px] relative overflow-hidden">
           <img src={player.photo} alt={player.nickname} className="w-full h-full object-cover grayscale" />
@@ -610,9 +612,9 @@ const PlayerDetailModal: React.FC<{ player: Player; onClose: () => void }> = ({ 
           <div className="flex gap-5 mb-10">
             {Object.entries(player.socials).map(([platform, count]) => (
               count && count !== '#' && (
-                <SocialFollowerIcon
+                <SocialFollowerIcon 
                   key={platform}
-                  platform={platform}
+                  platform={platform} 
                   count={count}
                   size={24}
                   className="text-slate-400 hover:text-[#FFC400]"
@@ -657,13 +659,13 @@ const AnimatedNumber: React.FC<{ value: string; className?: string }> = ({ value
       const update = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-
+        
         // Easing function for smoother count-up
         const easeOutQuad = (t: number) => t * (2 - t);
         const easedProgress = easeOutQuad(progress);
-
+        
         const current = easedProgress * targetValue;
-
+        
         setDisplayValue(current);
 
         if (progress < 1) {
@@ -699,15 +701,15 @@ const NewsAnnouncements = () => {
         {/* Header Row */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
           <div className="space-y-4">
-            <motion.h2
+            <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               className="font-syncopate text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter relative inline-block"
             >
-              NEWS & <span className="text-[#FFC400]">ANNOUNCEMENTS</span>
-              <motion.div
+              LATEST <span className="text-[#FFC400]">NEWS</span>
+              <motion.div 
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
@@ -732,7 +734,7 @@ const NewsAnnouncements = () => {
         {/* News Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Featured Card (International Qualifications) */}
-          <motion.div
+          <motion.div 
             initial={{ opacity: 0, y: 30, clipPath: 'inset(0 100% 0 0)' }}
             whileInView={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0 0)' }}
             viewport={{ once: true }}
@@ -740,32 +742,32 @@ const NewsAnnouncements = () => {
             className="lg:col-span-8 group relative bg-[#0A1A31] border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-500 overflow-hidden h-[500px] md:h-[600px]"
           >
             <div className="absolute inset-0 overflow-hidden">
-              <motion.img
-                src={featured.image}
-                alt={featured.title}
+              <motion.img 
+                src={featured.image} 
+                alt={featured.title} 
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.6 }}
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-[#081B3A]/60 to-transparent" />
             </div>
-
+            
             <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-end">
               <div className="mb-6">
                 <span className="bg-[#FFC400] text-black px-4 py-1 font-syncopate text-[9px] font-black tracking-widest uppercase inline-block">
                   {featured.category}
                 </span>
               </div>
-
+              
               <h3 className="font-syncopate text-3xl md:text-5xl font-bold text-white uppercase mb-6 leading-tight relative inline-block w-fit">
                 {featured.title}
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
               </h3>
-
+              
               <p className="text-slate-300 text-sm md:text-lg mb-8 line-clamp-2 font-light max-w-2xl uppercase tracking-wide">
                 {featured.excerpt}
               </p>
-
+              
               <div className="flex items-center justify-between pt-8 border-t border-white/10">
                 <div className="flex items-center gap-6 text-slate-500 font-syncopate text-[9px] tracking-widest">
                   <span>{featured.date}</span>
@@ -795,32 +797,32 @@ const NewsAnnouncements = () => {
                 className="group relative flex flex-col bg-[#0A1A31] border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-500 overflow-hidden h-[241px] md:h-[291px]"
               >
                 <div className="absolute inset-0 overflow-hidden">
-                  <motion.img
-                    src={item.image}
-                    alt={item.title}
+                  <motion.img 
+                    src={item.image} 
+                    alt={item.title} 
                     whileHover={{ scale: 1.03 }}
                     transition={{ duration: 0.6 }}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A] via-[#081B3A]/80 to-transparent" />
                 </div>
-
+                
                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
                   <div className="mb-4">
                     <span className="bg-[#FFC400] text-black px-3 py-1 font-syncopate text-[8px] font-black tracking-widest uppercase inline-block">
                       {item.category}
                     </span>
                   </div>
-
+                  
                   <h4 className="font-syncopate text-base md:text-lg font-bold text-white uppercase mb-4 group-hover:text-[#FFC400] transition-colors line-clamp-2 relative inline-block w-fit">
                     {item.title}
                     <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#FFC400] group-hover:w-full transition-all duration-500" />
                   </h4>
-
+                  
                   <p className="text-slate-400 text-[10px] md:text-xs mb-6 line-clamp-2 font-light uppercase tracking-wide">
                     {item.excerpt}
                   </p>
-
+                  
                   <div className="flex justify-between items-center pt-4 border-t border-white/10">
                     <span className="text-slate-500 font-syncopate text-[8px] tracking-widest">{item.date}</span>
                     <Link to={`/news/${item.slug}`} className="text-[#FFC400] font-syncopate text-[8px] font-black tracking-widest flex items-center gap-2 group/btn">
@@ -828,7 +830,7 @@ const NewsAnnouncements = () => {
                     </Link>
                   </div>
                 </div>
-
+                
                 {/* Corner Markers */}
                 <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-[#FFC400]/20 group-hover:border-[#FFC400]/50 transition-colors" />
               </motion.div>
@@ -861,7 +863,7 @@ const AboutSnapshot = () => {
     <section ref={sectionRef} className="py-40 px-6 bg-[#081B3A] relative z-10 overflow-hidden border-t border-slate-800/50">
       {/* Background Grid */}
       <div className="absolute inset-0 bg-grid opacity-[0.05] pointer-events-none" />
-
+      
       {/* Animated Scanning Line */}
       <motion.div
         animate={{ top: ['-10%', '110%'] }}
@@ -870,7 +872,7 @@ const AboutSnapshot = () => {
       />
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[0.4fr_0.6fr] gap-16 lg:gap-24 items-center relative z-10">
-
+        
         {/* Left Side: Content */}
         <motion.div
           style={{ y: leftY }}
@@ -885,7 +887,7 @@ const AboutSnapshot = () => {
           >
             WHO IS <span className="text-[#FFC400]">GEEKAY ESPORTS?</span>
           </motion.h2>
-
+          
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -893,10 +895,10 @@ const AboutSnapshot = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-slate-400 text-base md:text-lg font-light leading-relaxed mb-10 max-w-md"
           >
-            A premier multi-division organization dedicated to competitive excellence,
+            A premier multi-division organization dedicated to competitive excellence, 
             maintaining a relentless focus on regional dominance and international prestige.
           </motion.p>
-
+          
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -909,7 +911,7 @@ const AboutSnapshot = () => {
         </motion.div>
 
         {/* Right Side: Stats Grid */}
-        <motion.div
+        <motion.div 
           style={{ y: rightY }}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full"
         >
@@ -921,8 +923,8 @@ const AboutSnapshot = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 + (i * 0.1), duration: 0.6 }}
-              whileHover={{
-                y: -8,
+              whileHover={{ 
+                y: -8, 
                 backgroundColor: 'rgba(10, 26, 49, 0.9)',
                 boxShadow: '0 0 30px rgba(255, 196, 0, 0.15)'
               }}
@@ -930,18 +932,18 @@ const AboutSnapshot = () => {
             >
               {/* Subtle Edge Glow on Hover */}
               <div className="absolute inset-0 border border-[#FFC400]/0 group-hover:border-[#FFC400]/20 transition-colors pointer-events-none" />
-
+              
               <div className="mb-8">
-                <AnimatedNumber value={stat.value} />
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: '100%' }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, delay: 1 + (i * 0.1) }}
-                  className="h-[1px] bg-[#FFC400] mt-4 opacity-50"
-                />
+                 <AnimatedNumber value={stat.value} />
+                 <motion.div 
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '100%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 1 + (i * 0.1) }}
+                    className="h-[1px] bg-[#FFC400] mt-4 opacity-50"
+                  />
               </div>
-
+              
               <div className="space-y-2">
                 <div className="font-syncopate text-[11px] text-white tracking-[0.3em] uppercase font-black group-hover:text-[#FFC400] transition-colors">
                   {stat.label}
@@ -956,7 +958,7 @@ const AboutSnapshot = () => {
             </motion.div>
           ))}
 
-
+         
         </motion.div>
 
       </div>
@@ -1006,15 +1008,15 @@ const LiveOperationsHighlight = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="mb-16">
-          <motion.h2
+          <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="font-syncopate text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4"
           >
-            SCHEDULE <span className="text-[#FFC400]">HIGHLIGHT</span>
+            UPCOMING <span className="text-[#FFC400]">MATCHES</span>
           </motion.h2>
-          <motion.p
+          <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 0.6 }}
             viewport={{ once: true }}
@@ -1046,7 +1048,7 @@ const LiveOperationsHighlight = () => {
                       <p className="text-slate-400 font-syncopate text-[10px] tracking-widest uppercase">VS {match.opponent}</p>
                     </div>
                   </div>
-
+                  
                   <div className="flex flex-col md:items-end gap-2">
                     <div className="flex items-center gap-3 text-slate-300 font-syncopate text-[10px] tracking-widest">
                       <Calendar size={14} className="text-[#FFC400]" />
@@ -1065,8 +1067,8 @@ const LiveOperationsHighlight = () => {
                       STARTS IN: {match.countdown}
                     </div>
                   </div>
-                  <Link to="/schedule" className="group/link flex items-center gap-2 font-syncopate text-[9px] font-black text-[#FFC400] tracking-[0.2em] uppercase relative">
-                    VIEW MATCH
+                  <Link to="/events" className="group/link flex items-center gap-2 font-syncopate text-[9px] font-black text-[#FFC400] tracking-[0.2em] uppercase relative">
+                    VIEW MATCH 
                     <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                     <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#FFC400] group-hover/link:w-full transition-all duration-300" />
                   </Link>
@@ -1090,9 +1092,9 @@ const LiveOperationsHighlight = () => {
               className="group relative bg-[#0A1A31] border border-slate-800 hover:border-[#FFC400]/40 transition-all duration-500 overflow-hidden h-full flex flex-col"
             >
               <div className="relative aspect-video overflow-hidden">
-                <img
-                  src={featuredTournament.image}
-                  alt={featuredTournament.title}
+                <img 
+                  src={featuredTournament.image} 
+                  alt={featuredTournament.title} 
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1A31] via-[#0A1A31]/40 to-transparent" />
@@ -1125,7 +1127,7 @@ const LiveOperationsHighlight = () => {
                 </div>
 
                 <div className="mt-auto">
-                  <Link to="/schedule">
+                  <Link to="/events">
                     <ArenaButton className="w-full" icon={<ArrowRight size={18} />}>
                       VIEW TOURNAMENT
                     </ArenaButton>
@@ -1144,17 +1146,76 @@ const LiveOperationsHighlight = () => {
   );
 };
 
+const ActiveTeamsSection = () => {
+  return (
+    <section className="py-32 px-6 bg-[#030C1A] relative z-10 overflow-hidden border-t border-slate-900">
+      <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-16">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-syncopate text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4"
+          >
+            ACTIVE <span className="text-[#FFC400]">TEAMS</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.6 }}
+            viewport={{ once: true }}
+            className="text-slate-400 font-syncopate text-[10px] tracking-[0.2em] uppercase"
+          >
+            Our elite multi-gaming professional divisions.
+          </motion.p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {MOCK_TEAMS.slice(0, 4).map((team, idx) => (
+            <motion.div
+              key={team.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{ y: -8 }}
+              className="group relative bg-[#0A1A31]/40 border border-slate-800 p-8 hover:border-[#FFC400]/30 transition-all overflow-hidden flex flex-col justify-between min-h-[250px]"
+            >
+              <div className="absolute top-0 right-0 w-16 h-16 bg-[#FFC400]/5 skew-x-[-45deg] translate-x-8 -translate-y-8" />
+              <div>
+                <span className="text-[#FFC400] font-syncopate text-[9px] font-black tracking-widest uppercase mb-2 block">{team.game}</span>
+                <h3 className="font-syncopate text-xl font-black text-white uppercase mb-4 group-hover:text-[#FFC400] transition-colors">{team.name} Roster</h3>
+                <p className="text-slate-500 font-inter text-xs font-light leading-relaxed mb-6">{team.bio || `Our professional ${team.game} squad competing in the highest tiers of regional and global tournaments.`}</p>
+              </div>
+
+              <Link to={`/teams?id=${team.id}`} className="group/btn flex items-center gap-2 font-syncopate text-[9px] font-black text-[#FFC400] tracking-widest uppercase mt-4">
+                VIEW ROSTER <ArrowRight size={14} className="group-hover/btn:translate-x-1.5 transition-transform" />
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
   return (
-    <motion.div
+    <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="relative"
     >
+      <SEOMeta 
+        title="Geekay Esports - Leading Professional Esports Organization"
+        description="Official portal of Geekay Esports. Dominate the virtual arenas with our elite rosters in Rocket League, PUBG Mobile, Overwatch, Honor of Kings, and Fortnite."
+        ogType="website"
+      />
       <Hero />
       <NewsAnnouncements />
       <AboutSnapshot />
+      <ActiveTeamsSection />
       <LiveOperationsHighlight />
       <ShopSection />
     </motion.div>

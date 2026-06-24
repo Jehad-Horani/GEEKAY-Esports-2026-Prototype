@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Twitter, Twitch, Instagram, Youtube, LayoutGrid, Info, Briefcase, Calendar, Users, Home as HomeIcon, ChevronDown, ArrowRight } from 'lucide-react';
+import { Menu, X, Twitter, Twitch, Instagram, Youtube, LayoutGrid, Info, Briefcase, Calendar, Users, Home as HomeIcon, ChevronDown, ArrowRight, Search } from 'lucide-react';
 
 // Pages
 import Home from './pages/Home';
@@ -24,12 +24,16 @@ import AdminLeadership from './src/admin/Leadership';
 import AdminSettings from './src/admin/Settings';
 import AdminUsers from './src/admin/Users';
 import AdminSubscribers from './src/admin/Subscribers';
+import AdminNews from './src/admin/News';
 import Socials from './pages/Socials';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
+import PlayerProfile from './pages/PlayerProfile';
+import EventDetail from './pages/EventDetail';
 
 import SocialFollowerIcon from './components/SocialFollowerIcon';
 import NewsletterPopup from './components/NewsletterPopup';
+import GlobalSearch from './components/GlobalSearch';
 import { GEEKAY_LOGO } from './constants';
 
 // Component to handle scroll reset on navigation
@@ -94,7 +98,7 @@ const DesktopShopDropdown = () => {
 
   return (
     <div 
-      className="relative z-10"
+      className="relative"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
@@ -154,7 +158,7 @@ const MobileShopDropdown = () => {
     <div className="flex flex-col">
       <button 
         onClick={() => setIsShopOpen(!isShopOpen)}
-        className="font-syncopate text-4xl font-bold  z-96 flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
+        className="font-syncopate text-4xl font-bold flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
       >
         SHOP
         <ChevronDown size={24} className={`transition-transform duration-300 ${isShopOpen ? 'rotate-180 text-[#FFC400]' : ''}`} />
@@ -195,7 +199,111 @@ const MobileShopDropdown = () => {
   );
 };
 
-const Navbar = () => {
+const teamsDropdownLinks = [
+  { name: 'All Teams', path: '/teams' },
+  { name: 'Rocket League', path: '/teams/rocket-league' },
+  { name: 'PUBG Mobile', path: '/teams/pubg-mobile' },
+  { name: 'PUBG PC', path: '/teams/pubg-pc' },
+  { name: 'Overwatch', path: '/teams/overwatch' },
+  { name: 'Honor of Kings', path: '/teams/honor-of-kings' },
+  { name: 'Rainbow Six Siege', path: '/teams/r6-siege-x' },
+  { name: 'Fortnite', path: '/teams/fortnite' },
+  { name: 'Mobile Legends', path: '/teams/mobile-legends' },
+  { name: 'CrossFire', path: '/teams/crossfire' },
+  { name: 'EA Sports FC', path: '/teams/easfc' },
+];
+
+const DesktopTeamsDropdown = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  return (
+    <div 
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <button className={`font-syncopate text-[10px] tracking-[0.25em] font-bold hover:text-[#FFC400] transition-colors relative group flex items-center gap-1 ${location.pathname.startsWith('/teams') ? 'text-[#FFC400]' : 'text-slate-400'}`}>
+        TEAMS
+        <ChevronDown size={10} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        <span className={`absolute -bottom-2 left-0 h-[2px] bg-[#FFC400] transition-all duration-300 ${location.pathname.startsWith('/teams') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-1/2 -translate-x-1/2 pt-4 z-[100] w-[450px]"
+          >
+            <div className="bg-[#040E1E]/95 backdrop-blur-md border border-[#FFC400]/20 shadow-[0_20px_40px_rgba(0,0,0,0.6)] p-4">
+              <div className="px-3 py-2 border-b border-white/5 mb-3">
+                <span className="font-syncopate text-[8px] text-slate-400 tracking-[0.2em] uppercase">Division Selection</span>
+              </div>
+              <div className="grid grid-cols-2 gap-1">
+                {teamsDropdownLinks.map((team, i) => (
+                  <Link
+                    key={team.name}
+                    to={team.path}
+                    className="group relative flex items-center justify-between px-3 py-2 hover:bg-[#081B3A] transition-colors overflow-hidden"
+                  >
+                    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#FFC400] transform -translate-x-full group-hover:translate-x-0 transition-transform" />
+                    <span className="font-syncopate text-[9px] font-bold text-slate-300 group-hover:text-white transform group-hover:translate-x-1 transition-transform duration-300 tracking-[0.1em]">{team.name.toUpperCase()}</span>
+                    <ArrowRight size={10} className="text-slate-700 group-hover:text-[#FFC400] transform group-hover:translate-x-1 transition-all duration-300" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const MobileTeamsDropdown = ({ onCloseMenu }: { onCloseMenu: () => void }) => {
+  const [isTeamsOpen, setIsTeamsOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col">
+      <button 
+        onClick={() => setIsTeamsOpen(!isTeamsOpen)}
+        className="font-syncopate text-4xl font-bold flex items-center justify-between hover:text-[#FFC400] transition-colors w-full text-left"
+      >
+        TEAMS
+        <ChevronDown size={24} className={`transition-transform duration-300 ${isTeamsOpen ? 'rotate-180 text-[#FFC400]' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {isTeamsOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="grid grid-cols-1 gap-4 mt-6 pl-4 border-l-2 border-slate-800">
+              {teamsDropdownLinks.map((team, i) => (
+                <Link
+                  key={team.name}
+                  to={team.path}
+                  onClick={onCloseMenu}
+                  className="flex items-center justify-between group"
+                >
+                  <span className="font-syncopate text-2xl font-bold text-slate-300 group-hover:text-[#FFC400] transition-colors">{team.name.toUpperCase()}</span>
+                  <ArrowRight size={20} className="text-slate-600 group-hover:text-[#FFC400] transform group-hover:translate-x-2 transition-all" />
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const Navbar = ({ onSearchOpen }: { onSearchOpen: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -203,8 +311,8 @@ const Navbar = () => {
     { name: 'HOME', path: '/' },
     { name: 'ABOUT', path: '/about' },
     { name: 'TEAMS', path: '/teams' },
-    { name: 'VIEW ALL NEWS', path: '/news' },
-    { name: 'SCHEDULE', path: '/schedule' },
+    { name: 'EVENTS', path: '/events' },
+    { name: 'NEWS', path: '/news' },
     { name: 'MEDIA', path: '/socials' },
     { name: 'CAREERS', path: '/careers' },
   ];
@@ -219,22 +327,47 @@ const Navbar = () => {
       </Link>
 
       <div className="hidden lg:flex gap-10 items-center">
-        {navLinks.map((link) => (
-          <Link 
-            key={link.name} 
-            to={link.path}
-            className={`font-syncopate text-[10px] tracking-[0.25em] font-bold hover:text-[#FFC400] transition-colors relative group ${location.pathname === link.path ? 'text-[#FFC400]' : 'text-slate-400'}`}
-          >
-            {link.name}
-            <span className={`absolute -bottom-2 left-0 h-[2px] bg-[#FFC400] transition-all duration-300 ${location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'}`} />
-          </Link>
-        ))}
+        {navLinks.map((link) => {
+          if (link.name === 'TEAMS') {
+            return <DesktopTeamsDropdown key="TEAMS" />;
+          }
+          return (
+            <Link 
+              key={link.name} 
+              to={link.path}
+              className={`font-syncopate text-[10px] tracking-[0.25em] font-bold hover:text-[#FFC400] transition-colors relative group ${location.pathname === link.path ? 'text-[#FFC400]' : 'text-slate-400'}`}
+            >
+              {link.name}
+              <span className={`absolute -bottom-2 left-0 h-[2px] bg-[#FFC400] transition-all duration-300 ${location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+            </Link>
+          );
+        })}
+        
+        {/* Search trigger button */}
+        <button 
+          onClick={onSearchOpen}
+          className="text-slate-400 hover:text-[#FFC400] transition-colors p-2"
+          aria-label="Search"
+        >
+          <Search size={16} />
+        </button>
+
         <DesktopShopDropdown />
       </div>
 
-      <button className="lg:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+      <div className="flex items-center gap-4 lg:hidden">
+        {/* Mobile Search Trigger */}
+        <button 
+          onClick={onSearchOpen}
+          className="text-slate-400 hover:text-[#FFC400] transition-colors p-2"
+          aria-label="Search"
+        >
+          <Search size={18} />
+        </button>
+        <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
 
       <AnimatePresence>
         {isOpen && (
@@ -242,23 +375,28 @@ const Navbar = () => {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 bg-[#081B3A] z-40 flex flex-col p-12 lg:hidden"
+            className="fixed inset-0 bg-[#081B3A] z-40 flex flex-col p-12 lg:hidden overflow-y-auto"
           >
-             <div className="flex justify-between items-center mb-20">
+             <div className="flex justify-between items-center mb-10 shrink-0">
                 <span className="font-syncopate font-bold text-xl tracking-tighter">GEEKAY</span>
                 <button onClick={() => setIsOpen(false)}><X size={32} /></button>
              </div>
-            <div className="flex flex-col gap-8">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
-                  to={link.path} 
-                  onClick={() => setIsOpen(false)}
-                  className="font-syncopate text-4xl font-bold flex items-center gap-4 hover:text-[#FFC400] transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
+            <div className="flex flex-col gap-8 pb-10">
+              {navLinks.map((link) => {
+                if (link.name === 'TEAMS') {
+                  return <MobileTeamsDropdown key="TEAMS" onCloseMenu={() => setIsOpen(false)} />;
+                }
+                return (
+                  <Link 
+                    key={link.name} 
+                    to={link.path} 
+                    onClick={() => setIsOpen(false)}
+                    className="font-syncopate text-4xl font-bold flex items-center gap-4 hover:text-[#FFC400] transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
               <MobileShopDropdown />
             </div>
           </motion.div>
@@ -286,13 +424,27 @@ const SnapchatGhost = ({ size = 20, className = "" }) => (
 );
 
 export default function App() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <Router>
       <ScrollToTop />
       <div className="min-h-screen flex flex-col selection:bg-[#FFC400] selection:text-black bg-grid bg-[#081B3A] overflow-x-hidden">
         <div className="fixed inset-0 bg-scanline pointer-events-none z-10 opacity-30"></div>
         <CustomCursor />
-        <Navbar />
+        <Navbar onSearchOpen={() => setIsSearchOpen(true)} />
+        <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
         <NewsletterPopup />
         <main className="flex-grow relative z-20">
           <Routes>
@@ -300,12 +452,16 @@ export default function App() {
             <Route path="/news" element={<News />} />
             <Route path="/news/:slug" element={<NewsDetail />} />
             <Route path="/schedule" element={<Schedule />} />
+            <Route path="/events" element={<Schedule />} />
             <Route path="/teams" element={<Teams />} />
+            <Route path="/teams/:teamId" element={<Teams />} />
+            <Route path="/players/:playerName" element={<PlayerProfile />} />
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/careers/:slug" element={<JobDetail />} />
             <Route path="/info" element={<Information />} />
             <Route path="/socials" element={<Socials />} />
+            <Route path="/events/:eventName" element={<EventDetail />} />
 
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -318,6 +474,7 @@ export default function App() {
               <Route path="gallery" element={<AdminGallery />} />
               <Route path="jobs" element={<AdminJobs />} />
               <Route path="subscribers" element={<AdminSubscribers />} />
+              <Route path="news" element={<AdminNews />} />
               <Route path="settings" element={<AdminSettings />} />
               <Route path="users" element={<AdminUsers />} />
             </Route>
@@ -361,7 +518,7 @@ export default function App() {
               <h3 className="font-syncopate text-[10px] font-bold text-[#FFC400] mb-8 tracking-[0.3em] uppercase">Roster</h3>
               <ul className="space-y-4 text-slate-400 text-sm font-medium">
                 <li><Link to="/teams" className="hover:text-white transition-colors">Pro Teams</Link></li>
-                <li><Link to="/schedule" className="hover:text-white transition-colors">Tournaments</Link></li>
+                <li><Link to="/events" className="hover:text-white transition-colors">Tournaments</Link></li>
                 <li><Link to="/careers" className="hover:text-white transition-colors">Join Us</Link></li>
               </ul>
             </div>
