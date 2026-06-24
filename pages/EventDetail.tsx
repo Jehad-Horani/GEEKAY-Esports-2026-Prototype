@@ -93,8 +93,9 @@ const EventDetail = () => {
 
   // Normalization logic to merge database and mock events and select the matched one
   const matchedEvent = useMemo(() => {
-    const normalized = dbEvents.map(e => ({
+    const normalized = (dbEvents || []).map(e => ({
       ...e,
+      title: e.title || '',
       status: e.status ? e.status.toLowerCase() : 'upcoming',
       start_date: e.start_date || '',
       banner: e.banner || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200&h=600',
@@ -103,7 +104,7 @@ const EventDetail = () => {
     // Append MOCK_EVENTS not in the DB
     MOCK_EVENTS.forEach(mock => {
       const exists = normalized.some(
-        e => e.title.toLowerCase().trim() === mock.title.toLowerCase().trim()
+        e => e.title && mock.title && e.title.toLowerCase().trim() === mock.title.toLowerCase().trim()
       );
       if (!exists) {
         normalized.push({
@@ -141,7 +142,7 @@ const EventDetail = () => {
       }
     });
 
-    return normalized.find(e => getEventSlug(e.title) === eventName);
+    return normalized.find(e => e.title && getEventSlug(e.title) === eventName);
   }, [dbEvents, eventName]);
 
   // Fallbacks for richer rendering of elements
@@ -195,8 +196,9 @@ const EventDetail = () => {
   const relatedEvents = useMemo(() => {
     if (!matchedEvent) return [];
     
-    const all = dbEvents.filter(e => getEventSlug(e.title) !== eventName).map(e => ({
+    const all = (dbEvents || []).filter(e => e.title && getEventSlug(e.title) !== eventName).map(e => ({
       ...e,
+      title: e.title || '',
       status: e.status ? e.status.toLowerCase() : 'upcoming',
       start_date: e.start_date || '',
       banner: e.banner || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800&h=450'
@@ -205,7 +207,7 @@ const EventDetail = () => {
     MOCK_EVENTS.forEach(mock => {
       const slug = getEventSlug(mock.title);
       const isCurrent = slug === eventName;
-      const alreadyInList = all.some(e => getEventSlug(e.title) === slug);
+      const alreadyInList = all.some(e => e.title && getEventSlug(e.title) === slug);
       
       if (!isCurrent && !alreadyInList) {
         all.push({

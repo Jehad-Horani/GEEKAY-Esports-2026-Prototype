@@ -9,7 +9,8 @@ import { Event } from '../types';
 import Breadcrumbs from '../components/Breadcrumbs';
 import SEOMeta, { generateEventSchema } from '../components/SEOMeta';
 
-export const getEventSlug = (title: string) => {
+export const getEventSlug = (title: string | null | undefined) => {
+  if (!title) return '';
   return title
     .toLowerCase()
     .trim()
