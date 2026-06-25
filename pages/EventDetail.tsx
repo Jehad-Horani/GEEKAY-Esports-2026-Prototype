@@ -392,19 +392,22 @@ const EventDetail = () => {
             <div className="lg:col-span-5 grid grid-cols-2 gap-4">
               <div className="bg-[#040E1E] border border-slate-900 p-6 flex flex-col justify-between">
                 <span className="text-slate-500 font-syncopate text-[8px] tracking-widest uppercase">PRIZE POOL</span>
-                <span className="font-syncopate text-2xl font-black text-[#FFC400] mt-4">{matchedEvent.prizePool || '$100,000'}</span>
+                <span className="font-syncopate text-xl md:text-2xl font-black text-[#FFC400] mt-4">{matchedEvent.prizePool || '$100,000'}</span>
               </div>
               <div className="bg-[#040E1E] border border-slate-900 p-6 flex flex-col justify-between">
                 <span className="text-slate-500 font-syncopate text-[8px] tracking-widest uppercase">TOTAL TEAMS</span>
-                <span className="font-syncopate text-2xl font-black text-white mt-4">{teams.length || '16'} CONTENDERS</span>
+                <div className="mt-4">
+                  <span className="font-syncopate text-3xl font-black text-white block leading-none">{teams.length || '16'}</span>
+                  <span className="font-syncopate text-[9px] text-slate-400 font-bold tracking-wider block mt-1">CONTENDERS</span>
+                </div>
               </div>
               <div className="bg-[#040E1E] border border-slate-900 p-6 flex flex-col justify-between">
                 <span className="text-slate-500 font-syncopate text-[8px] tracking-widest uppercase">REGION</span>
-                <span className="font-syncopate text-2xl font-black text-white mt-4">{matchedEvent.region || 'EMEA'}</span>
+                <span className="font-syncopate text-xl md:text-2xl font-black text-white mt-4">{matchedEvent.region || 'EMEA'}</span>
               </div>
               <div className="bg-[#040E1E] border border-slate-900 p-6 flex flex-col justify-between">
                 <span className="text-slate-500 font-syncopate text-[8px] tracking-widest uppercase">BROADCAST</span>
-                <span className="font-syncopate text-lg font-black text-[#FFC400] mt-4">TWITCH / YOUTUBE</span>
+                <span className="font-syncopate text-xs md:text-sm font-black text-[#FFC400] mt-4 leading-normal">TWITCH / YOUTUBE</span>
               </div>
             </div>
           </div>
