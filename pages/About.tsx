@@ -93,7 +93,7 @@ const HUDStatCard = ({ label, value, index, isPriority = false }: { label: strin
     <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#FFC400]/30" />
     <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#FFC400]/30" />
   </motion.div>
-); 
+);  
 
 const About = () => {
   const leadershipData = [
